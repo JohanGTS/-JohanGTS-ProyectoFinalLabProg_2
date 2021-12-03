@@ -3,7 +3,7 @@
  */
 package Login;
 
-import Menu.Main;
+import Main.Main;
 import Placeholder.TextPrompt;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

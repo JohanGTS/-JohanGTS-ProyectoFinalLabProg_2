@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Menu;
+package Main;
 
-import Paneles.Panel1;
+import form.Panel1;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import menu.MenuItem;
 
 /**
  *
- * @author RavenPC
+ * @
  */
 public class Main extends javax.swing.JFrame {
 
