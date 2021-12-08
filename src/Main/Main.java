@@ -5,7 +5,10 @@
  */
 package Main;
 
-import form.Panel1;
+import form.PanelClientes;
+import form.PanelEntrenador;
+import form.PanelLocalizacion;
+import form.PanelUsuario;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -25,15 +28,16 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        
         execute();
     }
 
     private void execute() {
-        ImageIcon iconMantenimiento = new ImageIcon(getClass().getResource("/menu/user.png"));
-        ImageIcon iconMovimiento = new ImageIcon(getClass().getResource("/menu/setting.png"));
-        ImageIcon iconProcesos = new ImageIcon(getClass().getResource("/menu/database.png"));
-        ImageIcon iconConsultas = new ImageIcon(getClass().getResource("/menu/database.png"));
+        ImageIcon iconMantenimiento = new ImageIcon(getClass().getResource("/menu/tuerca.png"));
+        ImageIcon iconMovimiento = new ImageIcon(getClass().getResource("/menu/move.png"));
+        ImageIcon iconProcesos = new ImageIcon(getClass().getResource("/menu/process.png"));
+        ImageIcon iconConsultas = new ImageIcon(getClass().getResource("/menu/survey.png"));
+        ImageIcon iconSalir = new ImageIcon(getClass().getResource("/menu/salida.png"));
         ImageIcon iconMessage = new ImageIcon(getClass().getResource("/menu/message.png"));
         ImageIcon iconSubMenu = new ImageIcon(getClass().getResource("/menu/subMenu.png"));
         ImageIcon iconNext = new ImageIcon(getClass().getResource("/menu/next.png"));
@@ -43,17 +47,38 @@ public class Main extends javax.swing.JFrame {
         MenuItem menuUsuario = new MenuItem(iconSubMenu, "Usuario", new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                panelBody.add(new Panel1());
+                panelBody.add(new PanelUsuario());
                 panelBody.repaint();
                 panelBody.revalidate();
             }
         });
-        MenuItem menuEntrenador = new MenuItem(iconSubMenu, "Entrenador", null);
-        MenuItem menuLocalizacion = new MenuItem(iconSubMenu, "Localizacion", null);
+        MenuItem menuEntrenador = new MenuItem(iconSubMenu, "Entrenador",new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.add(new PanelEntrenador());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });     
+        MenuItem menuLocalizacion = new MenuItem(iconSubMenu, "Localizacion", new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.add(new PanelLocalizacion());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });
         MenuItem menuSalas = new MenuItem(iconSubMenu, "Salas", null);
         MenuItem menuActividad = new MenuItem(iconSubMenu, "Actividad", null);
         MenuItem menuHorarioActividad = new MenuItem(iconSubMenu, "Horario Actividad", null);
-        MenuItem menuClientes = new MenuItem(iconSubMenu, "Clientes", null);
+        MenuItem menuClientes = new MenuItem(iconSubMenu, "Clientes", new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.add(new PanelClientes());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });
         MenuItem menuEstadoReserva = new MenuItem(iconSubMenu, "Estado Reservas", null);
         MenuItem menuReserva = new MenuItem(iconSubMenu, "Reserva", null);
         MenuItem menuReservasActividades = new MenuItem(iconSubMenu, "Reservas Actividades", null);
@@ -74,7 +99,7 @@ public class Main extends javax.swing.JFrame {
         MenuItem menuusuario = new MenuItem(iconSubMenu, "Usuario", new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                panelBody.add(new Panel1());
+                panelBody.add(new PanelUsuario());
                 panelBody.repaint();
                 panelBody.revalidate();
             }
@@ -95,8 +120,15 @@ public class Main extends javax.swing.JFrame {
         MenuItem menuMantenimiento = new MenuItem(iconMantenimiento, "Mantenimiento", null, menuUsuario, menuEntrenador, menuLocalizacion,menuSalas,menuActividad,menuHorarioActividad,menuClientes,menuEstadoReserva,menuReserva,menuReservasActividades);
         MenuItem menuMovimiento = new MenuItem(iconMovimiento, "Movimientos", null, menuCuotas);
         MenuItem menuproceso = new MenuItem(iconProcesos, "Procesos", null,menuGenerarCobro,menuReservarCobro,menuActualizarCuotas);
-        MenuItem menuConsultas = new MenuItem(iconMovimiento, "Consultas", null, menuusuario,menuentrenador,menulocalizacion,menusalas,menuactividad,menuhorarioactividad,menuCobroFecha,menuCobroCliente,menuCuotaFecha,menuCuotaClientes,menuClientesBalance);
-        addMenu(menuMantenimiento, menuMovimiento, menuproceso,menuConsultas);
+        MenuItem menuConsultas = new MenuItem(iconConsultas, "Consultas", null, menuusuario,menuentrenador,menulocalizacion,menusalas,menuactividad,menuhorarioactividad,menuCobroFecha,menuCobroCliente,menuCuotaFecha,menuCuotaClientes,menuClientesBalance);
+        MenuItem menuSalir = new MenuItem(iconSalir, "Salir", new ActionListener(){
+           @Override
+            public void actionPerformed(ActionEvent ae) {
+                System.exit(0);
+            } 
+            
+        });
+        addMenu(menuMantenimiento, menuMovimiento, menuproceso,menuConsultas,menuSalir);
     }
 
     private void addMenu(MenuItem... menu) {
@@ -127,37 +159,33 @@ public class Main extends javax.swing.JFrame {
         panelBody = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        panelHeader.setBackground(new java.awt.Color(255, 255, 51));
+        panelHeader.setBackground(new java.awt.Color(0, 0, 0));
         panelHeader.setPreferredSize(new java.awt.Dimension(561, 50));
 
-        jLabel1.setBackground(new java.awt.Color(255, 255, 51));
-        jLabel1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
-        jLabel1.setText("                                                   GOLD GYM");
+        jLabel1.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel1.setFont(new java.awt.Font("Californian FB", 0, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("GOLD GYM");
         jLabel1.setOpaque(true);
 
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
         panelHeaderLayout.setHorizontalGroup(
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 855, Short.MAX_VALUE)
-            .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panelHeaderLayout.createSequentialGroup()
-                    .addGap(25, 25, 25)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 761, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(69, Short.MAX_VALUE)))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
         );
         panelHeaderLayout.setVerticalGroup(
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 54, Short.MAX_VALUE)
-            .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panelHeaderLayout.createSequentialGroup()
-                    .addGap(6, 6, 6)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(panelHeaderLayout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        getContentPane().add(panelHeader, java.awt.BorderLayout.PAGE_START);
+        getContentPane().add(panelHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 250, 37));
 
         panelMenu.setBackground(new java.awt.Color(115, 120, 230));
         panelMenu.setPreferredSize(new java.awt.Dimension(250, 384));
@@ -176,16 +204,16 @@ public class Main extends javax.swing.JFrame {
         );
         panelMenuLayout.setVerticalGroup(
             panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
         );
 
-        getContentPane().add(panelMenu, java.awt.BorderLayout.LINE_START);
+        getContentPane().add(panelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 34, -1, 700));
 
         panelBody.setBackground(new java.awt.Color(255, 255, 255));
         panelBody.setLayout(new java.awt.BorderLayout());
-        getContentPane().add(panelBody, java.awt.BorderLayout.CENTER);
+        getContentPane().add(panelBody, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, -6, 586, 740));
 
-        setSize(new java.awt.Dimension(871, 473));
+        setSize(new java.awt.Dimension(836, 735));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
