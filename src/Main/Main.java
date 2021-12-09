@@ -5,9 +5,15 @@
  */
 package Main;
 
+import form.PanelActividades;
 import form.PanelClientes;
+import form.PanelCuotas;
 import form.PanelEntrenador;
+import form.PanelEstadoReserva;
+import form.PanelHorarioActividades;
 import form.PanelLocalizacion;
+import form.PanelReservas;
+import form.PanelSalas;
 import form.PanelUsuario;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,8 +39,8 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void execute() {
-        ImageIcon iconMantenimiento = new ImageIcon(getClass().getResource("/menu/tuerca.png"));
-        ImageIcon iconMovimiento = new ImageIcon(getClass().getResource("/menu/move.png"));
+        ImageIcon iconMantenimiento = new ImageIcon(getClass().getResource("/menu/mantenimiento.png"));
+        ImageIcon iconMovimiento = new ImageIcon(getClass().getResource("/menu/motion.png"));
         ImageIcon iconProcesos = new ImageIcon(getClass().getResource("/menu/process.png"));
         ImageIcon iconConsultas = new ImageIcon(getClass().getResource("/menu/survey.png"));
         ImageIcon iconSalir = new ImageIcon(getClass().getResource("/menu/salida.png"));
@@ -68,9 +74,30 @@ public class Main extends javax.swing.JFrame {
                 panelBody.revalidate();
             }
         });
-        MenuItem menuSalas = new MenuItem(iconSubMenu, "Salas", null);
-        MenuItem menuActividad = new MenuItem(iconSubMenu, "Actividad", null);
-        MenuItem menuHorarioActividad = new MenuItem(iconSubMenu, "Horario Actividad", null);
+        MenuItem menuSalas = new MenuItem(iconSubMenu, "Salas", new ActionListener(){
+        @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.add(new PanelSalas());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });
+        MenuItem menuActividad = new MenuItem(iconSubMenu, "Actividad", new ActionListener(){
+        @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.add(new PanelActividades());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });
+        MenuItem menuHorarioActividad = new MenuItem(iconSubMenu, "Horario Actividad", new ActionListener(){
+        @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.add(new PanelHorarioActividades());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });
         MenuItem menuClientes = new MenuItem(iconSubMenu, "Clientes", new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -79,12 +106,40 @@ public class Main extends javax.swing.JFrame {
                 panelBody.revalidate();
             }
         });
-        MenuItem menuEstadoReserva = new MenuItem(iconSubMenu, "Estado Reservas", null);
-        MenuItem menuReserva = new MenuItem(iconSubMenu, "Reserva", null);
-        MenuItem menuReservasActividades = new MenuItem(iconSubMenu, "Reservas Actividades", null);
+        MenuItem menuEstadoReserva = new MenuItem(iconSubMenu, "Estado Reservas", new ActionListener(){
+          @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.add(new PanelEstadoReserva());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });
+        MenuItem menuReserva = new MenuItem(iconSubMenu, "Reserva", new ActionListener(){
+        @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.add(new PanelReservas());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });
+        MenuItem menuReservasActividades = new MenuItem(iconSubMenu, "Reservas Actividades", new ActionListener(){
+        @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.add(new PanelHorarioActividades());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });
 
         //  SubMenu del Movimiento 
-        MenuItem menuCuotas = new MenuItem(iconSubMenu, "Cuotas", null);
+        MenuItem menuCuotas = new MenuItem(iconSubMenu, "Cuotas", new ActionListener(){
+        @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.add(new PanelCuotas());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });
        
         
         //  SubMenu del Procesos 
