@@ -1,8 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
+
 package form;
+
+import Placeholder.TextPrompt;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,6 +15,8 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
      */
     public PanelEstadoReserva() {
         initComponents();
+        TextPrompt placeholderEstadoReserva= new TextPrompt("Obligatorio",idEstadoReserva);
+        TextPrompt placeholderEstado= new TextPrompt("Obligatorio",estadoTxt);
     }
 
     /**
@@ -28,15 +30,16 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
 
         jLabel10 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        idEstadoReserva = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator8 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        estadoTxt = new javax.swing.JTextField();
         jSeparator6 = new javax.swing.JSeparator();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        lblAgregar = new javax.swing.JLabel();
+        lblDinamico = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
@@ -49,13 +52,13 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
         jLabel2.setText("ID Estado de Reserva");
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
 
-        jTextField1.setBorder(null);
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        idEstadoReserva.setBorder(null);
+        idEstadoReserva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                idEstadoReservaActionPerformed(evt);
             }
         });
-        add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 233, 17));
+        add(idEstadoReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 233, 20));
         add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 250, 10));
 
         jSeparator8.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -65,46 +68,58 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
         jLabel5.setText("Estado");
         add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 79, -1, -1));
 
-        jTextField4.setBorder(null);
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
-            }
-        });
-        add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 99, 233, 20));
+        estadoTxt.setBorder(null);
+        add(estadoTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 233, 20));
         add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 120, 230, 10));
 
-        jLabel1.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel1.setFont(new java.awt.Font("Californian FB", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("AGREGAR");
-        jLabel1.setOpaque(true);
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 160, 130, 40));
+        lblAgregar.setBackground(new java.awt.Color(0, 0, 0));
+        lblAgregar.setFont(new java.awt.Font("Californian FB", 0, 18)); // NOI18N
+        lblAgregar.setForeground(new java.awt.Color(255, 255, 255));
+        lblAgregar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblAgregar.setText("AGREGAR");
+        lblAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblAgregar.setOpaque(true);
+        lblAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAgregarMouseClicked(evt);
+            }
+        });
+        add(lblAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 220, 130, 40));
 
-        jLabel8.setText("Modificaion:");
-        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 20, 80, 20));
+        lblDinamico.setText("Modificaion:");
+        add(lblDinamico, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 10, 80, 20));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void idEstadoReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idEstadoReservaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_idEstadoReservaActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
+        boolean vacio=true;
+        if(idEstadoReserva.getText().equals("")||estadoTxt.getText().equals(""))
+            vacio=false;
+       
+        if(!vacio)
+            JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Usuario agregado correctamente");
+            idEstadoReserva.setText("");
+            estadoTxt.setText("");
+        }
+    }//GEN-LAST:event_lblAgregarMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField estadoTxt;
+    private javax.swing.JTextField idEstadoReserva;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator8;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JLabel lblAgregar;
+    private javax.swing.JLabel lblDinamico;
     // End of variables declaration//GEN-END:variables
 }

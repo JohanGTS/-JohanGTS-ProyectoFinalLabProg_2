@@ -1,8 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
+
 package form;
+
+import Placeholder.TextPrompt;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,6 +15,8 @@ public class PanelLocalizacion extends javax.swing.JPanel {
      */
     public PanelLocalizacion() {
         initComponents();
+        TextPrompt placeholderId= new TextPrompt("Obligatorio",idTxt);
+        TextPrompt placeholderTipo= new TextPrompt("Obligatorio",tipoTxt);
     }
 
     /**
@@ -26,52 +28,58 @@ public class PanelLocalizacion extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        lblAgregar = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        idTxt = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        tipoTxt = new javax.swing.JTextField();
         jSeparator6 = new javax.swing.JSeparator();
         jLabel10 = new javax.swing.JLabel();
         jSeparator8 = new javax.swing.JSeparator();
-        jLabel8 = new javax.swing.JLabel();
+        lblDinamico = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel1.setFont(new java.awt.Font("Californian FB", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("AGREGAR");
-        jLabel1.setOpaque(true);
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 150, 130, 40));
+        lblAgregar.setBackground(new java.awt.Color(0, 0, 0));
+        lblAgregar.setFont(new java.awt.Font("Californian FB", 0, 18)); // NOI18N
+        lblAgregar.setForeground(new java.awt.Color(255, 255, 255));
+        lblAgregar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblAgregar.setText("AGREGAR");
+        lblAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblAgregar.setOpaque(true);
+        lblAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAgregarMouseClicked(evt);
+            }
+        });
+        add(lblAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 160, 130, 40));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("ID:");
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 79, -1, -1));
 
-        jTextField1.setBorder(null);
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        idTxt.setBorder(null);
+        idTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                idTxtActionPerformed(evt);
             }
         });
-        add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 233, 17));
+        add(idTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 233, 20));
         add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 233, 10));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Tipo:");
         add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 79, -1, -1));
 
-        jTextField4.setBorder(null);
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        tipoTxt.setBorder(null);
+        tipoTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                tipoTxtActionPerformed(evt);
             }
         });
-        add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 99, 233, 20));
+        add(tipoTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 233, 20));
         add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 120, 230, 10));
 
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
@@ -81,31 +89,46 @@ public class PanelLocalizacion extends javax.swing.JPanel {
         add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 260, 40));
 
         jSeparator8.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 10, 10, 130));
+        add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 10, 10, 170));
 
-        jLabel8.setText("Modificaion:");
-        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 80, 20));
+        lblDinamico.setText("Modificaion:");
+        add(lblDinamico, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 80, 20));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void idTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idTxtActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_idTxtActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void tipoTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoTxtActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_tipoTxtActionPerformed
+
+    private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
+        boolean vacio=true;
+        if(idTxt.getText().equals("")||tipoTxt.getText().equals(""))
+            vacio=false;
+       
+        if(!vacio)
+            JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Localización agregada correctamente");
+            idTxt.setText("");
+            tipoTxt.setText("");
+        }
+    }//GEN-LAST:event_lblAgregarMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField idTxt;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator8;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JLabel lblAgregar;
+    private javax.swing.JLabel lblDinamico;
+    private javax.swing.JTextField tipoTxt;
     // End of variables declaration//GEN-END:variables
 }

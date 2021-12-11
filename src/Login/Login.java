@@ -187,9 +187,9 @@ public class Login extends javax.swing.JFrame {
                     archivoUsuarios.createNewFile();
                 BufferedReader br =new BufferedReader(new FileReader(archivoUsuarios));
                 BufferedWriter bw=new BufferedWriter(new FileWriter(archivoUsuarios));
-                bw.write("admin; root");
+                bw.write("admin; root; 0");
                 bw.newLine();
-                bw.write("kkk; ooo");
+                bw.write("kkk; ooo ; 0");
                 bw.newLine();
                 bw.flush();
                 Scanner s= new Scanner(archivoUsuarios);
@@ -213,7 +213,7 @@ public class Login extends javax.swing.JFrame {
                     }
                 }
                 if(!encontrado||!correcto)
-                    JOptionPane.showMessageDialog(panelLogin, "Usuario o contraseña incorrecto");
+                    JOptionPane.showMessageDialog(null,"Usuario o contraseña incorrecto","Error al ingresar",JOptionPane.ERROR_MESSAGE);
                 
             } 
             catch (FileNotFoundException e)

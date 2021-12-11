@@ -4,6 +4,9 @@
  */
 package form;
 
+import Placeholder.TextPrompt;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Gabriel Marte
@@ -15,6 +18,12 @@ public class PanelReservas extends javax.swing.JPanel {
      */
     public PanelReservas() {
         initComponents();
+        TextPrompt placeholderIdReserva= new TextPrompt("Obligatorio",idReservaTxt);
+        TextPrompt placeholderIdSalaReserva= new TextPrompt("Obligatorio",idSalaReservaTxt);
+        TextPrompt placeholderIdClienteReserva= new TextPrompt("Obligatorio",idClienteReservaTxt);
+        TextPrompt placeholderHorarioReserva= new TextPrompt("Obligatorio",horarioReservaTxt);
+        TextPrompt placeholderFechaReserva= new TextPrompt("Obligatorio     DD/MM/AA",fechaReservaTxt);
+        TextPrompt placeholderEstadoReserva= new TextPrompt("Obligatorio",estadoReservaTxt);
     }
 
     /**
@@ -28,27 +37,28 @@ public class PanelReservas extends javax.swing.JPanel {
 
         jLabel10 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        idSalaReservaTxt = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
         jSeparator4 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        idClienteReservaTxt = new javax.swing.JTextField();
         jSeparator5 = new javax.swing.JSeparator();
         jSeparator8 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        fechaReservaTxt = new javax.swing.JTextField();
         jSeparator6 = new javax.swing.JSeparator();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jSeparator7 = new javax.swing.JSeparator();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jSeparator3 = new javax.swing.JSeparator();
-        jLabel1 = new javax.swing.JLabel();
+        lblAgregar = new javax.swing.JLabel();
+        lblDinamico = new javax.swing.JLabel();
+        idReservaTxt = new javax.swing.JTextField();
+        horarioReservaTxt = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
+        jSeparator9 = new javax.swing.JSeparator();
+        estadoReservaTxt = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jSeparator10 = new javax.swing.JSeparator();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
@@ -61,39 +71,21 @@ public class PanelReservas extends javax.swing.JPanel {
         jLabel2.setText("ID Reserva");
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
 
-        jTextField1.setBorder(null);
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-        add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 233, 17));
+        idSalaReservaTxt.setBorder(null);
+        add(idSalaReservaTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 233, 20));
         add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 250, 10));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("ID Sala Reserva");
         add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, -1, -1));
-
-        jPasswordField1.setBorder(null);
-        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField1ActionPerformed(evt);
-            }
-        });
-        add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 194, 233, 20));
         add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 218, 250, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("ID Cliente Reserva");
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, -1, 20));
 
-        jTextField3.setBorder(null);
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
-        add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 233, 20));
+        idClienteReservaTxt.setBorder(null);
+        add(idClienteReservaTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 233, 20));
         add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 250, 10));
 
         jSeparator8.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -103,100 +95,96 @@ public class PanelReservas extends javax.swing.JPanel {
         jLabel5.setText("Fecha Reserva");
         add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 79, -1, -1));
 
-        jTextField4.setBorder(null);
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
-            }
-        });
-        add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 99, 233, 20));
+        fechaReservaTxt.setBorder(null);
+        add(fechaReservaTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 233, 20));
         add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 120, 230, 10));
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel6.setText("Horario Reserva");
-        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 155, -1, -1));
-
-        jTextField6.setBorder(null);
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
+        lblAgregar.setBackground(new java.awt.Color(0, 0, 0));
+        lblAgregar.setFont(new java.awt.Font("Californian FB", 0, 18)); // NOI18N
+        lblAgregar.setForeground(new java.awt.Color(255, 255, 255));
+        lblAgregar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblAgregar.setText("AGREGAR");
+        lblAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblAgregar.setOpaque(true);
+        lblAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAgregarMouseClicked(evt);
             }
         });
-        add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 173, 233, -1));
-        add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 190, 230, 10));
+        add(lblAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 350, 130, 40));
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel7.setText("Estado Reserva");
-        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 211, -1, 24));
+        lblDinamico.setText("Modificaion:");
+        add(lblDinamico, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 10, 80, 20));
 
-        jTextField5.setBorder(null);
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+        idReservaTxt.setBorder(null);
+        idReservaTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
+                idReservaTxtActionPerformed(evt);
             }
         });
-        add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 241, 233, -1));
-        add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 260, 230, 10));
+        add(idReservaTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 233, 20));
 
-        jLabel1.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel1.setFont(new java.awt.Font("Californian FB", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("AGREGAR");
-        jLabel1.setOpaque(true);
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 280, 130, 40));
+        horarioReservaTxt.setBorder(null);
+        add(horarioReservaTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 200, 233, 20));
 
-        jLabel8.setText("Modificaion:");
-        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 30, 80, 20));
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel8.setText("Horario de reserva");
+        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 160, -1, -1));
+        add(jSeparator9, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, 250, -1));
+
+        estadoReservaTxt.setBorder(null);
+        add(estadoReservaTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 300, 233, 20));
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel9.setText("Estado de reserva");
+        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 260, -1, -1));
+        add(jSeparator10, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 320, 250, -1));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void idReservaTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idReservaTxtActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_idReservaTxtActionPerformed
 
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField1ActionPerformed
-
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
-
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
-
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
-
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
-
+    private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
+        boolean vacio=true;
+        if(idReservaTxt.getText().equals("")||idSalaReservaTxt.getText().equals("")||idClienteReservaTxt.getText().equals("")
+            ||fechaReservaTxt.getText().equals("")||horarioReservaTxt.getText().equals("")||estadoReservaTxt.getText().equals(""))
+            vacio=false;
+       
+        if(!vacio)
+            JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Reserva agregado correctamente");
+            idClienteReservaTxt.setText("");
+            idReservaTxt.setText("");
+            idSalaReservaTxt.setText("");
+            fechaReservaTxt.setText("");
+    }//GEN-LAST:event_lblAgregarMouseClicked
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField estadoReservaTxt;
+    private javax.swing.JTextField fechaReservaTxt;
+    private javax.swing.JTextField horarioReservaTxt;
+    private javax.swing.JTextField idClienteReservaTxt;
+    private javax.swing.JTextField idReservaTxt;
+    private javax.swing.JTextField idSalaReservaTxt;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
-    private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JSeparator jSeparator9;
+    private javax.swing.JLabel lblAgregar;
+    private javax.swing.JLabel lblDinamico;
     // End of variables declaration//GEN-END:variables
 }

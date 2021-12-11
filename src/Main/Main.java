@@ -12,6 +12,7 @@ import form.PanelEntrenador;
 import form.PanelEstadoReserva;
 import form.PanelHorarioActividades;
 import form.PanelLocalizacion;
+import form.PanelReservaActividades;
 import form.PanelReservas;
 import form.PanelSalas;
 import form.PanelUsuario;
@@ -53,14 +54,17 @@ public class Main extends javax.swing.JFrame {
         MenuItem menuUsuario = new MenuItem(iconSubMenu, "Usuario", new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
                 panelBody.add(new PanelUsuario());
                 panelBody.repaint();
                 panelBody.revalidate();
+                
             }
         });
         MenuItem menuEntrenador = new MenuItem(iconSubMenu, "Entrenador",new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
                 panelBody.add(new PanelEntrenador());
                 panelBody.repaint();
                 panelBody.revalidate();
@@ -69,6 +73,7 @@ public class Main extends javax.swing.JFrame {
         MenuItem menuLocalizacion = new MenuItem(iconSubMenu, "Localizacion", new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
                 panelBody.add(new PanelLocalizacion());
                 panelBody.repaint();
                 panelBody.revalidate();
@@ -77,6 +82,7 @@ public class Main extends javax.swing.JFrame {
         MenuItem menuSalas = new MenuItem(iconSubMenu, "Salas", new ActionListener(){
         @Override
             public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
                 panelBody.add(new PanelSalas());
                 panelBody.repaint();
                 panelBody.revalidate();
@@ -85,6 +91,7 @@ public class Main extends javax.swing.JFrame {
         MenuItem menuActividad = new MenuItem(iconSubMenu, "Actividad", new ActionListener(){
         @Override
             public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
                 panelBody.add(new PanelActividades());
                 panelBody.repaint();
                 panelBody.revalidate();
@@ -93,6 +100,7 @@ public class Main extends javax.swing.JFrame {
         MenuItem menuHorarioActividad = new MenuItem(iconSubMenu, "Horario Actividad", new ActionListener(){
         @Override
             public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
                 panelBody.add(new PanelHorarioActividades());
                 panelBody.repaint();
                 panelBody.revalidate();
@@ -101,6 +109,7 @@ public class Main extends javax.swing.JFrame {
         MenuItem menuClientes = new MenuItem(iconSubMenu, "Clientes", new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
                 panelBody.add(new PanelClientes());
                 panelBody.repaint();
                 panelBody.revalidate();
@@ -109,6 +118,7 @@ public class Main extends javax.swing.JFrame {
         MenuItem menuEstadoReserva = new MenuItem(iconSubMenu, "Estado Reservas", new ActionListener(){
           @Override
             public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
                 panelBody.add(new PanelEstadoReserva());
                 panelBody.repaint();
                 panelBody.revalidate();
@@ -117,6 +127,7 @@ public class Main extends javax.swing.JFrame {
         MenuItem menuReserva = new MenuItem(iconSubMenu, "Reserva", new ActionListener(){
         @Override
             public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
                 panelBody.add(new PanelReservas());
                 panelBody.repaint();
                 panelBody.revalidate();
@@ -125,7 +136,8 @@ public class Main extends javax.swing.JFrame {
         MenuItem menuReservasActividades = new MenuItem(iconSubMenu, "Reservas Actividades", new ActionListener(){
         @Override
             public void actionPerformed(ActionEvent ae) {
-                panelBody.add(new PanelHorarioActividades());
+                panelBody.removeAll();
+                panelBody.add(new PanelReservaActividades());
                 panelBody.repaint();
                 panelBody.revalidate();
             }
@@ -135,6 +147,7 @@ public class Main extends javax.swing.JFrame {
         MenuItem menuCuotas = new MenuItem(iconSubMenu, "Cuotas", new ActionListener(){
         @Override
             public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
                 panelBody.add(new PanelCuotas());
                 panelBody.repaint();
                 panelBody.revalidate();
@@ -154,6 +167,7 @@ public class Main extends javax.swing.JFrame {
         MenuItem menuusuario = new MenuItem(iconSubMenu, "Usuario", new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
                 panelBody.add(new PanelUsuario());
                 panelBody.repaint();
                 panelBody.revalidate();
@@ -206,12 +220,18 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jRadioButton1 = new javax.swing.JRadioButton();
         panelHeader = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         panelMenu = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         menus = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
         panelBody = new javax.swing.JPanel();
+
+        jRadioButton1.setText("jRadioButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -236,7 +256,7 @@ public class Main extends javax.swing.JFrame {
         panelHeaderLayout.setVerticalGroup(
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelHeaderLayout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -259,16 +279,39 @@ public class Main extends javax.swing.JFrame {
         );
         panelMenuLayout.setVerticalGroup(
             panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
+            .addGroup(panelMenuLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 40, Short.MAX_VALUE))
         );
 
         getContentPane().add(panelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 34, -1, 700));
 
         panelBody.setBackground(new java.awt.Color(255, 255, 255));
-        panelBody.setLayout(new java.awt.BorderLayout());
-        getContentPane().add(panelBody, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, -6, 586, 740));
+        panelBody.setLayout(new javax.swing.BoxLayout(panelBody, javax.swing.BoxLayout.LINE_AXIS));
+        jScrollPane2.setViewportView(panelBody);
 
-        setSize(new java.awt.Dimension(836, 735));
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 593, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 645, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 95, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 0, 590, 740));
+
+        setSize(new java.awt.Dimension(836, 597));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -309,7 +352,11 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel menus;
     private javax.swing.JPanel panelBody;
     private javax.swing.JPanel panelHeader;

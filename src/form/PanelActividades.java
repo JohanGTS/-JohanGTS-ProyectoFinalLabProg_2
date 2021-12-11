@@ -1,8 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
+
 package form;
+
+import Placeholder.TextPrompt;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,6 +15,11 @@ public class PanelActividades extends javax.swing.JPanel {
      */
     public PanelActividades() {
         initComponents();
+        TextPrompt placeholderIdActividad= new TextPrompt("Obligatorio",idActividadTxt);
+        TextPrompt placeholderNombreActividad= new TextPrompt("Obligatorio",nombreActividadTxt);
+        TextPrompt placeholderDescripcionAct= new TextPrompt("Obligatorio",descripcionActividad);
+        TextPrompt placeholderIdLocalizacion= new TextPrompt("Obligatorio",idLocalizacionActTxt);
+        TextPrompt placeholderIdEntrenador= new TextPrompt("Obligatorio",idEntrenadorActTxt);
     }
 
     /**
@@ -28,24 +33,25 @@ public class PanelActividades extends javax.swing.JPanel {
 
         jLabel10 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        nombreActividadTxt = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
         jSeparator4 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        descripcionActividad = new javax.swing.JTextField();
         jSeparator5 = new javax.swing.JSeparator();
         jSeparator8 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        idLocalizacionActTxt = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        idEntrenadorActTxt = new javax.swing.JTextField();
         jSeparator7 = new javax.swing.JSeparator();
-        jLabel1 = new javax.swing.JLabel();
+        lblAgregar = new javax.swing.JLabel();
         jSeparator6 = new javax.swing.JSeparator();
-        jLabel8 = new javax.swing.JLabel();
+        lblDinamico = new javax.swing.JLabel();
+        idActividadTxt = new javax.swing.JTextField();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
@@ -58,39 +64,23 @@ public class PanelActividades extends javax.swing.JPanel {
         jLabel2.setText("ID Actividad");
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
 
-        jTextField1.setBorder(null);
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-        add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 233, 17));
+        nombreActividadTxt.setBackground(new java.awt.Color(255, 255, 255));
+        nombreActividadTxt.setBorder(null);
+        add(nombreActividadTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 233, 17));
         add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 250, 10));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Nombre Actividad");
         add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, -1, -1));
-
-        jPasswordField1.setBorder(null);
-        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField1ActionPerformed(evt);
-            }
-        });
-        add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 194, 233, 20));
         add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 218, 250, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Descripcion Actividad");
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, -1, 20));
 
-        jTextField3.setBorder(null);
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
-        add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 233, 20));
+        descripcionActividad.setBackground(new java.awt.Color(255, 255, 255));
+        descripcionActividad.setBorder(null);
+        add(descripcionActividad, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 233, 20));
         add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 250, 10));
 
         jSeparator8.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -100,80 +90,90 @@ public class PanelActividades extends javax.swing.JPanel {
         jLabel5.setText("ID Localicaion Actividad");
         add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 79, -1, -1));
 
-        jTextField4.setBorder(null);
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
-            }
-        });
-        add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 99, 233, 20));
+        idLocalizacionActTxt.setBackground(new java.awt.Color(255, 255, 255));
+        idLocalizacionActTxt.setBorder(null);
+        add(idLocalizacionActTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 99, 233, 20));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("ID Entrenador Actividad");
         add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 155, -1, -1));
 
-        jTextField6.setBorder(null);
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
-            }
-        });
-        add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 194, 233, 20));
+        idEntrenadorActTxt.setBackground(new java.awt.Color(255, 255, 255));
+        idEntrenadorActTxt.setBorder(null);
+        add(idEntrenadorActTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 194, 233, 20));
         add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, 230, 10));
 
-        jLabel1.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel1.setFont(new java.awt.Font("Californian FB", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("AGREGAR");
-        jLabel1.setOpaque(true);
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 250, 130, 40));
+        lblAgregar.setBackground(new java.awt.Color(0, 0, 0));
+        lblAgregar.setFont(new java.awt.Font("Californian FB", 0, 18)); // NOI18N
+        lblAgregar.setForeground(new java.awt.Color(255, 255, 255));
+        lblAgregar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblAgregar.setText("AGREGAR");
+        lblAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblAgregar.setOpaque(true);
+        lblAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAgregarMouseClicked(evt);
+            }
+        });
+        add(lblAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 290, 130, 40));
         add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 120, 230, 10));
 
-        jLabel8.setText("Modificaion:");
-        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 30, 80, 20));
+        lblDinamico.setText("Modificaion:");
+        add(lblDinamico, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 80, 20));
+
+        idActividadTxt.setBackground(new java.awt.Color(255, 255, 255));
+        idActividadTxt.setBorder(null);
+        idActividadTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                idActividadTxtActionPerformed(evt);
+            }
+        });
+        add(idActividadTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 233, 17));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void idActividadTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idActividadTxtActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_idActividadTxtActionPerformed
 
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField1ActionPerformed
-
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
-
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
-
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
+    private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
+        boolean vacio=true;
+        if(idActividadTxt.getText().equals("")||nombreActividadTxt.getText().equals("")||descripcionActividad.getText().equals("")
+            ||idEntrenadorActTxt.getText().equals("")||idLocalizacionActTxt.getText().equals(""))
+            vacio=false;
+       
+        if(!vacio)
+            JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Usuario agregado correctamente");
+            idActividadTxt.setText("");
+            nombreActividadTxt.setText("");
+            descripcionActividad.setText("");
+            idEntrenadorActTxt.setText("");
+            idLocalizacionActTxt.setText("");
+        }
+    }//GEN-LAST:event_lblAgregarMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField descripcionActividad;
+    private javax.swing.JTextField idActividadTxt;
+    private javax.swing.JTextField idEntrenadorActTxt;
+    private javax.swing.JTextField idLocalizacionActTxt;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JLabel lblAgregar;
+    private javax.swing.JLabel lblDinamico;
+    private javax.swing.JTextField nombreActividadTxt;
     // End of variables declaration//GEN-END:variables
 }
