@@ -190,9 +190,9 @@ public class Login extends javax.swing.JFrame {
                 BufferedReader br =new BufferedReader(new FileReader(archivoUsuarios));
                 
                 BufferedWriter bw=new BufferedWriter(new FileWriter(archivoUsuarios));
-                bw.write("admin; root; 0");
+                bw.write("admin; root; 0;admin;admin");
                 bw.newLine();
-                bw.write("kkk; ooo ; 1");
+                bw.write("kkk; ooo ; 1;user;user");
                 bw.newLine();
                 bw.flush();
                 Scanner s= new Scanner(archivoUsuarios);

@@ -18,6 +18,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.security.spec.NamedParameterSpec;
 import java.util.Random;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
@@ -30,8 +31,10 @@ import javax.swing.border.Border;
 public class PanelUsuario extends javax.swing.JPanel {
 
     public static String sAntiguaLinea="";
-    public static String nuevaLinea="";
+    public static String sNuevaLinea="";
     public static boolean crear;
+    private static Scanner s;
+    
     /**
      * Creates new form Panel1
      */
@@ -173,37 +176,29 @@ public class PanelUsuario extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
-        boolean vacio=true;
-        File archivoUsuario= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuarios.txt");
-        String sNuevaLinea="";
-        String contrasena= new String(contrasenaPassFl.getPassword());
-        String nivelAcceso="";
-        if(loginUsuarioTxt.getText().equals("")||contrasenaPassFl.getPassword().length==0||
-            nombreTxt.getText().equals("")||apellidosTxt.getText().equals(""))
-            vacio=false;
-
-        if(!vacio)
-            JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
-        else
-        {
-            if(nivel0.isSelected())
-                    nivelAcceso="0";
-                else
-                    nivelAcceso="1";
-            if(crear)
-            {
-               guardarDatos(loginUsuarioTxt.getText(),contrasena,nivelAcceso,
-                        nombreTxt.getText(),apellidosTxt.getText(),correoElectronicoTxt.getText());
-            
-            }
+        String log="";
+        String pass="";
+        int nivel=1;
+        String nomb="";
+        String app="";
+        String correo="";
+        
+        log=loginUsuarioTxt.getText();
+        pass= new String(contrasenaPassFl.getPassword());
+        if(nivel0.isSelected())
+            nivel=0;
+        nomb=nombreTxt.getText();
+        app=apellidosTxt.getText();
+        correo=correoElectronicoTxt.getText();
+        
+        try {
+            if(!crear)
+                guardarDatos(log, pass, nivel, nomb, app, correo);
             else
             {
-                
-                sNuevaLinea=(loginUsuarioTxt.getText()+";"+contrasena+";"+nivelAcceso+";"+
-                        nombreTxt.getText()+";"+apellidosTxt.getText()+";"+correoElectronicoTxt.getText());
-                modificar(archivoUsuario,sAntiguaLinea, sNuevaLinea);
+                sNuevaLinea=(log+";"+pass+";"+nivel+";"+nomb+";"+app+";"+correo);
+                modificar(sAntiguaLinea,sNuevaLinea);
             }
-            JOptionPane.showMessageDialog(null, "Usuario agregado correctamente");
             loginUsuarioTxt.setText("");
             contrasenaPassFl.setText("");
             nivel0.setSelected(false);
@@ -211,82 +206,78 @@ public class PanelUsuario extends javax.swing.JPanel {
             nombreTxt.setText("");
             apellidosTxt.setText("");
             correoElectronicoTxt.setText("");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        
-        
     }//GEN-LAST:event_lblAgregarMouseClicked
 
     private void loginUsuarioTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginUsuarioTxtActionPerformed
-        String contrasena= new String(contrasenaPassFl.getPassword());
-        String usuario;
-        String nivelAcceso;
+        String cod;
         boolean encontrado=false;
-        File archivoUsuario= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuarios.txt");
-        usuario=loginUsuarioTxt.getText();
-        Scanner s;    
-            try {
-                
-                s= new Scanner(archivoUsuario);
-                if(!archivoUsuario.exists())
-                {
-                    archivoUsuario.createNewFile();
-                }
-                while(s.hasNext()&&!encontrado)
-                {
-                    String linea=s.nextLine();
-                    Scanner sl= new Scanner(linea);
-                    sl.useDelimiter("\\s*;\\s*");
-                    if(usuario.equals(sl.next()))
-                    {
-                        lblDinamico.setText("Modificando");
-                        contrasenaPassFl.setText(sl.next());
-                        if(sl.next().equals("0")){
-                            nivel0.setSelected(true);
-                            nivel1.setSelected(false);
-                            nivelAcceso="0";
-                        }
-                        else
-                        {
-                            nivel0.setSelected(false);
-                            nivel1.setSelected(true);
-                            nivelAcceso="1";
-                        }
-                        nombreTxt.setText(sl.next());
-                        apellidosTxt.setText(sl.next());
-                        if(!correoElectronicoTxt.equals(""))
-                            correoElectronicoTxt.setText(sl.next());
-                        
-                        
-                        crear=true;
-                        sAntiguaLinea=(loginUsuarioTxt.getText()+";"+contrasena+nombreTxt.getText()+";"+
-                                apellidosTxt.getText()+";"+correoElectronicoTxt.getText());
-                        encontrado=true;
-                        modificar(archivoUsuario, sAntiguaLinea, sAntiguaLinea);
-                    }
-                    else{
-                        lblDinamico.setText("Creando");
-                        contrasenaPassFl.setText("");
-                        nombreTxt.setText("");
-                        apellidosTxt.setText("");
-                        correoElectronicoTxt.setText("");
-                        nivel0.setSelected(false);
-                        nivel1.setSelected(true);
-                        crear=false;
-                    }
-                }
-                s.close();
-               
-            } 
-            catch (FileNotFoundException e)
-            {
-                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
-            } catch (IOException ex) 
-            {
-                ex.printStackTrace();
-            }
+        cod=loginUsuarioTxt.getText();
+        Scanner s;
+        try 
+        {
+          File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuarios.txt");
+          s=new Scanner(f);
+          if(!f.exists())
+          {
+              f.createNewFile();
+          }
+          else
+          {
+              while(s.hasNextLine()&&!encontrado)
+              {
+                  String linea= s.nextLine();
+                  Scanner sl= new Scanner(linea);
+                  sl.useDelimiter("\\s*;\\s*");
+                  try 
+                  {
+                      if(cod.equals(sl.next()))
+                      {
+                          contrasenaPassFl.setText(sl.next());
+                          if(sl.next().equals(0))
+                          {
+                              nivel0.setSelected(true);
+                              nivel1.setSelected(false);
+                          }
+                          else
+                          {
+                              nivel0.setSelected(false);
+                              nivel1.setSelected(true);
+                          }
+                          nombreTxt.setText(sl.next());
+                          apellidosTxt.setText(sl.next());
+                          correoElectronicoTxt.setText(sl.next());
+                          crear=true;
+                          lblDinamico.setText("Modificando");
+                      }
+                      else
+                      {
+                          contrasenaPassFl.setText("");
+                          nombreTxt.setText("");
+                          apellidosTxt.setText("");
+                          nivel0.setSelected(false);
+                          nivel1.setSelected(true);
+                          correoElectronicoTxt.setText("");
+                          crear=false;
+                          lblDinamico.setText("Creando");
+                      }
+                  } catch (Exception e) {
+                      System.out.println("Error al leer el archivo ");
+                      e.printStackTrace();
+                  }
+              }
+          }
+        } 
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        
     }//GEN-LAST:event_loginUsuarioTxtActionPerformed
 
-    public void  guardarDatos(String usuario,String contrasena, String nivelAcceso,String nombre,String apellidos, String correoElectronico){
+    public void  guardarDatos(String usuario,String contrasena, int nivelAcceso,String nombre,String apellidos, String correoElectronico){
         try
         {
            FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuarios.txt",true);
@@ -299,64 +290,18 @@ public class PanelUsuario extends javax.swing.JPanel {
         }
     }
     
-    public static  void modificar(File FficheroAntiguo,String Satigualinea,String Snuevalinea){        
-        /*Obtengo un numero aleatorio*/
-        Random numaleatorio= new Random(3816L); 
-        /*Creo un nombre para el nuevo fichero apartir del
-         *numero aleatorio*/
-        String SnombFichNuev=FficheroAntiguo.getParent()+"/auxiliar"+String.valueOf(Math.abs(numaleatorio.nextInt()))+".txt";
-        /*Crea un objeto File para el fichero nuevo*/
-        File FficheroNuevo=new File(SnombFichNuev);
+    public static  void modificar(String lineaAntigua, String nuevaLinea){ 
+       
+       File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuarios.txt");
+       File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
+       String aCadena=lineaAntigua;
+       String nCadena=nuevaLinea;
+       
+       BufferedReader br;
         try {
-            /*Si existe el fichero inical*/
-            if(FficheroAntiguo.exists()){
-                /*Abro un flujo de lectura*/
-                BufferedReader Flee= new BufferedReader(new FileReader(FficheroAntiguo));
-                String Slinea;
-                /*Recorro el fichero de texto linea a linea*/
-                while((Slinea=Flee.readLine())!=null) { 
-                    /*Si la lia obtenida es igual al la bucada
-                     *para modificar*/
-                    if (Slinea.toUpperCase().trim().equals(Satigualinea.toUpperCase().trim())) {
-                       /*Escribo la nueva linea en vez de la que tenia*/
-                        escribir(FficheroNuevo,Snuevalinea);
-                    }else{
-                        /*Escribo la linea antigua*/
-                         escribir(FficheroNuevo,Slinea);
-                    }             
-                }
-                /*Obtengo el nombre del fichero inicial*/
-                String SnomAntiguo=FficheroAntiguo.getName();
-                /*Borro el fichero inicial*/
-                borrar(FficheroAntiguo);
-                /*renombro el nuevo fichero con el nombre del 
-                *fichero inicial*/
-                FficheroNuevo.renameTo(FficheroAntiguo);
-                /*Cierro el flujo de lectura*/
-                Flee.close();
-            }else{
-                System.out.println("Fichero No Existe");
-            }
-        } catch (Exception ex) {
-            /*Captura un posible error y le imprime en pantalla*/ 
-             System.out.println(ex.getMessage());
-        }
-    }
-    
-   /* public void modificar(String lineaAntigua, String lineaNueva){
-        File fNuevo=new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivo2.txt");
-        File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuarios.txt");
-        String aCadena=lineaAntigua;
-        String nCadena=lineaNueva;
-        
-        
-        BufferedReader br;
-        try 
-        {
-            br=new BufferedReader(new FileReader(fAntiguo));
-            
             if(fAntiguo.exists())
             {
+                br=new BufferedReader(new FileReader(fAntiguo));
                 String linea;
                 while((linea=br.readLine()) != null)
                 {
@@ -365,71 +310,47 @@ public class PanelUsuario extends javax.swing.JPanel {
                     else
                         escribir(fNuevo, linea);
                 }
-                
-                String nAntiguo=fAntiguo.getName();
-                var nPath= fAntiguo.getAbsoluteFile();
-                if(fAntiguo.exists())
-                    fAntiguo.delete();
-                System.out.println(nPath);
-                fNuevo.renameTo(nPath);
                 br.close();
+                String nAntiguo=fAntiguo.getName();
+                borrar(fAntiguo);
+                fNuevo.renameTo(fAntiguo);
             }
             else
-                System.out.println("Fichero no existe");
-        } 
-        catch (Exception e) {
+                System.out.println("Ficho no existe");
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        
-    }*/
-    /*public static void escribir(File fFichero, String cadena){
+    }
+            
+   
+    
+    public static void escribir(File Ffichero,String cadena)
+    {
         BufferedWriter bw;
-        try
+        try 
         {
-            if(!fFichero.exists())
-                fFichero.createNewFile();
-            bw= new BufferedWriter(new FileWriter(fFichero,true));
+            if(!Ffichero.exists())
+                Ffichero.createNewFile();
+            bw= new BufferedWriter(new FileWriter(Ffichero,true));
             bw.write(cadena+"\r\n");
             bw.close();
         }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-        }
-    }*/
-    
-    public static void escribir(File Ffichero,String SCadena){
-  try {
-          //Si no Existe el fichero lo crea
-           if(!Ffichero.exists()){
-               Ffichero.createNewFile();
-           }
-          /*Abre un Flujo de escritura,sobre el fichero con codificacion utf-8. 
-           *Además  en el pedazo de sentencia "FileOutputStream(Ffichero,true)",
-           *true es por si existe el fichero seguir añadiendo texto y no borrar lo que tenia*/
-          BufferedWriter Fescribe=new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Ffichero,true), "utf-8"));
-          /*Escribe en el fichero la cadena que recibe la función. 
-           *el string "\r\n" significa salto de linea*/
-          Fescribe.write(SCadena + "\r\n");
-          //Cierra el flujo de escritura
-          Fescribe.close();
-       } catch (Exception ex) {
-          //Captura un posible error le imprime en pantalla 
-          System.out.println(ex.getMessage());
-       } 
-}
+        catch (Exception ex) {
+              ex.printStackTrace();
+           } 
+    }
     public static  void borrar(File Ffichero){
-     try {
-         /*Si existe el fichero*/
-         if(Ffichero.exists()){
-           /*Borra el fichero*/  
-           Ffichero.delete(); 
-           System.out.println("Fichero Borrado con Exito");
-         }
-     } catch (Exception ex) {
-         /*Captura un posible error y le imprime en pantalla*/ 
-          System.out.println(ex.getMessage());
-     }
+        try {
+
+            if(Ffichero.exists())
+            {
+               Ffichero.delete(); 
+               System.out.println("Fichero Borrado con Exito");
+            }
+            } 
+           catch (Exception ex) { 
+             System.out.println(ex.getMessage());
+        }
 } 
     
 
