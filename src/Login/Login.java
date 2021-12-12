@@ -21,6 +21,8 @@ import javax.swing.JOptionPane;
  */
 public class Login extends javax.swing.JFrame {
     String loginUsuario,passUsuario;
+    public static int nivelAccesoLogin;
+    
 
     /**
      * Creates new form Login
@@ -181,15 +183,16 @@ public class Login extends javax.swing.JFrame {
             
             loginUsuario=txtUsuario.getText();
             passUsuario=new String(passflPass.getPassword());//Se crea un objeto String con el contenido del campo jPasswordField
-            File archivoUsuarios= new File("C:\\ProyectoFinalLabProg2\\src\\main\\java\\ArchivosDeTexto\\archivoUsuarios.txt");
+            File archivoUsuarios= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuarios.txt");
             try {                           
                 if(!archivoUsuarios.exists())
                     archivoUsuarios.createNewFile();
                 BufferedReader br =new BufferedReader(new FileReader(archivoUsuarios));
+                
                 BufferedWriter bw=new BufferedWriter(new FileWriter(archivoUsuarios));
                 bw.write("admin; root; 0");
                 bw.newLine();
-                bw.write("kkk; ooo ; 0");
+                bw.write("kkk; ooo ; 1");
                 bw.newLine();
                 bw.flush();
                 Scanner s= new Scanner(archivoUsuarios);
@@ -204,7 +207,9 @@ public class Login extends javax.swing.JFrame {
                         if(passUsuario.equals(sl.next()))
                         {
                             correcto=true;
-                            JOptionPane.showMessageDialog(panelLogin, "Bienvenido al sistema");
+                            JOptionPane.showMessageDialog(null, "Bienvenido al sistema");
+                            nivelAccesoLogin=Integer.parseInt(sl.next());
+                            System.out.println(nivelAccesoLogin);
                             this.dispose();
                             //Lo de abajo es para que pase al menú principal
                             Main main= new Main();
@@ -218,7 +223,7 @@ public class Login extends javax.swing.JFrame {
             } 
             catch (FileNotFoundException e)
             {
-                JOptionPane.showMessageDialog(panelLogin, "Archivo de texto no encontrado");
+                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
             } catch (IOException ex) 
             {
                 ex.printStackTrace();

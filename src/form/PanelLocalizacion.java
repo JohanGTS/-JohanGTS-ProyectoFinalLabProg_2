@@ -2,6 +2,12 @@
 package form;
 
 import Placeholder.TextPrompt;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 /**
@@ -74,11 +80,6 @@ public class PanelLocalizacion extends javax.swing.JPanel {
         add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 79, -1, -1));
 
         tipoTxt.setBorder(null);
-        tipoTxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tipoTxtActionPerformed(evt);
-            }
-        });
         add(tipoTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 233, 20));
         add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 120, 230, 10));
 
@@ -90,18 +91,47 @@ public class PanelLocalizacion extends javax.swing.JPanel {
 
         jSeparator8.setOrientation(javax.swing.SwingConstants.VERTICAL);
         add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 10, 10, 170));
-
-        lblDinamico.setText("Modificaion:");
         add(lblDinamico, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 80, 20));
     }// </editor-fold>//GEN-END:initComponents
 
     private void idTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idTxtActionPerformed
-        // TODO add your handling code here:
+        int cod;
+        cod=Integer.parseInt(idTxt.getText());
+        boolean encontrado=false;
+        File archivoLocalizacion= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoLocalizacion.txt");
+        Scanner s;    
+            try {
+                s= new Scanner(archivoLocalizacion);
+                if(!archivoLocalizacion.exists())
+                {
+                    archivoLocalizacion.createNewFile();
+                }
+                while(s.hasNext()&&!encontrado)
+                {
+                    String linea=s.nextLine();
+                    Scanner sl= new Scanner(linea);
+                    sl.useDelimiter("\\s*;\\s*");
+                    if(cod==Integer.parseInt(sl.next())){
+                        tipoTxt.setText(sl.next());
+                        lblDinamico.setText("Modificando");
+                        encontrado=true;
+                    }
+                    else{
+                        lblDinamico.setText("Creando");
+                        tipoTxt.setText("");
+                    }
+                }
+                s.close();
+               
+            } 
+            catch (FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+            } catch (IOException ex) 
+            {
+                ex.printStackTrace();
+            }
     }//GEN-LAST:event_idTxtActionPerformed
-
-    private void tipoTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoTxtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tipoTxtActionPerformed
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
         boolean vacio=true;
@@ -112,10 +142,31 @@ public class PanelLocalizacion extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
         else
         {
+            File archivoLocalizacion= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoLocalizacion.txt");
+            try 
+            {
+                if(!archivoLocalizacion.exists())
+                    archivoLocalizacion.createNewFile();
+                BufferedWriter bw=new BufferedWriter(new FileWriter(archivoLocalizacion));
+                
+                bw.write(idTxt.getText()+";"+tipoTxt.getText());
+                bw.newLine();
+                bw.flush();
+            } 
+            catch (FileNotFoundException e) 
+            {
+                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+            
             JOptionPane.showMessageDialog(null, "Localización agregada correctamente");
             idTxt.setText("");
             tipoTxt.setText("");
         }
+            
     }//GEN-LAST:event_lblAgregarMouseClicked
 
 

@@ -23,6 +23,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import menu.MenuItem;
+import Login.Login;
 
 /**
  *
@@ -33,9 +34,10 @@ public class Main extends javax.swing.JFrame {
     /**
      * Creates new form Main
      */
+    int nivelAcceso;
     public Main() {
         initComponents();
-        
+        nivelAcceso=Login.nivelAccesoLogin;
         execute();
     }
 
@@ -54,11 +56,12 @@ public class Main extends javax.swing.JFrame {
         MenuItem menuUsuario = new MenuItem(iconSubMenu, "Usuario", new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
+                if(nivelAcceso==0){
                 panelBody.removeAll();
                 panelBody.add(new PanelUsuario());
                 panelBody.repaint();
                 panelBody.revalidate();
-                
+                }
             }
         });
         MenuItem menuEntrenador = new MenuItem(iconSubMenu, "Entrenador",new ActionListener(){

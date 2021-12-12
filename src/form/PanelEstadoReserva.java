@@ -2,6 +2,12 @@
 package form;
 
 import Placeholder.TextPrompt;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 /**
@@ -85,13 +91,46 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
             }
         });
         add(lblAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 220, 130, 40));
-
-        lblDinamico.setText("Modificaion:");
         add(lblDinamico, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 10, 80, 20));
     }// </editor-fold>//GEN-END:initComponents
 
     private void idEstadoReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idEstadoReservaActionPerformed
-        // TODO add your handling code here:
+        int cod;
+        cod=Integer.parseInt(idEstadoReserva.getText());
+        boolean encontrado=false;
+        File archvoEstadoReserva= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEstadoReserva.txt");
+        Scanner s;    
+            try {
+                s= new Scanner(archvoEstadoReserva);
+                if(!archvoEstadoReserva.exists())
+                {
+                    archvoEstadoReserva.createNewFile();
+                }
+                while(s.hasNext()&&!encontrado)
+                {
+                    String linea=s.nextLine();
+                    Scanner sl= new Scanner(linea);
+                    sl.useDelimiter("\\s*;\\s*");
+                    if(cod==Integer.parseInt(sl.next())){
+                        estadoTxt.setText(sl.next());
+                        lblDinamico.setText("Modificando");
+                        encontrado=true;
+                    }
+                    else{
+                        lblDinamico.setText("Creando");
+                        estadoTxt.setText("");
+                    }
+                }
+                s.close();
+               
+            } 
+            catch (FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+            } catch (IOException ex) 
+            {
+                ex.printStackTrace();
+            }
     }//GEN-LAST:event_idEstadoReservaActionPerformed
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
@@ -103,7 +142,27 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
         else
         {
-            JOptionPane.showMessageDialog(null, "Usuario agregado correctamente");
+            File estadoReserva= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEstadoReserva.txt");
+            try 
+            {
+                if(!estadoReserva.exists())
+                    estadoReserva.createNewFile();
+                BufferedWriter bw=new BufferedWriter(new FileWriter(estadoReserva));
+                
+                bw.write(idEstadoReserva.getText()+";"+estadoTxt.getText());
+                bw.newLine();
+                bw.flush();
+            } 
+            catch (FileNotFoundException e) 
+            {
+                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+            
+            JOptionPane.showMessageDialog(null, "Estado de reserva agregado correctamente");
             idEstadoReserva.setText("");
             estadoTxt.setText("");
         }

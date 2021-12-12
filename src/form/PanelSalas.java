@@ -4,7 +4,14 @@
  */
 package form;
 
+import Main.Main;
 import Placeholder.TextPrompt;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,7 +30,6 @@ public class PanelSalas extends javax.swing.JPanel {
         TextPrompt placeholderDescripcionSala= new TextPrompt("Obligatorio",descripcionSalaTxt);
         TextPrompt placeholderIdLocSala= new TextPrompt("Obligatorio",idLocSalaTxt);
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -117,7 +123,7 @@ public class PanelSalas extends javax.swing.JPanel {
         add(idLocSalaTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 99, 233, 20));
         add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 120, 230, 10));
 
-        lblDinamico.setText("Modificaion:");
+        lblDinamico.setEnabled(false);
         add(lblDinamico, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 10, 80, 20));
 
         idSalasTxt.setBackground(new java.awt.Color(255, 255, 255));
@@ -130,12 +136,10 @@ public class PanelSalas extends javax.swing.JPanel {
         add(idSalasTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 233, 17));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void idSalasTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idSalasTxtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_idSalasTxtActionPerformed
-
+    
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
         boolean vacio=true;
+        boolean encontrado=false;
         if(idSalasTxt.getText().equals("")||nombreSalaTxt.getText().equals("")||descripcionSalaTxt.getText().equals("")
             ||idLocSalaTxt.getText().equals(""))
             vacio=false;
@@ -144,6 +148,27 @@ public class PanelSalas extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
         else
         {
+            File archivoSalas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoSalas.txt");
+            try {                           
+                if(!archivoSalas.exists())
+                    archivoSalas.createNewFile();;
+                
+                BufferedWriter bw=new BufferedWriter(new FileWriter(archivoSalas));
+
+                bw.write(idSalasTxt.getText()+";"+nombreSalaTxt.getText()+";"+descripcionSalaTxt.getText()+";"+idLocSalaTxt.getText());
+                bw.newLine();
+                bw.flush();
+               
+            } 
+            catch (FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+            } catch (IOException ex) 
+            {
+                ex.printStackTrace();
+            }
+            
+            
             JOptionPane.showMessageDialog(null, "Sala agregada correctamente");
             idSalasTxt.setText("");
             nombreSalaTxt.setText("");
@@ -151,6 +176,49 @@ public class PanelSalas extends javax.swing.JPanel {
             idLocSalaTxt.setText("");
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
+
+    private void idSalasTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idSalasTxtActionPerformed
+        int cod;
+        cod=Integer.parseInt(idSalasTxt.getText());
+        boolean encontrado=false;
+        File archivoSalas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoSalas.txt");
+        Scanner s;    
+            try {
+                s= new Scanner(archivoSalas);
+                if(!archivoSalas.exists())
+                {
+                    archivoSalas.createNewFile();
+                }
+                while(s.hasNext()&&!encontrado)
+                {
+                    String linea=s.nextLine();
+                    Scanner sl= new Scanner(linea);
+                    sl.useDelimiter("\\s*;\\s*");
+                    if(cod==Integer.parseInt(sl.next())){
+                        nombreSalaTxt.setText(sl.next());
+                        descripcionSalaTxt.setText(sl.next());
+                        idLocSalaTxt.setText(sl.next());
+                        lblDinamico.setText("Modificando");
+                        encontrado=true;
+                    }
+                    else{
+                        lblDinamico.setText("Creando");
+                        nombreSalaTxt.setText("");
+                        descripcionSalaTxt.setText("");
+                        idLocSalaTxt.setText("");
+                    }
+                }
+                s.close();
+               
+            } 
+            catch (FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+            } catch (IOException ex) 
+            {
+                ex.printStackTrace();
+            }
+    }//GEN-LAST:event_idSalasTxtActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

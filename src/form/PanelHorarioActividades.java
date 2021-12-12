@@ -5,6 +5,12 @@
 package form;
 
 import Placeholder.TextPrompt;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 /**
@@ -104,8 +110,6 @@ public class PanelHorarioActividades extends javax.swing.JPanel {
             }
         });
         add(lblAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 290, 130, 40));
-
-        lblDinamico.setText("Modificaion:");
         add(lblDinamico, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 10, 80, 20));
 
         idHorarioActividadTxt.setBorder(null);
@@ -118,7 +122,46 @@ public class PanelHorarioActividades extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void idHorarioActividadTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idHorarioActividadTxtActionPerformed
-        // TODO add your handling code here:
+        int cod;
+        cod=Integer.parseInt(idHorarioActividadTxt.getText());
+        boolean encontrado=false;
+        File archivoReservas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoHorarioActividades.txt");
+        Scanner s;    
+            try {
+                s= new Scanner(archivoReservas);
+                if(!archivoReservas.exists())
+                {
+                    archivoReservas.createNewFile();
+                }
+                while(s.hasNext()&&!encontrado)
+                {
+                    String linea=s.nextLine();
+                    Scanner sl= new Scanner(linea);
+                    sl.useDelimiter("\\s*;\\s*");
+                    if(cod==Integer.parseInt(sl.next())){
+                        diaActividadTxt.setText(sl.next());
+                        horaActividadTxt.setText(sl.next());
+                        idActividadTxt.setText(sl.next());
+                        lblDinamico.setText("Modificando");
+                        encontrado=true;
+                    }
+                    else{
+                        lblDinamico.setText("Creando");
+                        idActividadTxt.setText("");
+                        horaActividadTxt.setText("");
+                        diaActividadTxt.setText("");
+                    }
+                }
+                s.close();
+               
+            } 
+            catch (FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+            } catch (IOException ex) 
+            {
+                ex.printStackTrace();
+            }
     }//GEN-LAST:event_idHorarioActividadTxtActionPerformed
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
@@ -131,7 +174,28 @@ public class PanelHorarioActividades extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
         else
         {
-            JOptionPane.showMessageDialog(null, "Usuario agregado correctamente");
+            File horarioActividades= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoHorarioActividades.txt");
+            try {                           
+                if(!horarioActividades.exists())
+                    horarioActividades.createNewFile();;
+                
+                BufferedWriter bw=new BufferedWriter(new FileWriter(horarioActividades));
+               
+                bw.write(idHorarioActividadTxt.getText()+";"+diaActividadTxt.getText()+";"+horaActividadTxt.getText()+";"+
+                        idActividadTxt.getText());
+                bw.newLine();
+                bw.flush();
+               
+            } 
+            catch (FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+            } catch (IOException ex) 
+            {
+                ex.printStackTrace();
+            }
+            
+            JOptionPane.showMessageDialog(null, "Horario de actividads agregado correctamente");
             idActividadTxt.setText("");
             idHorarioActividadTxt.setText("");
             horaActividadTxt.setText("");

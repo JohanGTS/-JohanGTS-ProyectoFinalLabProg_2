@@ -5,6 +5,12 @@
 package form;
 
 import Placeholder.TextPrompt;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 /**
@@ -112,8 +118,6 @@ public class PanelReservas extends javax.swing.JPanel {
             }
         });
         add(lblAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 350, 130, 40));
-
-        lblDinamico.setText("Modificaion:");
         add(lblDinamico, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 10, 80, 20));
 
         idReservaTxt.setBorder(null);
@@ -142,7 +146,50 @@ public class PanelReservas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void idReservaTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idReservaTxtActionPerformed
-        // TODO add your handling code here:
+        int cod;
+        cod=Integer.parseInt(idReservaTxt.getText());
+        boolean encontrado=false;
+        File archivoReservas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservas.txt");
+        Scanner s;    
+            try {
+                s= new Scanner(archivoReservas);
+                if(!archivoReservas.exists())
+                {
+                    archivoReservas.createNewFile();
+                }
+                while(s.hasNext()&&!encontrado)
+                {
+                    String linea=s.nextLine();
+                    Scanner sl= new Scanner(linea);
+                    sl.useDelimiter("\\s*;\\s*");
+                    if(cod==Integer.parseInt(sl.next())){
+                        idSalaReservaTxt.setText(sl.next());
+                        idClienteReservaTxt.setText(sl.next());
+                        fechaReservaTxt.setText(sl.next());
+                        horarioReservaTxt.setText(sl.next());
+                        estadoReservaTxt.setText(sl.next());
+                        lblDinamico.setText("Modificando");
+                        encontrado=true;
+                    }
+                    else{
+                        lblDinamico.setText("Creando");
+                        idSalaReservaTxt.setText("");
+                        idClienteReservaTxt.setText("");
+                        fechaReservaTxt.setText("");
+                        horarioReservaTxt.setText("");
+                        estadoReservaTxt.setText("");
+                    }
+                }
+                s.close();
+               
+            } 
+            catch (FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+            } catch (IOException ex) 
+            {
+                ex.printStackTrace();
+            }
     }//GEN-LAST:event_idReservaTxtActionPerformed
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
@@ -155,11 +202,33 @@ public class PanelReservas extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
         else
         {
-            JOptionPane.showMessageDialog(null, "Reserva agregado correctamente");
+            File archivoReservas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservas.txt");
+            try {                           
+                if(!archivoReservas.exists())
+                    archivoReservas.createNewFile();;
+                
+                BufferedWriter bw=new BufferedWriter(new FileWriter(archivoReservas));
+               
+                bw.write(idReservaTxt.getText()+";"+idSalaReservaTxt.getText()+";"+idClienteReservaTxt.getText()+";"+fechaReservaTxt.getText()+
+                        horarioReservaTxt.getText()+";"+estadoReservaTxt.getText());
+                bw.newLine();
+                bw.flush();
+               
+            } 
+            catch (FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+            } catch (IOException ex) 
+            {
+                ex.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(null, "Reserva agregada correctamente");
             idClienteReservaTxt.setText("");
             idReservaTxt.setText("");
             idSalaReservaTxt.setText("");
             fechaReservaTxt.setText("");
+            horarioReservaTxt.setText("");
+            estadoReservaTxt.setText("");
     }//GEN-LAST:event_lblAgregarMouseClicked
 }
 

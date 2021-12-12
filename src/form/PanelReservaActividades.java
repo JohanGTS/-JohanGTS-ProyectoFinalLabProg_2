@@ -2,6 +2,12 @@
 package form;
 
 import Placeholder.TextPrompt;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 /**
@@ -158,7 +164,53 @@ public class PanelReservaActividades extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void idReservaActividadTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idReservaActividadTxtActionPerformed
-        // TODO add your handling code here:
+        int cod;
+        cod=Integer.parseInt(idReservaActividadTxt.getText());
+        boolean encontrado=false;
+        File archivoReservas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservaActividades.txt");
+        Scanner s;    
+            try {
+                s= new Scanner(archivoReservas);
+                if(!archivoReservas.exists())
+                {
+                    archivoReservas.createNewFile();
+                }
+                while(s.hasNext()&&!encontrado)
+                {
+                    String linea=s.nextLine();
+                    Scanner sl= new Scanner(linea);
+                    sl.useDelimiter("\\s*;\\s*");
+                    if(cod==Integer.parseInt(sl.next())){
+                        idReservaActividadTxt.setText(sl.next());
+                        fechaReservaTxt.setText(sl.next());
+                        fechaBajaTxt.setText(sl.next());
+                        idEstadoReservaActTxt.setText(sl.next());
+                        idClienteReservaActTxt.setText(sl.next());
+                        idClienteReservaActTxt.setText(sl.next());
+                        idReservaHoraActTxt.setText(sl.next());
+                        lblDinamico.setText("Modificando");
+                        encontrado=true;
+                    }
+                    else{
+                        lblDinamico.setText("Creando");
+                        fechaReservaTxt.setText("");
+                        fechaBajaTxt.setText("");
+                        idEstadoReservaActTxt.setText("");
+                        idClienteReservaActTxt.setText("");
+                        idActividadTxt.setText("");
+                        idReservaHoraActTxt.setText("");
+                    }
+                }
+                s.close();
+               
+            } 
+            catch (FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+            } catch (IOException ex) 
+            {
+                ex.printStackTrace();
+            }
     }//GEN-LAST:event_idReservaActividadTxtActionPerformed
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
@@ -172,14 +224,34 @@ public class PanelReservaActividades extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
         else
         {
+            File reservaActividades= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservaActividades.txt");
+            try {                           
+                if(!reservaActividades.exists())
+                    reservaActividades.createNewFile();;
+                
+                BufferedWriter bw=new BufferedWriter(new FileWriter(reservaActividades));
+               
+                bw.write(idReservaActividadTxt.getText()+";"+fechaReservaTxt.getText()+";"+fechaBajaTxt.getText()+";"+
+                        idEstadoReservaActTxt.getText()+";"+idClienteReservaActTxt.getText()+";"+idActividadTxt.getText()+";"+idReservaHoraActTxt.getText());
+                bw.newLine();
+                bw.flush();
+               
+            } 
+            catch (FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+            } catch (IOException ex) 
+            {
+                ex.printStackTrace();
+            }
             JOptionPane.showMessageDialog(null, "Actividad reservada correctamente");
-            idActividadTxt.setText("");
-            idClienteReservaActTxt.setText("");
-            idEstadoReservaActTxt.setText("");
             idReservaActividadTxt.setText("");
-            idReservaHoraActTxt.setText("");
-            fechaBajaTxt.setText("");
             fechaReservaTxt.setText("");
+            fechaBajaTxt.setText("");
+            idEstadoReservaActTxt.setText("");
+            idClienteReservaActTxt.setText("");
+            idActividadTxt.setText("");
+            idReservaHoraActTxt.setText("");
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
 

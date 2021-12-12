@@ -5,6 +5,12 @@
 package form;
 
 import Placeholder.TextPrompt;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 /**
@@ -221,8 +227,6 @@ public class PanelClientes extends javax.swing.JPanel {
             }
         });
         add(lblAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 690, 130, 40));
-
-        lblDinamico.setText("Modificaion:");
         add(lblDinamico, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 10, 80, 20));
 
         idClienteTxt.setBorder(null);
@@ -249,11 +253,71 @@ public class PanelClientes extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void idClienteTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idClienteTxtActionPerformed
-        // TODO add your handling code here:
+        int cod;
+        String tipo,estatus;
+        cod=Integer.parseInt(idClienteTxt.getText());
+        boolean encontrado=false;
+        File archivoCliente= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoCliente.txt");
+        Scanner s;    
+            try {
+                s= new Scanner(archivoCliente);
+                if(!archivoCliente.exists())
+                {
+                    archivoCliente.createNewFile();
+                }
+                while(s.hasNext()&&!encontrado)
+                {
+                    String linea=s.nextLine();
+                    Scanner sl= new Scanner(linea);
+                    sl.useDelimiter("\\s*;\\s*");
+                    if(cod==Integer.parseInt(sl.next())){
+                        nombreClienteTxt.setText(sl.next());
+                        apellidoPaternoTxt.setText(sl.next());
+                        apellidoMaternoTxt.setText(sl.next());
+                        direccionTxt.setText(sl.next());
+                        fechaNacimientoTxt.setText(sl.next());
+                        telefonoTxt.setText(sl.next());
+                        celularTxt.setText(sl.next());
+                        fechaIngresoTxt.setText(sl.next());
+                        estatus=sl.next();
+                        tipo=sl.next();
+                        correoElectronicoTxt.setText(sl.next());
+                        balanceTxt.setText(sl.next());
+                        valorCuotasTxt.setText(sl.next());
+                        lblDinamico.setText("Modificando");
+                        encontrado=true;
+                    }
+                    else{
+                        lblDinamico.setText("Creando");
+                        nombreClienteTxt.setText("");
+                        apellidoPaternoTxt.setText("");
+                        apellidoMaternoTxt.setText("");
+                        direccionTxt.setText("");
+                        fechaNacimientoTxt.setText("");
+                        telefonoTxt.setText("");
+                        celularTxt.setText("");
+                        fechaIngresoTxt.setText("");
+                        correoElectronicoTxt.setText("");
+                        balanceTxt.setText("");
+                        valorCuotasTxt.setText("");
+                    }
+                }
+                s.close();
+               
+            } 
+            catch (FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+            } catch (IOException ex) 
+            {
+                ex.printStackTrace();
+            }
     }//GEN-LAST:event_idClienteTxtActionPerformed
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
         boolean vacio=true;
+        String estatus="";
+        String tipo="";
         if(idClienteTxt.getText().equals("")||nombreClienteTxt.getText().equals("")||apellidoMaternoTxt.getText().equals("")
             ||apellidoPaternoTxt.getText().equals("")||direccionTxt.getText().equals("")||fechaNacimientoTxt.getText().equals("")
             ||telefonoTxt.getText().equals("")||celularTxt.getText().equals("")||fechaIngresoTxt.getText().equals(""))
@@ -263,7 +327,39 @@ public class PanelClientes extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
         else
         {
-            JOptionPane.showMessageDialog(null, "Usuario agregado correctamente");
+            File clientes= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
+            try {                           
+                if(!clientes.exists())
+                    clientes.createNewFile();;
+                if(activoEstatus.isSelected())
+                    estatus="activoEstatus";
+                else
+                    estatus="pasivoEstatus";
+                
+                if(activoTipo.isSelected())
+                    tipo="activoTipo";
+                else
+                    tipo="invitadoTipo";
+                    
+                BufferedWriter bw=new BufferedWriter(new FileWriter(clientes));
+               
+                bw.write(idClienteTxt.getText()+";"+apellidoPaternoTxt.getText()+";"+apellidoMaternoTxt.getText()+";"+
+                        direccionTxt.getText()+";"+fechaNacimientoTxt.getText()+";"+telefonoTxt.getText()+";"
+                +";"+celularTxt.getText()+";"+fechaIngresoTxt.getText()+";"+estatus+";"+tipo+";"
+                +correoElectronicoTxt.getText()+";"+Double.parseDouble(balanceTxt.getText())+";"+Double.parseDouble(valorCuotasTxt.getText()));
+                bw.newLine();
+                bw.flush();
+               
+            } 
+            catch (FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+            } catch (IOException ex) 
+            {
+                ex.printStackTrace();
+            }
+            
+            JOptionPane.showMessageDialog(null, "Cliente agregado correctamente");
             idClienteTxt.setText("");
             nombreClienteTxt.setText("");
             apellidoMaternoTxt.setText("");

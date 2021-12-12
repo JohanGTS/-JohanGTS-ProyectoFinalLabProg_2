@@ -2,6 +2,12 @@
 package form;
 
 import Placeholder.TextPrompt;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 /**
@@ -113,11 +119,14 @@ public class PanelEntrenador extends javax.swing.JPanel {
         jLabel10.setText("Registrar nuevo Entrenador");
         jLabel10.setOpaque(true);
         add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 260, 40));
-
-        lblDinamico.setText("Modificaion:");
         add(lblDinamico, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 10, 80, 20));
 
         idTxt.setBorder(null);
+        idTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                idTxtActionPerformed(evt);
+            }
+        });
         add(idTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 233, 20));
     }// </editor-fold>//GEN-END:initComponents
 
@@ -130,6 +139,26 @@ public class PanelEntrenador extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
         else
         {
+            File archivoEntrenador= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEntrenador.txt");
+            try {                           
+                if(!archivoEntrenador.exists())
+                    archivoEntrenador.createNewFile();;
+                
+                BufferedWriter bw=new BufferedWriter(new FileWriter(archivoEntrenador));
+
+                bw.write(idTxt.getText()+";"+nombreTxt.getText()+";"+apellidosTxt.getText()+";"+telefonoTxt.getText()
+                +";"+correoElectronicoTxt.getText());
+                bw.newLine();
+                bw.flush();
+               
+            } 
+            catch (FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+            } catch (IOException ex) 
+            {
+                ex.printStackTrace();
+            }
             JOptionPane.showMessageDialog(null, "Usuario agregado correctamente");
             idTxt.setText("");
             telefonoTxt.setText("");
@@ -138,6 +167,51 @@ public class PanelEntrenador extends javax.swing.JPanel {
             correoElectronicoTxt.setText("");
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
+
+    private void idTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idTxtActionPerformed
+        int cod;
+        cod=Integer.parseInt(idTxt.getText());
+        boolean encontrado=false;
+        File archivoEntrenador= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEntrenador.txt");
+        Scanner s;    
+            try {
+                s= new Scanner(archivoEntrenador);
+                if(!archivoEntrenador.exists())
+                {
+                    archivoEntrenador.createNewFile();
+                }
+                while(s.hasNext()&&!encontrado)
+                {
+                    String linea=s.nextLine();
+                    Scanner sl= new Scanner(linea);
+                    sl.useDelimiter("\\s*;\\s*");
+                    if(cod==Integer.parseInt(sl.next())){
+                        nombreTxt.setText(sl.next());
+                        apellidosTxt.setText(sl.next());
+                        telefonoTxt.setText(sl.next());
+                        correoElectronicoTxt.setText(sl.next());
+                        lblDinamico.setText("Modificando");
+                        encontrado=true;
+                    }
+                    else{
+                        lblDinamico.setText("Creando");
+                        nombreTxt.setText("");
+                        apellidosTxt.setText("");
+                        telefonoTxt.setText("");
+                        correoElectronicoTxt.setText("");
+                    }
+                }
+                s.close();
+               
+            } 
+            catch (FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+            } catch (IOException ex) 
+            {
+                ex.printStackTrace();
+            }
+    }//GEN-LAST:event_idTxtActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
