@@ -214,8 +214,10 @@ public class PanelUsuario extends javax.swing.JPanel {
     private void loginUsuarioTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginUsuarioTxtActionPerformed
         String cod;
         boolean encontrado=false;
+        String nivel="";
         cod=loginUsuarioTxt.getText();
         Scanner s;
+        Scanner sl = null;
         try 
         {
           File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuarios.txt");
@@ -229,27 +231,33 @@ public class PanelUsuario extends javax.swing.JPanel {
               while(s.hasNextLine()&&!encontrado)
               {
                   String linea= s.nextLine();
-                  Scanner sl= new Scanner(linea);
+                   sl= new Scanner(linea);
+                  String pass="";
                   sl.useDelimiter("\\s*;\\s*");
                   try 
                   {
                       if(cod.equals(sl.next()))
                       {
                           contrasenaPassFl.setText(sl.next());
-                          if(sl.next().equals(0))
+                          if(sl.next().equals("0"))
                           {
                               nivel0.setSelected(true);
                               nivel1.setSelected(false);
+                              nivel="0";
                           }
                           else
                           {
                               nivel0.setSelected(false);
                               nivel1.setSelected(true);
+                              nivel="1";
                           }
                           nombreTxt.setText(sl.next());
                           apellidosTxt.setText(sl.next());
                           correoElectronicoTxt.setText(sl.next());
+                          pass= new String(contrasenaPassFl.getPassword());
                           crear=true;
+                          sAntiguaLinea=(loginUsuarioTxt.getText()+";"+pass+";"+nivel+";"+
+                                  nombreTxt.getText()+";"+apellidosTxt.getText()+";"+correoElectronicoTxt.getText());
                           lblDinamico.setText("Modificando");
                       }
                       else
@@ -268,6 +276,9 @@ public class PanelUsuario extends javax.swing.JPanel {
                       e.printStackTrace();
                   }
               }
+              
+                  sl.close();
+                  s.close();
           }
         } 
         catch (IOException e) {
@@ -305,15 +316,20 @@ public class PanelUsuario extends javax.swing.JPanel {
                 String linea;
                 while((linea=br.readLine()) != null)
                 {
-                    if(linea.equals(aCadena))
+                    if(linea.equals(aCadena)){
                         escribir(fNuevo, nCadena);
-                    else
+                    }
+                        
+                    else{
                         escribir(fNuevo, linea);
+                    }
+                        
                 }
                 br.close();
                 String nAntiguo=fAntiguo.getName();
+                File auxiliar= new File(fAntiguo.getAbsolutePath());
                 borrar(fAntiguo);
-                fNuevo.renameTo(fAntiguo);
+                System.out.println(fNuevo.renameTo(auxiliar));
             }
             else
                 System.out.println("Ficho no existe");
@@ -344,8 +360,7 @@ public class PanelUsuario extends javax.swing.JPanel {
 
             if(Ffichero.exists())
             {
-               Ffichero.delete(); 
-               System.out.println("Fichero Borrado con Exito");
+                System.out.println(Ffichero.delete());
             }
             } 
            catch (Exception ex) { 

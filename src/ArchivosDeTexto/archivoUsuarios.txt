@@ -1,3 +1,3 @@
-admin; root; 0;admin;admin
-kkk; ooo ; 1;user;user
-kkk;ooo;1;user;admin;dd
+admin; root; 0;admin;admin;aaa
+kkk; ooo ; 1;user;user;aaa
+aaa;aaa;1;aaa;bbb;aaa
