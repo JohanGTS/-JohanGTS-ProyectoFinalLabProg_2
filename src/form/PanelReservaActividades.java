@@ -246,7 +246,7 @@ public class PanelReservaActividades extends javax.swing.JPanel {
                     guardarDatos(idR, fechaR, fechaB, idEstado,idClienteReser,idActividad,idReservaHora);
                 else
                 {
-                    sNuevaLinea=(idR+";"+fechaR+";"+ fechaB+";"+ idEstado+";"+idActividad+";"+idReservaHora);
+                    sNuevaLinea=(idR+";"+fechaR+";"+ fechaB+";"+ idEstado+";"+idClienteReser+";"+idActividad+";"+idReservaHora);
                     modificar(sAntiguaLinea,sNuevaLinea);
                 }
                 JOptionPane.showMessageDialog(null, "Actividad reservada correctamente");
