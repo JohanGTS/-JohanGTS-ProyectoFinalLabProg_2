@@ -2,11 +2,14 @@
 package form;
 
 import Placeholder.TextPrompt;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
@@ -16,6 +19,9 @@ import javax.swing.JOptionPane;
  */
 public class PanelEntrenador extends javax.swing.JPanel {
 
+    public static String sAntiguaLinea="";
+    public static String sNuevaLinea="";
+    public static boolean crear;
     /**
      * Creates new form PanelEntrenador
      */
@@ -131,88 +137,181 @@ public class PanelEntrenador extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
+        
         boolean vacio=true;
-        if(idTxt.getText().equals("")||nombreTxt.getText().equals("")||apellidosTxt.getText().equals(""))
-            vacio=false;
-       
-        if(!vacio)
-            JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
-        else
-        {
-            File archivoEntrenador= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEntrenador.txt");
-            try {                           
-                if(!archivoEntrenador.exists())
-                    archivoEntrenador.createNewFile();;
-                
-                BufferedWriter bw=new BufferedWriter(new FileWriter(archivoEntrenador));
-
-                bw.write(idTxt.getText()+";"+nombreTxt.getText()+";"+apellidosTxt.getText()+";"+telefonoTxt.getText()
-                +";"+correoElectronicoTxt.getText());
-                bw.newLine();
-                bw.flush();
-               
-            } 
-            catch (FileNotFoundException e)
+        
+        
+        try {
+            if(idTxt.getText().equals("")||nombreTxt.getText().equals("")||apellidosTxt.getText().equals("")||telefonoTxt.getText().equals(""))
+                vacio=false;
+            if(!vacio)
+                JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
+            else
             {
-                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
-            } catch (IOException ex) 
-            {
-                ex.printStackTrace();
-            }
-            JOptionPane.showMessageDialog(null, "Usuario agregado correctamente");
-            idTxt.setText("");
-            telefonoTxt.setText("");
-            nombreTxt.setText("");
-            apellidosTxt.setText("");
-            correoElectronicoTxt.setText("");
+                int id=Integer.parseInt(idTxt.getText());
+                String nomb=nombreTxt.getText();
+                String ape= apellidosTxt.getText();
+                String tel= telefonoTxt.getText();
+                String correo=correoElectronicoTxt.getText();
+                    if(!crear)
+                    guardarDatos(id, nomb,ape,tel,correo);
+                else
+                {
+                    sNuevaLinea=(id+";"+nomb+";"+ape+";"+tel+";"+correo);
+                    modificar(sAntiguaLinea,sNuevaLinea);
+                }
+                JOptionPane.showMessageDialog(null, "Entrenador agregada correctamente");
+                idTxt.setText("");
+                nombreTxt.setText("");
+                apellidosTxt.setText("");
+                telefonoTxt.setText("");
+                correoElectronicoTxt.setText("");
+                }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
 
     private void idTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idTxtActionPerformed
         int cod;
-        cod=Integer.parseInt(idTxt.getText());
         boolean encontrado=false;
-        File archivoEntrenador= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEntrenador.txt");
-        Scanner s;    
-            try {
-                s= new Scanner(archivoEntrenador);
-                if(!archivoEntrenador.exists())
-                {
-                    archivoEntrenador.createNewFile();
-                }
-                while(s.hasNext()&&!encontrado)
-                {
-                    String linea=s.nextLine();
-                    Scanner sl= new Scanner(linea);
-                    sl.useDelimiter("\\s*;\\s*");
-                    if(cod==Integer.parseInt(sl.next())){
-                        nombreTxt.setText(sl.next());
-                        apellidosTxt.setText(sl.next());
-                        telefonoTxt.setText(sl.next());
-                        correoElectronicoTxt.setText(sl.next());
-                        lblDinamico.setText("Modificando");
-                        encontrado=true;
-                    }
-                    else{
-                        lblDinamico.setText("Creando");
-                        nombreTxt.setText("");
-                        apellidosTxt.setText("");
-                        telefonoTxt.setText("");
-                        correoElectronicoTxt.setText("");
-                    }
-                }
-                s.close();
-               
-            } 
-            catch (FileNotFoundException e)
-            {
-                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
-            } catch (IOException ex) 
-            {
-                ex.printStackTrace();
-            }
+        cod=Integer.parseInt(idTxt.getText());
+        Scanner s;
+        Scanner sl = null;
+        try 
+        {
+          File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEntrenador.txt");
+          s=new Scanner(f);
+          if(!f.exists())
+          {
+              f.createNewFile();
+          }
+          else
+          {
+              while(s.hasNextLine()&&!encontrado)
+              {
+                  String linea= s.nextLine();
+                  sl= new Scanner(linea);
+                  sl.useDelimiter("\\s*;\\s*");
+                  try 
+                  {
+                      if(cod==Integer.parseInt(sl.next()))
+                      {
+                          nombreTxt.setText(sl.next());
+                          apellidosTxt.setText(sl.next());
+                          telefonoTxt.setText(sl.next());
+                          correoElectronicoTxt.setText(sl.next());
+                          crear=true;
+                          encontrado=true;
+                          sAntiguaLinea=(idTxt.getText()+";"+nombreTxt.getText()+";"+apellidosTxt.getText()+";"+telefonoTxt.getText()
+                                  +";"+correoElectronicoTxt.getText());
+                          lblDinamico.setText("Modificando");
+                      }
+                      else
+                      {
+                          nombreTxt.setText("");
+                          apellidosTxt.setText("");
+                          telefonoTxt.setText("");
+                          correoElectronicoTxt.setText("");
+                          crear=false;
+                          encontrado=false;
+                          lblDinamico.setText("Creando");
+                      }
+                  } catch (Exception e) {
+                      System.out.println("Error al leer el archivo ");
+                      e.printStackTrace();
+                  }
+              }
+              
+                  sl.close();
+                  s.close();
+          }
+        } 
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_idTxtActionPerformed
+public void  guardarDatos(int id,String nombre,String apellido, String telefono, String correo){
+        try
+        {
+           FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEntrenador.txt",true);
+           PrintWriter pw= new PrintWriter(F1);
+           pw.println(id+";"+nombre+";"+apellido+";"+telefono+";"+correo);
+           pw.close();
+        } catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null, "Error al grabar el archivo");
+        }
+    }
+    
+    public static  void modificar(String lineaAntigua, String nuevaLinea){ 
+       
+       File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEntrenador.txt");
+       File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
+       String aCadena=lineaAntigua;
+       String nCadena=nuevaLinea;
+       
+       BufferedReader br;
+        try {
+            if(fAntiguo.exists())
+            {
+                br=new BufferedReader(new FileReader(fAntiguo));
+                String linea;
+                while((linea=br.readLine()) != null)
+                {
+                    
+                    if(linea.equals(aCadena)){
+                        escribir(fNuevo, nCadena);
+                    }
+                        
+                    else{
+                        escribir(fNuevo, linea);
+                    }
+                        
+                }
+                br.close();
+                String nAntiguo=fAntiguo.getName();
+                File auxiliar= new File(fAntiguo.getAbsolutePath());
+                borrar(fAntiguo);
+                System.out.println(fNuevo.renameTo(auxiliar));
+            }
+            else
+                System.out.println("El archivo no existe");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+            
+   
+    
+    public static void escribir(File Ffichero,String cadena)
+    {
+        BufferedWriter bw;
+        try 
+        {
+            if(!Ffichero.exists())
+                Ffichero.createNewFile();
+            bw= new BufferedWriter(new FileWriter(Ffichero,true));
+            bw.write(cadena+"\r\n");
+            bw.close();
+        }
+        catch (Exception ex) {
+              ex.printStackTrace();
+           } 
+    }
+    public static  void borrar(File Ffichero){
+        try {
 
+            if(Ffichero.exists())
+            {
+                System.out.println(Ffichero.delete());
+            }
+            } 
+           catch (Exception ex) { 
+             System.out.println(ex.getMessage());
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField apellidosTxt;

@@ -6,11 +6,14 @@ package form;
 
 import Main.Main;
 import Placeholder.TextPrompt;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
@@ -19,6 +22,10 @@ import javax.swing.JOptionPane;
  * @author Gabriel Marte
  */
 public class PanelSalas extends javax.swing.JPanel {
+    public static String sAntiguaLinea="";
+    public static String sNuevaLinea="";
+    public static boolean crear;
+    private static Scanner s;
 
     /**
      * Creates new form PanelSalas
@@ -138,8 +145,8 @@ public class PanelSalas extends javax.swing.JPanel {
 
     
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
+        
         boolean vacio=true;
-        boolean encontrado=false;
         if(idSalasTxt.getText().equals("")||nombreSalaTxt.getText().equals("")||descripcionSalaTxt.getText().equals("")
             ||idLocSalaTxt.getText().equals(""))
             vacio=false;
@@ -148,78 +155,161 @@ public class PanelSalas extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
         else
         {
-            File archivoSalas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoSalas.txt");
-            try {                           
-                if(!archivoSalas.exists())
-                    archivoSalas.createNewFile();;
-                
-                BufferedWriter bw=new BufferedWriter(new FileWriter(archivoSalas));
-
-                bw.write(idSalasTxt.getText()+";"+nombreSalaTxt.getText()+";"+descripcionSalaTxt.getText()+";"+idLocSalaTxt.getText());
-                bw.newLine();
-                bw.flush();
-               
-            } 
-            catch (FileNotFoundException e)
-            {
-                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
-            } catch (IOException ex) 
-            {
-                ex.printStackTrace();
-            }
-            
-            
-            JOptionPane.showMessageDialog(null, "Sala agregada correctamente");
-            idSalasTxt.setText("");
-            nombreSalaTxt.setText("");
-            descripcionSalaTxt.setText("");
-            idLocSalaTxt.setText("");
+            int idSalas=Integer.parseInt(idSalasTxt.getText());
+            String nombre=nombreSalaTxt.getText();
+            int idLocSalas=Integer.parseInt(idLocSalaTxt.getText());
+            String descripcion=descripcionSalaTxt.getText();
+            if(!crear)
+                    guardarDatos(idSalas, nombre,descripcion,idLocSalas);
+            else
+                {
+                    sNuevaLinea=(idSalas+";"+nombre+";"+descripcion+";"+idLocSalas);
+                    modificar(sAntiguaLinea,sNuevaLinea);
+                }
+                JOptionPane.showMessageDialog(null, "Sala agregada correctamente");
+                idLocSalaTxt.setText("");
+                idSalasTxt.setText("");
+                nombreSalaTxt.setText("");
+                descripcionSalaTxt.setText("");
         }
+        
     }//GEN-LAST:event_lblAgregarMouseClicked
 
     private void idSalasTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idSalasTxtActionPerformed
         int cod;
-        cod=Integer.parseInt(idSalasTxt.getText());
         boolean encontrado=false;
-        File archivoSalas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoSalas.txt");
-        Scanner s;    
-            try {
-                s= new Scanner(archivoSalas);
-                if(!archivoSalas.exists())
-                {
-                    archivoSalas.createNewFile();
-                }
-                while(s.hasNext()&&!encontrado)
-                {
-                    String linea=s.nextLine();
-                    Scanner sl= new Scanner(linea);
-                    sl.useDelimiter("\\s*;\\s*");
-                    if(cod==Integer.parseInt(sl.next())){
-                        nombreSalaTxt.setText(sl.next());
-                        descripcionSalaTxt.setText(sl.next());
-                        idLocSalaTxt.setText(sl.next());
-                        lblDinamico.setText("Modificando");
-                        encontrado=true;
-                    }
-                    else{
-                        lblDinamico.setText("Creando");
-                        nombreSalaTxt.setText("");
-                        descripcionSalaTxt.setText("");
-                        idLocSalaTxt.setText("");
-                    }
-                }
-                s.close();
-               
-            } 
-            catch (FileNotFoundException e)
-            {
-                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
-            } catch (IOException ex) 
-            {
-                ex.printStackTrace();
-            }
+        cod=Integer.parseInt(idSalasTxt.getText());
+        Scanner s;
+        Scanner sl = null;
+        try 
+        {
+          File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoSalas.txt");
+          s=new Scanner(f);
+          if(!f.exists())
+          {
+              f.createNewFile();
+          }
+          else
+          {
+              while(s.hasNextLine()&&!encontrado)
+              {
+                  String linea= s.nextLine();
+                  sl= new Scanner(linea);
+                  sl.useDelimiter("\\s*;\\s*");
+                  try 
+                  {
+                      if(cod==Integer.parseInt(sl.next()))
+                      {
+                          nombreSalaTxt.setText(sl.next());
+                          descripcionSalaTxt.setText(sl.next());
+                          idLocSalaTxt.setText(sl.next());
+                          crear=true;
+                          encontrado=true;
+                          sAntiguaLinea=(idSalasTxt.getText()+";"+nombreSalaTxt.getText()+";"+descripcionSalaTxt.getText()+";"+idLocSalaTxt.getText());
+                          lblDinamico.setText("Modificando");
+                      }
+                      else
+                      {
+                          nombreSalaTxt.setText("");
+                          descripcionSalaTxt.setText("");
+                          idLocSalaTxt.setText("");
+                          crear=false;
+                          encontrado=false;
+                          lblDinamico.setText("Creando");
+                      }
+                  } catch (Exception e) {
+                      System.out.println("Error al leer el archivo ");
+                      e.printStackTrace();
+                  }
+              }
+              
+                  sl.close();
+                  s.close();
+          }
+        } 
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_idSalasTxtActionPerformed
+    public void  guardarDatos(int idSala,String nombre, String descripcion,int idLocSala){
+        try
+        {
+           FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoSalas.txt",true);
+           PrintWriter pw= new PrintWriter(F1);
+           pw.println(idSala+";"+nombre+";"+descripcion+";"+idLocSala);
+           pw.close();
+        } catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null, "Error al grabar el archivo");
+        }
+    }
+    
+    public static  void modificar(String lineaAntigua, String nuevaLinea){ 
+       
+       File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoSalas.txt");
+       File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
+       String aCadena=lineaAntigua;
+       String nCadena=nuevaLinea;
+       
+       BufferedReader br;
+        try {
+            if(fAntiguo.exists())
+            {
+                br=new BufferedReader(new FileReader(fAntiguo));
+                String linea;
+                while((linea=br.readLine()) != null)
+                {
+                    if(linea.equals(aCadena)){
+                        escribir(fNuevo, nCadena);
+                    }
+                        
+                    else{
+                        escribir(fNuevo, linea);
+                    }
+                        
+                }
+                br.close();
+                String nAntiguo=fAntiguo.getName();
+                File auxiliar= new File(fAntiguo.getAbsolutePath());
+                borrar(fAntiguo);
+                System.out.println(fNuevo.renameTo(auxiliar));
+            }
+            else
+                System.out.println("Archivo no existe");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+            
+   
+    
+    public static void escribir(File Ffichero,String cadena)
+    {
+        BufferedWriter bw;
+        try 
+        {
+            if(!Ffichero.exists())
+                Ffichero.createNewFile();
+            bw= new BufferedWriter(new FileWriter(Ffichero,true));
+            bw.write(cadena+"\r\n");
+            bw.close();
+        }
+        catch (Exception ex) {
+              ex.printStackTrace();
+           } 
+    }
+    public static  void borrar(File Ffichero){
+        try {
 
+            if(Ffichero.exists())
+            {
+                System.out.println(Ffichero.delete());
+            }
+            } 
+           catch (Exception ex) { 
+             System.out.println(ex.getMessage());
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField descripcionSalaTxt;

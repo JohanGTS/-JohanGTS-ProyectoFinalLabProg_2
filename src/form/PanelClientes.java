@@ -5,11 +5,14 @@
 package form;
 
 import Placeholder.TextPrompt;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
@@ -19,6 +22,11 @@ import javax.swing.JOptionPane;
  */
 public class PanelClientes extends javax.swing.JPanel {
 
+    public static String sAntiguaLinea="";
+    public static String sNuevaLinea="";
+    public static boolean crear;
+    public static String estatus;
+    public static String tipo;
     /**
      * Creates new form PanelClientes
      */
@@ -254,16 +262,17 @@ public class PanelClientes extends javax.swing.JPanel {
 
     private void idClienteTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idClienteTxtActionPerformed
         int cod;
-        String tipo,estatus;
+        estatus="pasivo";
+        tipo="invitado";
         cod=Integer.parseInt(idClienteTxt.getText());
         boolean encontrado=false;
-        File archivoCliente= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoCliente.txt");
+        File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
         Scanner s;    
             try {
-                s= new Scanner(archivoCliente);
-                if(!archivoCliente.exists())
+                s= new Scanner(f);
+                if(!f.exists())
                 {
-                    archivoCliente.createNewFile();
+                    f.createNewFile();
                 }
                 while(s.hasNext()&&!encontrado)
                 {
@@ -271,6 +280,7 @@ public class PanelClientes extends javax.swing.JPanel {
                     Scanner sl= new Scanner(linea);
                     sl.useDelimiter("\\s*;\\s*");
                     if(cod==Integer.parseInt(sl.next())){
+                        
                         nombreClienteTxt.setText(sl.next());
                         apellidoPaternoTxt.setText(sl.next());
                         apellidoMaternoTxt.setText(sl.next());
@@ -279,27 +289,34 @@ public class PanelClientes extends javax.swing.JPanel {
                         telefonoTxt.setText(sl.next());
                         celularTxt.setText(sl.next());
                         fechaIngresoTxt.setText(sl.next());
-                        estatus=sl.next();
-                        tipo=sl.next();
+                        if(sl.next().equals("activo"))
+                        {
+                            estatus="activo";
+                            activoEstatus.setSelected(true);
+                        }   
+                            
+                        if(sl.next().equals("activo"))
+                        {
+                            tipo="activo";
+                            activoTipo.setSelected(true);
+                        }
+                            
                         correoElectronicoTxt.setText(sl.next());
                         balanceTxt.setText(sl.next());
                         valorCuotasTxt.setText(sl.next());
                         lblDinamico.setText("Modificando");
+                        sAntiguaLinea=(idClienteTxt.getText()+";"+nombreClienteTxt.getText()+";"+apellidoPaternoTxt.getText()+";"+apellidoMaternoTxt.getText()+";"+
+                                direccionTxt.getText()+";"+fechaNacimientoTxt.getText()+";"+telefonoTxt.getText()+";"+celularTxt.getText()+";"+
+                                fechaIngresoTxt.getText()+";"+estatus+";"+tipo+";"+correoElectronicoTxt.getText()+";"+balanceTxt.getText()+";"+valorCuotasTxt.getText());
                         encontrado=true;
+                        crear=true;
                     }
                     else{
                         lblDinamico.setText("Creando");
-                        nombreClienteTxt.setText("");
-                        apellidoPaternoTxt.setText("");
-                        apellidoMaternoTxt.setText("");
-                        direccionTxt.setText("");
-                        fechaNacimientoTxt.setText("");
-                        telefonoTxt.setText("");
-                        celularTxt.setText("");
-                        fechaIngresoTxt.setText("");
-                        correoElectronicoTxt.setText("");
-                        balanceTxt.setText("");
-                        valorCuotasTxt.setText("");
+                        pasivoEstatus.setSelected(true);
+                        invitadoTipo.setSelected(true);
+                        balanceTxt.setText("0");
+                        crear=false;
                     }
                 }
                 s.close();
@@ -316,66 +333,144 @@ public class PanelClientes extends javax.swing.JPanel {
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
         boolean vacio=true;
-        String estatus="";
-        String tipo="";
-        if(idClienteTxt.getText().equals("")||nombreClienteTxt.getText().equals("")||apellidoMaternoTxt.getText().equals("")
-            ||apellidoPaternoTxt.getText().equals("")||direccionTxt.getText().equals("")||fechaNacimientoTxt.getText().equals("")
-            ||telefonoTxt.getText().equals("")||celularTxt.getText().equals("")||fechaIngresoTxt.getText().equals(""))
+        if(idClienteTxt.getText().equals("")||nombreClienteTxt.getText().equals("")||apellidoMaternoTxt.getText().equals("")||apellidoPaternoTxt.getText().equals("")
+                ||direccionTxt.getText().equals("")||fechaNacimientoTxt.getText().equals("")||telefonoTxt.getText().equals("")||celularTxt.getText().equals("")||
+                fechaIngresoTxt.getText().equals(""))
             vacio=false;
        
         if(!vacio)
             JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
         else
         {
-            File clientes= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
-            try {                           
-                if(!clientes.exists())
-                    clientes.createNewFile();;
-                if(activoEstatus.isSelected())
-                    estatus="activoEstatus";
-                else
-                    estatus="pasivoEstatus";
-                
-                if(activoTipo.isSelected())
-                    tipo="activoTipo";
-                else
-                    tipo="invitadoTipo";
-                    
-                BufferedWriter bw=new BufferedWriter(new FileWriter(clientes));
-               
-                bw.write(idClienteTxt.getText()+";"+apellidoPaternoTxt.getText()+";"+apellidoMaternoTxt.getText()+";"+
-                        direccionTxt.getText()+";"+fechaNacimientoTxt.getText()+";"+telefonoTxt.getText()+";"
-                +";"+celularTxt.getText()+";"+fechaIngresoTxt.getText()+";"+estatus+";"+tipo+";"
-                +correoElectronicoTxt.getText()+";"+Double.parseDouble(balanceTxt.getText())+";"+Double.parseDouble(valorCuotasTxt.getText()));
-                bw.newLine();
-                bw.flush();
-               
-            } 
-            catch (FileNotFoundException e)
+            int idClie=Integer.parseInt(idClienteTxt.getText());
+            String nom=nombreClienteTxt.getText();
+            String apeP=apellidoPaternoTxt.getText();
+            String apeM=apellidoMaternoTxt.getText();
+            String direc=direccionTxt.getText();
+            String fechaNac=fechaNacimientoTxt.getText();
+            String tel=telefonoTxt.getText();
+            String cel=celularTxt.getText();
+            String fechaIng=fechaIngresoTxt.getText();
+            if(activoTipo.isSelected())
+                tipo="activo";
+            else
+                tipo="pasivo";
+            if(activoEstatus.isSelected())
+                estatus="activo";
+            else
+                estatus="invitado";
+            String correo=correoElectronicoTxt.getText();
+            double balanc=Double.parseDouble(balanceTxt.getText());
+            double valorCu=Double.parseDouble(valorCuotasTxt.getText());
+            if(!crear)
+                guardarDatos(idClie,nom,apeP,apeM,direc,fechaNac,tel,cel,fechaIng,estatus,tipo,correo,balanc,valorCu);
+            else
             {
-                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
-            } catch (IOException ex) 
-            {
-                ex.printStackTrace();
+                sNuevaLinea=(idClienteTxt.getText()+";"+nombreClienteTxt.getText()+";"+apellidoPaternoTxt.getText()+";"+apellidoMaternoTxt.getText()+";"+
+                        direccionTxt.getText()+";"+fechaNacimientoTxt.getText()+";"+telefonoTxt.getText()+";"+celularTxt.getText()+";"+
+                        fechaIngresoTxt.getText()+";"+estatus+";"+tipo+";"+correoElectronicoTxt.getText()+";"+
+                        balanceTxt.getText()+";"+valorCuotasTxt.getText());
+                modificar(sAntiguaLinea,sNuevaLinea);
             }
-            
-            JOptionPane.showMessageDialog(null, "Cliente agregado correctamente");
-            idClienteTxt.setText("");
-            nombreClienteTxt.setText("");
-            apellidoMaternoTxt.setText("");
-            apellidoPaternoTxt.setText("");
-            direccionTxt.setText("");
-            fechaNacimientoTxt.setText("");
-            fechaIngresoTxt.setText("");
-            telefonoTxt.setText("");
-            celularTxt.setText("");
-            fechaIngresoTxt.setText("");
-            activoTipo.setSelected(false);
-            pasivoEstatus.setSelected(true);
-            activoEstatus.setSelected(false);
-            invitadoTipo.setSelected(true);
+                JOptionPane.showMessageDialog(null, "Cliente agregado correctamente");
+                idClienteTxt.setText("");
+                nombreClienteTxt.setText("");
+                apellidoMaternoTxt.setText("");
+                apellidoPaternoTxt.setText("");
+                direccionTxt.setText("");
+                fechaNacimientoTxt.setText("");
+                fechaIngresoTxt.setText("");
+                telefonoTxt.setText("");
+                celularTxt.setText("");
+                correoElectronicoTxt.setText("");
+                balanceTxt.setText("");
+                valorCuotasTxt.setText("");
+                pasivoEstatus.setSelected(true);
+                invitadoTipo.setSelected(true);
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
+public void guardarDatos(int id,String nombre,String apePat,String apeMat, String direc, String fechaNac, String telefono,
+String celular, String fechaIng, String status, String tipo,String correo, double balance, double valorCuotas){
+        try
+        {
+           FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt",true);
+           PrintWriter pw= new PrintWriter(F1);
+           pw.println(id+";"+nombre+";"+apePat+";"+apeMat+";"+direc+";"+fechaNac+";"+telefono+";"+celular+";"+fechaIng+";"
+                   +status+";"+tipo+";"+correo+";"+balance+";"+valorCuotas);
+           pw.close();
+        } catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null, "Error al grabar el archivo");
+        }
+    }
+    
+    public static  void modificar(String lineaAntigua, String nuevaLinea){ 
+       
+       File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
+       File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
+       String aCadena=lineaAntigua;
+       String nCadena=nuevaLinea;
+       
+       BufferedReader br;
+        try {
+            if(fAntiguo.exists())
+            {
+                br=new BufferedReader(new FileReader(fAntiguo));
+                String linea;
+                while((linea=br.readLine()) != null)
+                {
+                    
+                    if(linea.equals(aCadena)){
+                        escribir(fNuevo, nCadena);
+                    }
+                        
+                    else{
+                        escribir(fNuevo, linea);
+                    }
+                        
+                }
+                br.close();
+                String nAntiguo=fAntiguo.getName();
+                File auxiliar= new File(fAntiguo.getAbsolutePath());
+                borrar(fAntiguo);
+                System.out.println(fNuevo.renameTo(auxiliar));
+            }
+            else
+                System.out.println("El archivo no existe");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+            
+   
+    
+    public static void escribir(File Ffichero,String cadena)
+    {
+        BufferedWriter bw;
+        try 
+        {
+            if(!Ffichero.exists())
+                Ffichero.createNewFile();
+            bw= new BufferedWriter(new FileWriter(Ffichero,true));
+            bw.write(cadena+"\r\n");
+            bw.close();
+        }
+        catch (Exception ex) {
+              ex.printStackTrace();
+           } 
+    }
+    public static  void borrar(File Ffichero){
+        try {
+
+            if(Ffichero.exists())
+            {
+                System.out.println(Ffichero.delete());
+            }
+            } 
+           catch (Exception ex) { 
+             System.out.println(ex.getMessage());
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

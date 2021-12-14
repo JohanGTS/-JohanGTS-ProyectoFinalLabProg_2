@@ -176,36 +176,50 @@ public class PanelUsuario extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
-        String log="";
-        String pass="";
-        int nivel=1;
-        String nomb="";
-        String app="";
-        String correo="";
         
-        log=loginUsuarioTxt.getText();
-        pass= new String(contrasenaPassFl.getPassword());
-        if(nivel0.isSelected())
-            nivel=0;
-        nomb=nombreTxt.getText();
-        app=apellidosTxt.getText();
-        correo=correoElectronicoTxt.getText();
+        boolean vacio=true;
+        
+        
         
         try {
-            if(!crear)
-                guardarDatos(log, pass, nivel, nomb, app, correo);
+            if(loginUsuarioTxt.getText().equals("")||contrasenaPassFl.getPassword().length==0||
+            nombreTxt.getText().equals("")||apellidosTxt.getText().equals(""))
+                vacio=false;
+            
+            if(!vacio)
+                JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
             else
             {
-                sNuevaLinea=(log+";"+pass+";"+nivel+";"+nomb+";"+app+";"+correo);
-                modificar(sAntiguaLinea,sNuevaLinea);
-            }
-            loginUsuarioTxt.setText("");
-            contrasenaPassFl.setText("");
-            nivel0.setSelected(false);
-            nivel1.setSelected(true);
-            nombreTxt.setText("");
-            apellidosTxt.setText("");
-            correoElectronicoTxt.setText("");
+                String log="";
+                String pass="";
+                int nivel=1;
+                String nomb="";
+                String app="";
+                String correo="";
+                log=loginUsuarioTxt.getText();
+                pass= new String(contrasenaPassFl.getPassword());
+                if(nivel0.isSelected())
+                    nivel=0;
+                nomb=nombreTxt.getText();
+                app=apellidosTxt.getText();
+                correo=correoElectronicoTxt.getText();
+                if(!crear)
+                    guardarDatos(log, pass, nivel, nomb, app, correo);
+                else
+                {
+                    sNuevaLinea=(log+";"+pass+";"+nivel+";"+nomb+";"+app+";"+correo);
+                    modificar(sAntiguaLinea,sNuevaLinea);
+                }
+                JOptionPane.showMessageDialog(null, "Usuario agregado correctamente");
+                loginUsuarioTxt.setText("");
+                contrasenaPassFl.setText("");
+                nivel0.setSelected(false);
+                nivel1.setSelected(true);
+                nombreTxt.setText("");
+                apellidosTxt.setText("");
+                correoElectronicoTxt.setText("");
+                }
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -256,6 +270,7 @@ public class PanelUsuario extends javax.swing.JPanel {
                           correoElectronicoTxt.setText(sl.next());
                           pass= new String(contrasenaPassFl.getPassword());
                           crear=true;
+                          encontrado=true;
                           sAntiguaLinea=(loginUsuarioTxt.getText()+";"+pass+";"+nivel+";"+
                                   nombreTxt.getText()+";"+apellidosTxt.getText()+";"+correoElectronicoTxt.getText());
                           lblDinamico.setText("Modificando");
@@ -269,6 +284,7 @@ public class PanelUsuario extends javax.swing.JPanel {
                           nivel1.setSelected(true);
                           correoElectronicoTxt.setText("");
                           crear=false;
+                          encontrado=false;
                           lblDinamico.setText("Creando");
                       }
                   } catch (Exception e) {

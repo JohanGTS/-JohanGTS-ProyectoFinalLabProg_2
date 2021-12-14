@@ -5,11 +5,14 @@
 package form;
 
 import Placeholder.TextPrompt;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
@@ -18,7 +21,10 @@ import javax.swing.JOptionPane;
  * @author Gabriel Marte
  */
 public class PanelHorarioActividades extends javax.swing.JPanel {
-
+    public static String sAntiguaLinea="";
+    public static String sNuevaLinea="";
+    public static boolean crear;
+    private static Scanner s;
     /**
      * Creates new form PanelHorarioActividades
      */
@@ -125,13 +131,13 @@ public class PanelHorarioActividades extends javax.swing.JPanel {
         int cod;
         cod=Integer.parseInt(idHorarioActividadTxt.getText());
         boolean encontrado=false;
-        File archivoReservas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoHorarioActividades.txt");
+        File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoHorarioActividades.txt");
         Scanner s;    
             try {
-                s= new Scanner(archivoReservas);
-                if(!archivoReservas.exists())
+                s= new Scanner(f);
+                if(!f.exists())
                 {
-                    archivoReservas.createNewFile();
+                    f.createNewFile();
                 }
                 while(s.hasNext()&&!encontrado)
                 {
@@ -142,14 +148,20 @@ public class PanelHorarioActividades extends javax.swing.JPanel {
                         diaActividadTxt.setText(sl.next());
                         horaActividadTxt.setText(sl.next());
                         idActividadTxt.setText(sl.next());
+                            
                         lblDinamico.setText("Modificando");
+                        sAntiguaLinea=(idHorarioActividadTxt.getText()+";"+diaActividadTxt.getText()+";"+horaActividadTxt.getText()+";"+
+                                idActividadTxt.getText());
                         encontrado=true;
+                        crear=true;
                     }
                     else{
                         lblDinamico.setText("Creando");
+                        idHorarioActividadTxt.setText("");
                         idActividadTxt.setText("");
-                        horaActividadTxt.setText("");
                         diaActividadTxt.setText("");
+                        horaActividadTxt.setText("");
+                        crear=false;
                     }
                 }
                 s.close();
@@ -165,44 +177,121 @@ public class PanelHorarioActividades extends javax.swing.JPanel {
     }//GEN-LAST:event_idHorarioActividadTxtActionPerformed
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
+        
         boolean vacio=true;
-        if(idActividadTxt.getText().equals("")||idHorarioActividadTxt.getText().equals("")||horaActividadTxt.getText().equals("")
-            ||diaActividadTxt.getText().equals(""))
-            vacio=false;
-       
-        if(!vacio)
-            JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
-        else
-        {
-            File horarioActividades= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoHorarioActividades.txt");
-            try {                           
-                if(!horarioActividades.exists())
-                    horarioActividades.createNewFile();;
-                
-                BufferedWriter bw=new BufferedWriter(new FileWriter(horarioActividades));
-               
-                bw.write(idHorarioActividadTxt.getText()+";"+diaActividadTxt.getText()+";"+horaActividadTxt.getText()+";"+
-                        idActividadTxt.getText());
-                bw.newLine();
-                bw.flush();
-               
-            } 
-            catch (FileNotFoundException e)
-            {
-                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
-            } catch (IOException ex) 
-            {
-                ex.printStackTrace();
-            }
+        
+        
+        try {
+            if(idActividadTxt.getText().equals("")||idHorarioActividadTxt.getText().equals("")||horaActividadTxt.getText().equals("")||
+            diaActividadTxt.getText().equals(""))
+                vacio=false;
             
-            JOptionPane.showMessageDialog(null, "Horario de actividads agregado correctamente");
-            idActividadTxt.setText("");
-            idHorarioActividadTxt.setText("");
-            horaActividadTxt.setText("");
-            diaActividadTxt.setText("");
+            if(!vacio)
+                JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
+            else
+            {   
+                int idHorario=Integer.parseInt(idHorarioActividadTxt.getText());
+                int dia=Integer.parseInt(diaActividadTxt.getText());
+                String hora=horaActividadTxt.getText();
+                int idActividad=Integer.parseInt(idActividadTxt.getText());
+                
+                if(!crear)
+                    guardarDatos(idHorario, dia, hora, idActividad);
+                else
+                {
+                    sNuevaLinea=(idHorario+";"+dia+";"+hora+";"+idActividad);
+                    modificar(sAntiguaLinea,sNuevaLinea);
+                }
+                JOptionPane.showMessageDialog(null, "Reserva agregada correctamente");
+                idActividadTxt.setText("");
+                idHorarioActividadTxt.setText("");
+                horaActividadTxt.setText("");
+                diaActividadTxt.setText("");
+                }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
+public void  guardarDatos(int idHorario,int dia,String hora,int idActividad){
+        try
+        {
+           FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoHorarioActividades.txt",true);
+           PrintWriter pw= new PrintWriter(F1);
+           pw.println(idHorario+";"+dia+";"+hora+";"+idActividad);
+           pw.close();
+        } catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null, "Error al grabar el archivo");
+        }
+    }
+    
+    public static  void modificar(String lineaAntigua, String nuevaLinea){ 
+       
+       File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoHorarioActividades.txt");
+       File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
+       String aCadena=lineaAntigua;
+       String nCadena=nuevaLinea;
+       
+       BufferedReader br;
+        try {
+            if(fAntiguo.exists())
+            {
+                br=new BufferedReader(new FileReader(fAntiguo));
+                String linea;
+                while((linea=br.readLine()) != null)
+                {
+                    if(linea.equals(aCadena)){
+                        escribir(fNuevo, nCadena);
+                    }
+                        
+                    else{
+                        System.out.println("c");
+                    }
+                        
+                }
+                br.close();
+                String nAntiguo=fAntiguo.getName();
+                File auxiliar= new File(fAntiguo.getAbsolutePath());
+                borrar(fAntiguo);
+                System.out.println(fNuevo.renameTo(auxiliar));
+            }
+            else
+                System.out.println("Archivo no existe");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+            
+   
+    
+    public static void escribir(File Ffichero,String cadena)
+    {
+        BufferedWriter bw;
+        try 
+        {
+            if(!Ffichero.exists())
+                Ffichero.createNewFile();
+            bw= new BufferedWriter(new FileWriter(Ffichero,true));
+            bw.write(cadena+"\r\n");
+            bw.close();
+        }
+        catch (Exception ex) {
+              ex.printStackTrace();
+           } 
+    }
+    public static  void borrar(File Ffichero){
+        try {
 
+            if(Ffichero.exists())
+            {
+                System.out.println(Ffichero.delete());
+            }
+            } 
+           catch (Exception ex) { 
+             System.out.println(ex.getMessage());
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField diaActividadTxt;

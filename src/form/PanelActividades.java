@@ -2,6 +2,14 @@
 package form;
 
 import Placeholder.TextPrompt;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 /**
@@ -10,6 +18,9 @@ import javax.swing.JOptionPane;
  */
 public class PanelActividades extends javax.swing.JPanel {
 
+    public static String sAntiguaLinea="";
+    public static String sNuevaLinea="";
+    public static boolean crear;
     /**
      * Creates new form PanelActividades
      */
@@ -132,28 +143,175 @@ public class PanelActividades extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void idActividadTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idActividadTxtActionPerformed
-        // TODO add your handling code here:
+        int cod;
+        boolean encontrado=false;
+        cod=Integer.parseInt(idActividadTxt.getText());
+        Scanner s;
+        Scanner sl = null;
+        try 
+        {
+          File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoActividades.txt");
+          s=new Scanner(f);
+          if(!f.exists())
+          {
+              f.createNewFile();
+          }
+          else
+          {
+              while(s.hasNextLine()&&!encontrado)
+              {
+                  String linea= s.nextLine();
+                  sl= new Scanner(linea);
+                  sl.useDelimiter("\\s*;\\s*");
+                  try 
+                  {
+                      if(cod==Integer.parseInt(sl.next()))
+                      {
+                          nombreActividadTxt.setText(sl.next());
+                          descripcionActividad.setText(sl.next());
+                          idLocalizacionActTxt.setText(sl.next());
+                          idEntrenadorActTxt.setText(sl.next());
+                          crear=true;
+                          encontrado=true;
+                          sAntiguaLinea=(idActividadTxt.getText()+";"+nombreActividadTxt.getText()+";"+descripcionActividad.getText()
+                                  +";"+idLocalizacionActTxt.getText()+";"+idEntrenadorActTxt.getText());
+                          lblDinamico.setText("Modificando");
+                      }
+                      else
+                      {
+                          nombreActividadTxt.setText("");
+                          descripcionActividad.setText("");
+                          idLocalizacionActTxt.setText("");
+                          idEntrenadorActTxt.setText("");
+                          crear=false;
+                          encontrado=false;
+                          lblDinamico.setText("Creando");
+                      }
+                  } catch (Exception e) {
+                      System.out.println("Error al leer el archivo ");
+                      e.printStackTrace();
+                  }
+              }
+              
+                  sl.close();
+                  s.close();
+          }
+        } 
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_idActividadTxtActionPerformed
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
+        
         boolean vacio=true;
         if(idActividadTxt.getText().equals("")||nombreActividadTxt.getText().equals("")||descripcionActividad.getText().equals("")
-            ||idEntrenadorActTxt.getText().equals("")||idLocalizacionActTxt.getText().equals(""))
+            ||idLocalizacionActTxt.getText().equals("")||idEntrenadorActTxt.getText().equals(""))
             vacio=false;
        
         if(!vacio)
             JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
         else
         {
-            JOptionPane.showMessageDialog(null, "Usuario agregado correctamente");
-            idActividadTxt.setText("");
-            nombreActividadTxt.setText("");
-            descripcionActividad.setText("");
-            idEntrenadorActTxt.setText("");
-            idLocalizacionActTxt.setText("");
+            int idActividad=Integer.parseInt(idActividadTxt.getText());
+            String nombre=nombreActividadTxt.getText();
+            String descripcion=descripcionActividad.getText();
+            int idLocalizacion=Integer.parseInt(idLocalizacionActTxt.getText());
+            int idEntrenador= Integer.parseInt(idEntrenadorActTxt.getText());
+            if(!crear)
+                    guardarDatos(idActividad, nombre,descripcion,idLocalizacion,idEntrenador);
+            else
+                {
+                    sNuevaLinea=(idActividad+";"+nombre+";"+idLocalizacion+";"+descripcion);
+                    modificar(sAntiguaLinea,sNuevaLinea);
+                }
+                JOptionPane.showMessageDialog(null, "Sala agregada correctamente");
+                nombreActividadTxt.setText("");
+                descripcionActividad.setText("");
+                idActividadTxt.setText("");
+                idLocalizacionActTxt.setText("");
+                idEntrenadorActTxt.setText("");
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
+public void  guardarDatos(int idActividad,String nombre, String descripcion,int idLocalizacion, int idEntrenador){
+        try
+        {
+           FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoActividades.txt",true);
+           PrintWriter pw= new PrintWriter(F1);
+           pw.println(idActividad+";"+nombre+";"+descripcion+";"+idLocalizacion+";"+idEntrenador);
+           pw.close();
+        } catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null, "Error al grabar el archivo");
+        }
+    }
+    
+    public static  void modificar(String lineaAntigua, String nuevaLinea){ 
+       
+       File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoActividades.txt");
+       File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
+       String aCadena=lineaAntigua;
+       String nCadena=nuevaLinea;
+       
+       BufferedReader br;
+        try {
+            if(fAntiguo.exists())
+            {
+                br=new BufferedReader(new FileReader(fAntiguo));
+                String linea;
+                while((linea=br.readLine()) != null)
+                {
+                    if(linea.equals(aCadena)){
+                        escribir(fNuevo, nCadena);
+                    }
+                        
+                    else{
+                        escribir(fNuevo, linea);
+                    }
+                        
+                }
+                br.close();
+                String nAntiguo=fAntiguo.getName();
+                File auxiliar= new File(fAntiguo.getAbsolutePath());
+                borrar(fAntiguo);
+                System.out.println(fNuevo.renameTo(auxiliar));
+            }
+            else
+                System.out.println("Archivo no existe");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+            
+   
+    
+    public static void escribir(File Ffichero,String cadena)
+    {
+        BufferedWriter bw;
+        try 
+        {
+            if(!Ffichero.exists())
+                Ffichero.createNewFile();
+            bw= new BufferedWriter(new FileWriter(Ffichero,true));
+            bw.write(cadena+"\r\n");
+            bw.close();
+        }
+        catch (Exception ex) {
+              ex.printStackTrace();
+           } 
+    }
+    public static  void borrar(File Ffichero){
+        try {
 
+            if(Ffichero.exists())
+            {
+                System.out.println(Ffichero.delete());
+            }
+            } 
+           catch (Exception ex) { 
+             System.out.println(ex.getMessage());
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField descripcionActividad;

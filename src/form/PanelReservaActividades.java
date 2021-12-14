@@ -2,11 +2,14 @@
 package form;
 
 import Placeholder.TextPrompt;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
@@ -15,7 +18,9 @@ import javax.swing.JOptionPane;
  * @author Gabriel Marte
  */
 public class PanelReservaActividades extends javax.swing.JPanel {
-
+    public static String sAntiguaLinea="";
+    public static String sNuevaLinea="";
+    public static boolean crear;
     /**
      * Creates new form PanelReservaActividades
      */
@@ -167,13 +172,13 @@ public class PanelReservaActividades extends javax.swing.JPanel {
         int cod;
         cod=Integer.parseInt(idReservaActividadTxt.getText());
         boolean encontrado=false;
-        File archivoReservas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservaActividades.txt");
+        File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservaActividades.txt");
         Scanner s;    
             try {
-                s= new Scanner(archivoReservas);
-                if(!archivoReservas.exists())
+                s= new Scanner(f);
+                if(!f.exists())
                 {
-                    archivoReservas.createNewFile();
+                    f.createNewFile();
                 }
                 while(s.hasNext()&&!encontrado)
                 {
@@ -181,24 +186,29 @@ public class PanelReservaActividades extends javax.swing.JPanel {
                     Scanner sl= new Scanner(linea);
                     sl.useDelimiter("\\s*;\\s*");
                     if(cod==Integer.parseInt(sl.next())){
-                        idReservaActividadTxt.setText(sl.next());
                         fechaReservaTxt.setText(sl.next());
                         fechaBajaTxt.setText(sl.next());
                         idEstadoReservaActTxt.setText(sl.next());
                         idClienteReservaActTxt.setText(sl.next());
-                        idClienteReservaActTxt.setText(sl.next());
+                        idActividadTxt.setText(sl.next());
                         idReservaHoraActTxt.setText(sl.next());
+                            
                         lblDinamico.setText("Modificando");
+                        sAntiguaLinea=(idReservaActividadTxt.getText()+";"+fechaReservaTxt.getText()+";"+fechaBajaTxt.getText()+";"+
+                        idEstadoReservaActTxt.getText()+";"+idClienteReservaActTxt.getText()+";"+idActividadTxt.getText()+";"+idReservaHoraActTxt.getText());
                         encontrado=true;
+                        crear=true;
                     }
                     else{
                         lblDinamico.setText("Creando");
                         fechaReservaTxt.setText("");
+                        idActividadTxt.setText("");
                         fechaBajaTxt.setText("");
                         idEstadoReservaActTxt.setText("");
                         idClienteReservaActTxt.setText("");
                         idActividadTxt.setText("");
                         idReservaHoraActTxt.setText("");
+                        crear=false;
                     }
                 }
                 s.close();
@@ -215,6 +225,7 @@ public class PanelReservaActividades extends javax.swing.JPanel {
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
         boolean vacio=true;
+        
         if(idReservaActividadTxt.getText().equals("")||idReservaHoraActTxt.getText().equals("")||fechaBajaTxt.getText().equals("")
             ||fechaReservaTxt.getText().equals("")||idClienteReservaActTxt.getText().equals("")||idActividadTxt.getText().equals("")
             ||idEstadoReservaActTxt.getText().equals(""))
@@ -224,37 +235,108 @@ public class PanelReservaActividades extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
         else
         {
-            File reservaActividades= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservaActividades.txt");
-            try {                           
-                if(!reservaActividades.exists())
-                    reservaActividades.createNewFile();;
+            int idR=Integer.parseInt(idReservaActividadTxt.getText());
+            String fechaR=fechaReservaTxt.getText();
+            String fechaB=fechaBajaTxt.getText();
+            int idEstado= Integer.parseInt(idEstadoReservaActTxt.getText());
+            int idClienteReser= Integer.parseInt(idClienteReservaActTxt.getText());
+            int idActividad= Integer.parseInt(idActividadTxt.getText());
+            int idReservaHora= Integer.parseInt(idReservaHoraActTxt.getText());
+            if(!crear)
+                    guardarDatos(idR, fechaR, fechaB, idEstado,idClienteReser,idActividad,idReservaHora);
+                else
+                {
+                    sNuevaLinea=(idR+";"+fechaR+";"+ fechaB+";"+ idEstado+";"+idActividad+";"+idReservaHora);
+                    modificar(sAntiguaLinea,sNuevaLinea);
+                }
+                JOptionPane.showMessageDialog(null, "Actividad reservada correctamente");
+                idReservaActividadTxt.setText("");
+                fechaReservaTxt.setText("");
+                fechaBajaTxt.setText("");
+                idEstadoReservaActTxt.setText("");
+                idClienteReservaActTxt.setText("");
+                idActividadTxt.setText("");
+                idReservaHoraActTxt.setText("");
                 
-                BufferedWriter bw=new BufferedWriter(new FileWriter(reservaActividades));
-               
-                bw.write(idReservaActividadTxt.getText()+";"+fechaReservaTxt.getText()+";"+fechaBajaTxt.getText()+";"+
-                        idEstadoReservaActTxt.getText()+";"+idClienteReservaActTxt.getText()+";"+idActividadTxt.getText()+";"+idReservaHoraActTxt.getText());
-                bw.newLine();
-                bw.flush();
-               
-            } 
-            catch (FileNotFoundException e)
-            {
-                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
-            } catch (IOException ex) 
-            {
-                ex.printStackTrace();
-            }
-            JOptionPane.showMessageDialog(null, "Actividad reservada correctamente");
-            idReservaActividadTxt.setText("");
-            fechaReservaTxt.setText("");
-            fechaBajaTxt.setText("");
-            idEstadoReservaActTxt.setText("");
-            idClienteReservaActTxt.setText("");
-            idActividadTxt.setText("");
-            idReservaHoraActTxt.setText("");
+            
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
+public void  guardarDatos(int idR,String fechaR,String fechaB,int idEstado,int idClienteReser, int idAct,int idReservaHoraAct){
+        try
+        {
+           FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservaActividades.txt",true);
+           PrintWriter pw= new PrintWriter(F1);
+           pw.println(idR+";"+fechaR+";"+fechaB+";"+idEstado+";"+idClienteReser+";"+idAct+";"+idReservaHoraAct);
+           pw.close();
+        } catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null, "Error al grabar el archivo");
+        }
+    }
+    
+    public static  void modificar(String lineaAntigua, String nuevaLinea){ 
+       
+       File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservaActividades.txt");
+       File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
+       String aCadena=lineaAntigua;
+       String nCadena=nuevaLinea;
+       
+       BufferedReader br;
+        try {
+            if(fAntiguo.exists())
+            {
+                br=new BufferedReader(new FileReader(fAntiguo));
+                String linea;
+                while((linea=br.readLine()) != null)
+                {
+                    if(linea.equals(aCadena)){
+                        escribir(fNuevo, nCadena);
+                    }
+                        
+                    else{
+                        System.out.println("c");
+                    }
+                        
+                }
+                br.close();
+                String nAntiguo=fAntiguo.getName();
+                File auxiliar= new File(fAntiguo.getAbsolutePath());
+                borrar(fAntiguo);
+                System.out.println(fNuevo.renameTo(auxiliar));
+            }
+            else
+                System.out.println("Archivo no existe");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static void escribir(File Ffichero,String cadena)
+    {
+        BufferedWriter bw;
+        try 
+        {
+            if(!Ffichero.exists())
+                Ffichero.createNewFile();
+            bw= new BufferedWriter(new FileWriter(Ffichero,true));
+            bw.write(cadena+"\r\n");
+            bw.close();
+        }
+        catch (Exception ex) {
+              ex.printStackTrace();
+           } 
+    }
+    public static  void borrar(File Ffichero){
+        try {
 
+            if(Ffichero.exists())
+            {
+                System.out.println(Ffichero.delete());
+            }
+            } 
+           catch (Exception ex) { 
+             System.out.println(ex.getMessage());
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField fechaBajaTxt;

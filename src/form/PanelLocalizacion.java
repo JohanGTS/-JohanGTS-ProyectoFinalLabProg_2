@@ -2,11 +2,14 @@
 package form;
 
 import Placeholder.TextPrompt;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
@@ -15,7 +18,10 @@ import javax.swing.JOptionPane;
  * @author Gabriel Marte
  */
 public class PanelLocalizacion extends javax.swing.JPanel {
-
+    public static String sAntiguaLinea="";
+    public static String sNuevaLinea="";
+    public static boolean crear;
+    private static Scanner s;
     /**
      * Creates new form PanelLocalizacion
      */
@@ -96,79 +102,167 @@ public class PanelLocalizacion extends javax.swing.JPanel {
 
     private void idTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idTxtActionPerformed
         int cod;
-        cod=Integer.parseInt(idTxt.getText());
         boolean encontrado=false;
-        File archivoLocalizacion= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoLocalizacion.txt");
-        Scanner s;    
-            try {
-                s= new Scanner(archivoLocalizacion);
-                if(!archivoLocalizacion.exists())
-                {
-                    archivoLocalizacion.createNewFile();
-                }
-                while(s.hasNext()&&!encontrado)
-                {
-                    String linea=s.nextLine();
-                    Scanner sl= new Scanner(linea);
-                    sl.useDelimiter("\\s*;\\s*");
-                    if(cod==Integer.parseInt(sl.next())){
-                        tipoTxt.setText(sl.next());
-                        lblDinamico.setText("Modificando");
-                        encontrado=true;
-                    }
-                    else{
-                        lblDinamico.setText("Creando");
-                        tipoTxt.setText("");
-                    }
-                }
-                s.close();
-               
-            } 
-            catch (FileNotFoundException e)
-            {
-                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
-            } catch (IOException ex) 
-            {
-                ex.printStackTrace();
-            }
+        cod=Integer.parseInt(idTxt.getText());
+        Scanner s;
+        Scanner sl = null;
+        try 
+        {
+          File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoLocalizacion.txt");
+          s=new Scanner(f);
+          if(!f.exists())
+          {
+              f.createNewFile();
+          }
+          else
+          {
+              while(s.hasNextLine()&&!encontrado)
+              {
+                  String linea= s.nextLine();
+                   sl= new Scanner(linea);
+                  String pass="";
+                  sl.useDelimiter("\\s*;\\s*");
+                  try 
+                  {
+                      if(cod==Integer.parseInt(sl.next()))
+                      {
+                          tipoTxt.setText(sl.next());
+                          crear=true;
+                          encontrado=true;
+                          sAntiguaLinea=(idTxt.getText()+";"+tipoTxt.getText());
+                          lblDinamico.setText("Modificando");
+                      }
+                      else
+                      {
+                          tipoTxt.setText("");
+                          crear=false;
+                          encontrado=false;
+                          lblDinamico.setText("Creando");
+                      }
+                  } catch (Exception e) {
+                      System.out.println("Error al leer el archivo ");
+                      e.printStackTrace();
+                  }
+              }
+              
+                  sl.close();
+                  s.close();
+          }
+        } 
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_idTxtActionPerformed
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
+        
         boolean vacio=true;
-        if(idTxt.getText().equals("")||tipoTxt.getText().equals(""))
-            vacio=false;
-       
-        if(!vacio)
-            JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
-        else
-        {
-            File archivoLocalizacion= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoLocalizacion.txt");
-            try 
+        try {
+            if(idTxt.getText().equals("")||tipoTxt.getText().equals(""))
+                vacio=false;
+            if(!vacio)
+                JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
+            else
             {
-                if(!archivoLocalizacion.exists())
-                    archivoLocalizacion.createNewFile();
-                BufferedWriter bw=new BufferedWriter(new FileWriter(archivoLocalizacion));
-                
-                bw.write(idTxt.getText()+";"+tipoTxt.getText());
-                bw.newLine();
-                bw.flush();
-            } 
-            catch (FileNotFoundException e) 
-            {
-                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
-            }
-            catch(IOException e)
-            {
-                e.printStackTrace();
-            }
+                int idSala=Integer.parseInt(idTxt.getText());
+                String tipo=tipoTxt.getText();
+                    if(!crear)
+                    guardarDatos(idSala, tipo);
+                else
+                {
+                    sNuevaLinea=(idSala+";"+tipo);
+                    modificar(sAntiguaLinea,sNuevaLinea);
+                }
+                JOptionPane.showMessageDialog(null, "Localización agregada correctamente");
+                idTxt.setText("");
+                tipoTxt.setText("");
+                }
             
-            JOptionPane.showMessageDialog(null, "Localización agregada correctamente");
-            idTxt.setText("");
-            tipoTxt.setText("");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
             
     }//GEN-LAST:event_lblAgregarMouseClicked
+public void  guardarDatos(int id,String tipo){
+        try
+        {
+           FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoLocalizacion.txt",true);
+           PrintWriter pw= new PrintWriter(F1);
+           pw.println(id+";"+tipo);
+           pw.close();
+        } catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null, "Error al grabar el archivo");
+        }
+    }
+    
+    public static  void modificar(String lineaAntigua, String nuevaLinea){ 
+       
+       File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoLocalizacion.txt");
+       File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
+       String aCadena=lineaAntigua;
+       String nCadena=nuevaLinea;
+       
+       BufferedReader br;
+        try {
+            if(fAntiguo.exists())
+            {
+                br=new BufferedReader(new FileReader(fAntiguo));
+                String linea;
+                while((linea=br.readLine()) != null)
+                {
+                    
+                    if(linea.equals(aCadena)){
+                        escribir(fNuevo, nCadena);
+                    }
+                        
+                    else{
+                        escribir(fNuevo, linea);
+                    }
+                        
+                }
+                br.close();
+                String nAntiguo=fAntiguo.getName();
+                File auxiliar= new File(fAntiguo.getAbsolutePath());
+                borrar(fAntiguo);
+                System.out.println(fNuevo.renameTo(auxiliar));
+            }
+            else
+                System.out.println("El archivo no existe");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+            
+   
+    
+    public static void escribir(File Ffichero,String cadena)
+    {
+        BufferedWriter bw;
+        try 
+        {
+            if(!Ffichero.exists())
+                Ffichero.createNewFile();
+            bw= new BufferedWriter(new FileWriter(Ffichero,true));
+            bw.write(cadena+"\r\n");
+            bw.close();
+        }
+        catch (Exception ex) {
+              ex.printStackTrace();
+           } 
+    }
+    public static  void borrar(File Ffichero){
+        try {
 
+            if(Ffichero.exists())
+            {
+                System.out.println(Ffichero.delete());
+            }
+            } 
+           catch (Exception ex) { 
+             System.out.println(ex.getMessage());
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField idTxt;

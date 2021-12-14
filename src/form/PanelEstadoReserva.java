@@ -15,14 +15,18 @@ import javax.swing.JOptionPane;
  * @author Gabriel Marte
  */
 public class PanelEstadoReserva extends javax.swing.JPanel {
-
+    public static String sAntiguaLinea="";
+    public static String sNuevaLinea="";
+    public static boolean crear;
+    public static String estado="";
     /**
      * Creates new form PanelEstadoReserva
      */
     public PanelEstadoReserva() {
         initComponents();
         TextPrompt placeholderEstadoReserva= new TextPrompt("Obligatorio",idEstadoReserva);
-        TextPrompt placeholderEstado= new TextPrompt("Obligatorio",estadoTxt);
+        grupoEstado.add(reservado);
+        grupoEstado.add(noReservado);
     }
 
     /**
@@ -34,16 +38,18 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        grupoEstado = new javax.swing.ButtonGroup();
         jLabel10 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         idEstadoReserva = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator8 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
-        estadoTxt = new javax.swing.JTextField();
         jSeparator6 = new javax.swing.JSeparator();
         lblAgregar = new javax.swing.JLabel();
         lblDinamico = new javax.swing.JLabel();
+        reservado = new javax.swing.JCheckBox();
+        noReservado = new javax.swing.JCheckBox();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -72,10 +78,7 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Estado");
-        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 79, -1, -1));
-
-        estadoTxt.setBorder(null);
-        add(estadoTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 233, 20));
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 70, -1, -1));
         add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 120, 230, 10));
 
         lblAgregar.setBackground(new java.awt.Color(0, 0, 0));
@@ -92,19 +95,26 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
         });
         add(lblAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 220, 130, 40));
         add(lblDinamico, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 10, 80, 20));
+
+        reservado.setText("Reservado");
+        add(reservado, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 90, -1, -1));
+
+        noReservado.setSelected(true);
+        noReservado.setText("No reservado");
+        add(noReservado, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 90, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void idEstadoReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idEstadoReservaActionPerformed
         int cod;
         cod=Integer.parseInt(idEstadoReserva.getText());
         boolean encontrado=false;
-        File archvoEstadoReserva= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEstadoReserva.txt");
+        File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEstadoReserva.txt");
         Scanner s;    
             try {
-                s= new Scanner(archvoEstadoReserva);
-                if(!archvoEstadoReserva.exists())
+                s= new Scanner(f);
+                if(!f.exists())
                 {
-                    archvoEstadoReserva.createNewFile();
+                    f.createNewFile();
                 }
                 while(s.hasNext()&&!encontrado)
                 {
@@ -112,13 +122,26 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
                     Scanner sl= new Scanner(linea);
                     sl.useDelimiter("\\s*;\\s*");
                     if(cod==Integer.parseInt(sl.next())){
-                        estadoTxt.setText(sl.next());
+                        if(sl.next().equals("reservado"))
+                        {
+                            estado="reservado";
+                            reservado.setSelected(true);
+                        }
+                        else
+                        {
+                            estado="no reservado";
+                            noReservado.setSelected(true);
+                        }
+                            
                         lblDinamico.setText("Modificando");
+                        sAntiguaLinea=(idEstadoReserva.getText()+";"+estado);
                         encontrado=true;
+                        crear=true;
                     }
                     else{
                         lblDinamico.setText("Creando");
-                        estadoTxt.setText("");
+                        noReservado.setSelected(true);
+                        crear=false;
                     }
                 }
                 s.close();
@@ -135,7 +158,7 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
         boolean vacio=true;
-        if(idEstadoReserva.getText().equals("")||estadoTxt.getText().equals(""))
+        if(idEstadoReserva.getText().equals(""))
             vacio=false;
        
         if(!vacio)
@@ -148,8 +171,11 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
                 if(!estadoReserva.exists())
                     estadoReserva.createNewFile();
                 BufferedWriter bw=new BufferedWriter(new FileWriter(estadoReserva));
-                
-                bw.write(idEstadoReserva.getText()+";"+estadoTxt.getText());
+                if(reservado.isSelected())
+                    estado="reservado";
+                else
+                    estado="no reservado";
+                bw.write(idEstadoReserva.getText()+";"+estado);
                 bw.newLine();
                 bw.flush();
             } 
@@ -164,13 +190,13 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
             
             JOptionPane.showMessageDialog(null, "Estado de reserva agregado correctamente");
             idEstadoReserva.setText("");
-            estadoTxt.setText("");
+            noReservado.setSelected(true);
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField estadoTxt;
+    private javax.swing.ButtonGroup grupoEstado;
     private javax.swing.JTextField idEstadoReserva;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -180,5 +206,7 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JLabel lblAgregar;
     private javax.swing.JLabel lblDinamico;
+    private javax.swing.JCheckBox noReservado;
+    private javax.swing.JCheckBox reservado;
     // End of variables declaration//GEN-END:variables
 }

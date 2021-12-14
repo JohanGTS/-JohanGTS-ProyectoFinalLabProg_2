@@ -5,11 +5,14 @@
 package form;
 
 import Placeholder.TextPrompt;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
@@ -18,6 +21,9 @@ import javax.swing.JOptionPane;
  * @author Gabriel Marte
  */
 public class PanelReservas extends javax.swing.JPanel {
+    public static String sAntiguaLinea="";
+    public static String sNuevaLinea="";
+    public static boolean crear;
 
     /**
      * Creates new form PanelReservas
@@ -29,7 +35,8 @@ public class PanelReservas extends javax.swing.JPanel {
         TextPrompt placeholderIdClienteReserva= new TextPrompt("Obligatorio",idClienteReservaTxt);
         TextPrompt placeholderHorarioReserva= new TextPrompt("Obligatorio",horarioReservaTxt);
         TextPrompt placeholderFechaReserva= new TextPrompt("Obligatorio     DD/MM/AA",fechaReservaTxt);
-        TextPrompt placeholderEstadoReserva= new TextPrompt("Obligatorio",estadoReservaTxt);
+        grupoEstado.add(reservado);
+        grupoEstado.add(noReservado);
     }
 
     /**
@@ -41,6 +48,7 @@ public class PanelReservas extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        grupoEstado = new javax.swing.ButtonGroup();
         jLabel10 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         idSalaReservaTxt = new javax.swing.JTextField();
@@ -60,9 +68,10 @@ public class PanelReservas extends javax.swing.JPanel {
         horarioReservaTxt = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jSeparator9 = new javax.swing.JSeparator();
-        estadoReservaTxt = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jSeparator10 = new javax.swing.JSeparator();
+        reservado = new javax.swing.JCheckBox();
+        noReservado = new javax.swing.JCheckBox();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -136,17 +145,22 @@ public class PanelReservas extends javax.swing.JPanel {
         add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 160, -1, -1));
         add(jSeparator9, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, 250, -1));
 
-        estadoReservaTxt.setBorder(null);
-        add(estadoReservaTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 300, 233, 20));
-
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel9.setText("Estado de reserva");
         add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 260, -1, -1));
         add(jSeparator10, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 320, 250, -1));
+
+        reservado.setText("Reservado");
+        add(reservado, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 290, -1, -1));
+
+        noReservado.setSelected(true);
+        noReservado.setText("No reservado");
+        add(noReservado, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 290, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void idReservaTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idReservaTxtActionPerformed
         int cod;
+        String estado="";
         cod=Integer.parseInt(idReservaTxt.getText());
         boolean encontrado=false;
         File archivoReservas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservas.txt");
@@ -167,9 +181,24 @@ public class PanelReservas extends javax.swing.JPanel {
                         idClienteReservaTxt.setText(sl.next());
                         fechaReservaTxt.setText(sl.next());
                         horarioReservaTxt.setText(sl.next());
-                        estadoReservaTxt.setText(sl.next());
+                        if(sl.next().equals("reservado"))
+                        {
+                            estado="reservado";
+                            reservado.setSelected(true);
+                            noReservado.setSelected(false);
+                        }
+                        else
+                        {
+                            estado="no reservado";
+                            reservado.setSelected(false);
+                            noReservado.setSelected(true);
+                        }
+                            
                         lblDinamico.setText("Modificando");
+                        sAntiguaLinea=(idReservaTxt.getText()+";"+idSalaReservaTxt.getText()+";"+idClienteReservaTxt.getText()+";"+
+                                fechaReservaTxt.getText()+";"+horarioReservaTxt.getText()+";"+estado);
                         encontrado=true;
+                        crear=true;
                     }
                     else{
                         lblDinamico.setText("Creando");
@@ -177,7 +206,9 @@ public class PanelReservas extends javax.swing.JPanel {
                         idClienteReservaTxt.setText("");
                         fechaReservaTxt.setText("");
                         horarioReservaTxt.setText("");
-                        estadoReservaTxt.setText("");
+                        reservado.setSelected(false);
+                        noReservado.setSelected(true);
+                        crear=false;
                     }
                 }
                 s.close();
@@ -193,48 +224,131 @@ public class PanelReservas extends javax.swing.JPanel {
     }//GEN-LAST:event_idReservaTxtActionPerformed
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
+        
         boolean vacio=true;
-        if(idReservaTxt.getText().equals("")||idSalaReservaTxt.getText().equals("")||idClienteReservaTxt.getText().equals("")
-            ||fechaReservaTxt.getText().equals("")||horarioReservaTxt.getText().equals("")||estadoReservaTxt.getText().equals(""))
-            vacio=false;
-       
-        if(!vacio)
-            JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
-        else
-        {
-            File archivoReservas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservas.txt");
-            try {                           
-                if(!archivoReservas.exists())
-                    archivoReservas.createNewFile();;
-                
-                BufferedWriter bw=new BufferedWriter(new FileWriter(archivoReservas));
-               
-                bw.write(idReservaTxt.getText()+";"+idSalaReservaTxt.getText()+";"+idClienteReservaTxt.getText()+";"+fechaReservaTxt.getText()+
-                        horarioReservaTxt.getText()+";"+estadoReservaTxt.getText());
-                bw.newLine();
-                bw.flush();
-               
-            } 
-            catch (FileNotFoundException e)
+        
+        
+        try {
+            if(idReservaTxt.getText().equals("")||idClienteReservaTxt.getText().equals("")||idSalaReservaTxt.getText().equals("")||
+            fechaReservaTxt.getText().equals("")||horarioReservaTxt.getText().equals(""))
+                vacio=false;
+            
+            if(!vacio)
+                JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
+            else
             {
-                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
-            } catch (IOException ex) 
-            {
-                ex.printStackTrace();
-            }
-            JOptionPane.showMessageDialog(null, "Reserva agregada correctamente");
-            idClienteReservaTxt.setText("");
-            idReservaTxt.setText("");
-            idSalaReservaTxt.setText("");
-            fechaReservaTxt.setText("");
-            horarioReservaTxt.setText("");
-            estadoReservaTxt.setText("");
+                int log=Integer.parseInt(idReservaTxt.getText());
+                int pass=Integer.parseInt(idSalaReservaTxt.getText());
+                int nivel=Integer.parseInt(idClienteReservaTxt.getText());
+                String nomb=fechaReservaTxt.getText();
+                String app=horarioReservaTxt.getText();
+                String estado="no reservado";
+                if(reservado.isSelected())
+                    estado="reservado";
+                if(!crear)
+                    guardarDatos(log, pass, nivel, nomb, app, estado);
+                else
+                {
+                    sNuevaLinea=(log+";"+pass+";"+nivel+";"+nomb+";"+app+";"+estado);
+                    modificar(sAntiguaLinea,sNuevaLinea);
+                }
+                JOptionPane.showMessageDialog(null, "Reserva agregada correctamente");
+                idClienteReservaTxt.setText("");
+                idReservaTxt.setText("");
+                reservado.setSelected(false);
+                noReservado.setSelected(true);
+                idSalaReservaTxt.setText("");
+                fechaReservaTxt.setText("");
+                horarioReservaTxt.setText("");
+                }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_lblAgregarMouseClicked
-}
+public void  guardarDatos(int idReserva,int idSalaReserva, int idClienteReserva,String reserva,String horario, String estado){
+        try
+        {
+           FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservas.txt",true);
+           PrintWriter pw= new PrintWriter(F1);
+           pw.println(idReserva+";"+idSalaReserva+";"+idClienteReserva+";"+reserva+";"+horario+";"+estado);
+           pw.close();
+        } catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null, "Error al grabar el archivo");
+        }
+    }
+    
+    public static  void modificar(String lineaAntigua, String nuevaLinea){ 
+       
+       File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservas.txt");
+       File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
+       String aCadena=lineaAntigua;
+       String nCadena=nuevaLinea;
+       
+       BufferedReader br;
+        try {
+            if(fAntiguo.exists())
+            {
+                br=new BufferedReader(new FileReader(fAntiguo));
+                String linea;
+                while((linea=br.readLine()) != null)
+                {
+                    if(linea.equals(aCadena)){
+                        escribir(fNuevo, nCadena);
+                    }
+                        
+                    else{
+                        System.out.println("c");
+                    }
+                        
+                }
+                br.close();
+                String nAntiguo=fAntiguo.getName();
+                File auxiliar= new File(fAntiguo.getAbsolutePath());
+                borrar(fAntiguo);
+                System.out.println(fNuevo.renameTo(auxiliar));
+            }
+            else
+                System.out.println("Archivo no existe");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+            
+   
+    
+    public static void escribir(File Ffichero,String cadena)
+    {
+        BufferedWriter bw;
+        try 
+        {
+            if(!Ffichero.exists())
+                Ffichero.createNewFile();
+            bw= new BufferedWriter(new FileWriter(Ffichero,true));
+            bw.write(cadena+"\r\n");
+            bw.close();
+        }
+        catch (Exception ex) {
+              ex.printStackTrace();
+           } 
+    }
+    public static  void borrar(File Ffichero){
+        try {
+
+            if(Ffichero.exists())
+            {
+                System.out.println(Ffichero.delete());
+            }
+            } 
+           catch (Exception ex) { 
+             System.out.println(ex.getMessage());
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField estadoReservaTxt;
     private javax.swing.JTextField fechaReservaTxt;
+    private javax.swing.ButtonGroup grupoEstado;
     private javax.swing.JTextField horarioReservaTxt;
     private javax.swing.JTextField idClienteReservaTxt;
     private javax.swing.JTextField idReservaTxt;
@@ -255,5 +369,7 @@ public class PanelReservas extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator9;
     private javax.swing.JLabel lblAgregar;
     private javax.swing.JLabel lblDinamico;
+    private javax.swing.JCheckBox noReservado;
+    private javax.swing.JCheckBox reservado;
     // End of variables declaration//GEN-END:variables
 }
