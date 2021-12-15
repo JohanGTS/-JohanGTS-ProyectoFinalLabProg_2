@@ -27,10 +27,10 @@ public class PanelEntrenador extends javax.swing.JPanel {
      */
     public PanelEntrenador() {
         initComponents();
-        TextPrompt placeholderId= new TextPrompt("Obligatorio",idTxt);
+        TextPrompt placeholderId= new TextPrompt("Obligatorio, debe contener 8 dígitos",idTxt);
         TextPrompt placeholderNombre= new TextPrompt("Obligatorio",nombreTxt);
         TextPrompt placeholderApellidos= new TextPrompt("Obligatorio",apellidosTxt);
-        TextPrompt placeholderTelefono= new TextPrompt("Obligatorio",telefonoTxt);
+        TextPrompt placeholderTelefono= new TextPrompt("Obligatorio, debe contener 10 dígitos",telefonoTxt);
     }
 
     /**
@@ -139,11 +139,34 @@ public class PanelEntrenador extends javax.swing.JPanel {
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
         
         boolean vacio=true;
-        
+        File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEntrenador.txt");
         
         try {
+            if(!f.exists())
+                f.createNewFile();
             if(idTxt.getText().equals("")||nombreTxt.getText().equals("")||apellidosTxt.getText().equals("")||telefonoTxt.getText().equals(""))
                 vacio=false;
+            if(!correoElectronicoTxt.getText().isEmpty())
+            {
+                if(correoElectronicoTxt.getText().length()<8||!correoElectronicoTxt.getText().contains("@")||!correoElectronicoTxt.getText().contains("."))
+                {
+                    JOptionPane.showMessageDialog(null,"El correo debe contener mínimo un @ un . y tener una longitud de 8 caracteres","Longitud insuficiente",JOptionPane.ERROR_MESSAGE);
+                    correoElectronicoTxt.setText("");
+                    vacio=false;
+                } 
+            }
+            if(!idTxt.getText().matches("[0-9]{8}"))//.matches taoma una sub region de algo, en este caso números enteros del 0 al 9
+            {
+                vacio=false;
+                idTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El id del entrenador solo acepta valores numéricos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
+            if(!telefonoTxt.getText().matches("[0-9]{10}"))//.matches taoma una sub region de algo, en este caso números enteros del 0 al 9
+            {
+                vacio=false;
+                telefonoTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El teléfono solo acepta valores numéricos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
             if(!vacio)
                 JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
             else
@@ -182,12 +205,13 @@ public class PanelEntrenador extends javax.swing.JPanel {
         try 
         {
           File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEntrenador.txt");
-          s=new Scanner(f);
+          
           if(!f.exists())
           {
               f.createNewFile();
           }
-          else
+          s=new Scanner(f);
+          try 
           {
               while(s.hasNextLine()&&!encontrado)
               {
@@ -225,8 +249,12 @@ public class PanelEntrenador extends javax.swing.JPanel {
               }
               
                   sl.close();
-                  s.close();
-          }
+                  s.close();  
+          } 
+          catch (NullPointerException e) {
+              lblDinamico.setText("Creando");
+            }
+
         } 
         catch (IOException e) {
             e.printStackTrace();

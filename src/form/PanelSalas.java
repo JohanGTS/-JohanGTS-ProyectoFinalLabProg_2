@@ -15,6 +15,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -146,52 +148,74 @@ public class PanelSalas extends javax.swing.JPanel {
     
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
         
-        boolean vacio=true;
-        if(idSalasTxt.getText().equals("")||nombreSalaTxt.getText().equals("")||descripcionSalaTxt.getText().equals("")
-            ||idLocSalaTxt.getText().equals(""))
-            vacio=false;
-       
-        if(!vacio)
-            JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
-        //Se empezaran las validaciones de datos
-        else if(!idSalasTxt.getText().matches("[0-9]{8}"))//.matches taoma una sub region de algo, en este caso números enteros del 0 al 9
-        {
-            vacio=false;
-            idSalasTxt.setText("");
-            JOptionPane.showMessageDialog(null,"El id de la sala solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
-        }
-        else if(!idLocSalaTxt.getText().matches("[0-9]{8}"))
-        {
-            vacio=false;
-            idLocSalaTxt.setText("");
-            JOptionPane.showMessageDialog(null,"El id de la localización de la sala solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
-        }
-        else if(nombreSalaTxt.getText().length()<4)
-        {
-            vacio=false;
-            nombreSalaTxt.setText("");
-            JOptionPane.showMessageDialog(null,"El nombre de la sala debe contener al menos 4 caracteres","Longitud insuficiente",JOptionPane.ERROR_MESSAGE);
-        }
-        else if(descripcionSalaTxt.getText().length()<10)
-        {
-            vacio=false;
-            descripcionSalaTxt.setText("");
-            JOptionPane.showMessageDialog(null,"La descripción de la sala debe contener al menos 10 caracteres","Longitud insuficiente",JOptionPane.ERROR_MESSAGE);
-        }
-        else
-        {
-            try 
+        try {
+            boolean vacio=true;
+            File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoSalas.txt");
+            if(!f.exists())
+                f.createNewFile();
+            
+            if(idSalasTxt.getText().equals("")||nombreSalaTxt.getText().equals("")||descripcionSalaTxt.getText().equals("")
+                    ||idLocSalaTxt.getText().equals(""))
+                vacio=false;
+            if(!idSalasTxt.getText().matches("[0-9]{8}"))//.matches taoma una sub region de algo, en este caso números enteros del 0 al 9
+            {
+                vacio=false;
+                idSalasTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El id de la sala solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
+            if(!idLocSalaTxt.getText().matches("[0-9]{8}"))
+            {
+                vacio=false;
+                idLocSalaTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El id de la localización de la sala solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+                File archId= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoLocalizacion.txt");
+                if (!archId.exists()) 
+                {
+                    JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
+                    vacio=false;
+                }
+                else
+                {
+                    int cod;
+                    cod=Integer.parseInt(idLocSalaTxt.getText());
+                    if(!revisarEnArchivo(archId, cod))
+                    {
+                        idLocSalaTxt.setText("");
+                        JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
+                        vacio=false;
+                    }
+                }
+                
+            }
+            if(nombreSalaTxt.getText().length()<4)
+            {
+                vacio=false;
+                nombreSalaTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El nombre de la sala debe contener al menos 4 caracteres","Longitud insuficiente",JOptionPane.ERROR_MESSAGE);
+            }
+            if(descripcionSalaTxt.getText().length()<10)
+            {
+                vacio=false;
+                descripcionSalaTxt.setText("");
+                JOptionPane.showMessageDialog(null,"La descripción de la sala debe contener al menos 10 caracteres","Longitud insuficiente",JOptionPane.ERROR_MESSAGE);
+            }
+            if(!vacio)
+                JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
+            //Se empezaran las validaciones de datos
+            
+            else
             {
                 
-            } catch (Exception e) {
-            }
-            int idSalas=Integer.parseInt(idSalasTxt.getText());
-            String nombre=nombreSalaTxt.getText();
-            int idLocSalas=Integer.parseInt(idLocSalaTxt.getText());
-            String descripcion=descripcionSalaTxt.getText();
-            if(!crear)
+                int idSalas=Integer.parseInt(idSalasTxt.getText());
+                String nombre=nombreSalaTxt.getText();
+                int idLocSalas=Integer.parseInt(idLocSalaTxt.getText());
+                String descripcion=descripcionSalaTxt.getText();
+                if(!crear)
                     guardarDatos(idSalas, nombre,descripcion,idLocSalas);
-            else
+                else
                 {
                     sNuevaLinea=(idSalas+";"+nombre+";"+descripcion+";"+idLocSalas);
                     modificar(sAntiguaLinea,sNuevaLinea);
@@ -201,6 +225,9 @@ public class PanelSalas extends javax.swing.JPanel {
                 idSalasTxt.setText("");
                 nombreSalaTxt.setText("");
                 descripcionSalaTxt.setText("");
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(PanelSalas.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_lblAgregarMouseClicked
@@ -214,50 +241,57 @@ public class PanelSalas extends javax.swing.JPanel {
         try 
         {
           File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoSalas.txt");
-          s=new Scanner(f);
+          
           if(!f.exists())
-          {
-              f.createNewFile();
-          }
-          else
-          {
-              while(s.hasNextLine()&&!encontrado)
-              {
-                  String linea= s.nextLine();
-                  sl= new Scanner(linea);
-                  sl.useDelimiter("\\s*;\\s*");
-                  try 
-                  {
-                      if(cod==Integer.parseInt(sl.next()))
-                      {
-                          nombreSalaTxt.setText(sl.next());
-                          descripcionSalaTxt.setText(sl.next());
-                          idLocSalaTxt.setText(sl.next());
-                          crear=true;
-                          encontrado=true;
-                          sAntiguaLinea=(idSalasTxt.getText()+";"+nombreSalaTxt.getText()+";"+descripcionSalaTxt.getText()+";"+idLocSalaTxt.getText());
-                          lblDinamico.setText("Modificando");
-                      }
-                      else
-                      {
-                          nombreSalaTxt.setText("");
-                          descripcionSalaTxt.setText("");
-                          idLocSalaTxt.setText("");
-                          crear=false;
-                          encontrado=false;
-                          lblDinamico.setText("Creando");
-                      }
-                  } catch (Exception e) {
-                      System.out.println("Error al leer el archivo ");
-                      e.printStackTrace();
-                  }
-              }
-              
-                  sl.close();
-                  s.close();
-          }
+                f.createNewFile();
+                try 
+                {
+                    s=new Scanner(f);
+                    while(s.hasNextLine()&&!encontrado)
+                    {
+                    String linea= s.nextLine();
+                    sl= new Scanner(linea);
+                    sl.useDelimiter("\\s*;\\s*");
+                    try 
+                    {
+                        if(cod==Integer.parseInt(sl.next()))
+                        {
+                            nombreSalaTxt.setText(sl.next());
+                            descripcionSalaTxt.setText(sl.next());
+                            idLocSalaTxt.setText(sl.next());
+                            crear=true;
+                            encontrado=true;
+                            sAntiguaLinea=(idSalasTxt.getText()+";"+nombreSalaTxt.getText()+";"+descripcionSalaTxt.getText()+";"+idLocSalaTxt.getText());
+                            lblDinamico.setText("Modificando");
+                        }
+                        else
+                        {
+                            nombreSalaTxt.setText("");
+                            descripcionSalaTxt.setText("");
+                            idLocSalaTxt.setText("");
+                            crear=false;
+                            encontrado=false;
+                            lblDinamico.setText("Creando");
+                        }
+                    } 
+                        catch (Exception e) 
+                        {
+                        System.out.println("Error al leer el archivo ");
+                        e.printStackTrace();
+                        }
+                    }
+
+                    sl.close();
+                    s.close();
+                } 
+                catch (NullPointerException e) {
+                    lblDinamico.setText("Creando");
+            }
+                
+                
+
         } 
-        catch (IOException e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }//GEN-LAST:event_idSalasTxtActionPerformed
@@ -339,6 +373,37 @@ public class PanelSalas extends javax.swing.JPanel {
            catch (Exception ex) { 
              System.out.println(ex.getMessage());
         }
+    }
+    
+    public boolean revisarEnArchivo(File archivo, int id)
+    {
+        if (!archivo.exists()) {
+            return false;
+        }
+        else
+        {
+            try 
+            {
+                Scanner s=new Scanner(archivo);
+                Scanner sl = null;
+                while(s.hasNextLine())
+                {
+                  String linea= s.nextLine();
+                  sl= new Scanner(linea);
+                  sl.useDelimiter("\\s*;\\s*");
+                  if(id==Integer.parseInt(sl.next()))
+                      return true;
+                  else
+                      return false;
+                } 
+            }
+            catch (FileNotFoundException ex) {
+                Logger.getLogger(PanelSalas.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

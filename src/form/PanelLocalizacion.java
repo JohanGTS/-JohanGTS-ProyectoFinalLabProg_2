@@ -27,7 +27,7 @@ public class PanelLocalizacion extends javax.swing.JPanel {
      */
     public PanelLocalizacion() {
         initComponents();
-        TextPrompt placeholderId= new TextPrompt("Obligatorio",idTxt);
+        TextPrompt placeholderId= new TextPrompt("Obligatorio, debe contener 8 dígitos",idTxt);
         TextPrompt placeholderTipo= new TextPrompt("Obligatorio",tipoTxt);
     }
 
@@ -106,21 +106,19 @@ public class PanelLocalizacion extends javax.swing.JPanel {
         cod=Integer.parseInt(idTxt.getText());
         Scanner s;
         Scanner sl = null;
+        File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoLocalizacion.txt");
         try 
         {
-          File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoLocalizacion.txt");
-          s=new Scanner(f);
+          
           if(!f.exists())
-          {
               f.createNewFile();
-          }
-          else
-          {
-              while(s.hasNextLine()&&!encontrado)
+            try 
+            {
+                s=new Scanner(f);
+                while(s.hasNextLine()&&!encontrado)
               {
                   String linea= s.nextLine();
-                   sl= new Scanner(linea);
-                  String pass="";
+                  sl= new Scanner(linea);
                   sl.useDelimiter("\\s*;\\s*");
                   try 
                   {
@@ -147,7 +145,11 @@ public class PanelLocalizacion extends javax.swing.JPanel {
               
                   sl.close();
                   s.close();
-          }
+            } 
+            catch (NullPointerException e) {
+                lblDinamico.setText("Creando");
+            }  
+          
         } 
         catch (IOException e) {
             e.printStackTrace();
@@ -157,9 +159,25 @@ public class PanelLocalizacion extends javax.swing.JPanel {
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
         
         boolean vacio=true;
+        File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoLocalizacion.txt");
         try {
+            if (!f.exists()) 
+                f.createNewFile();
+            
             if(idTxt.getText().equals("")||tipoTxt.getText().equals(""))
                 vacio=false;
+            if(!idTxt.getText().matches("[0-9]{8}"))//.matches taoma una sub region de algo, en este caso números enteros del 0 al 9
+            {
+                vacio=false;
+                idTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El id de la localización solo acepta valores numéricos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
+            if(tipoTxt.getText().length()<4)
+            {
+                vacio=false;
+                tipoTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El tipo de la localización debe tener al menos 4 letras","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
             if(!vacio)
                 JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
             else
@@ -233,9 +251,6 @@ public void  guardarDatos(int id,String tipo){
             e.printStackTrace();
         }
     }
-            
-   
-    
     public static void escribir(File Ffichero,String cadena)
     {
         BufferedWriter bw;

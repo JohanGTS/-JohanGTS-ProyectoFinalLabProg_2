@@ -178,10 +178,12 @@ public class PanelUsuario extends javax.swing.JPanel {
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
         String pass= new String(contrasenaPassFl.getPassword());
         boolean vacio=true;
-        
-        
-        
+        File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuario.txt");
         try {
+            if(!f.exists())
+                {
+                    f.createNewFile();
+                }
             if(loginUsuarioTxt.getText().isEmpty()||contrasenaPassFl.getPassword().length==0||
             nombreTxt.getText().isEmpty()||apellidosTxt.getText().isEmpty())
                 vacio=false;

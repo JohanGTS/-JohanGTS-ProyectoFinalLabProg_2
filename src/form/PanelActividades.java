@@ -5,11 +5,14 @@ import Placeholder.TextPrompt;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,11 +29,11 @@ public class PanelActividades extends javax.swing.JPanel {
      */
     public PanelActividades() {
         initComponents();
-        TextPrompt placeholderIdActividad= new TextPrompt("Obligatorio",idActividadTxt);
+        TextPrompt placeholderIdActividad= new TextPrompt("Obligatorio, debe contener 8 dígitos",idActividadTxt);
         TextPrompt placeholderNombreActividad= new TextPrompt("Obligatorio",nombreActividadTxt);
         TextPrompt placeholderDescripcionAct= new TextPrompt("Obligatorio",descripcionActividad);
-        TextPrompt placeholderIdLocalizacion= new TextPrompt("Obligatorio",idLocalizacionActTxt);
-        TextPrompt placeholderIdEntrenador= new TextPrompt("Obligatorio",idEntrenadorActTxt);
+        TextPrompt placeholderIdLocalizacion= new TextPrompt("Obligatorio, debe contener 8 dígitos",idLocalizacionActTxt);
+        TextPrompt placeholderIdEntrenador= new TextPrompt("Obligatorio, debe contener 8 dígitos",idEntrenadorActTxt);
     }
 
     /**
@@ -98,7 +101,7 @@ public class PanelActividades extends javax.swing.JPanel {
         add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 0, 10, 340));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setText("ID Localicaion Actividad");
+        jLabel5.setText("ID Localización Actividad");
         add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 79, -1, -1));
 
         idLocalizacionActTxt.setBackground(new java.awt.Color(255, 255, 255));
@@ -128,8 +131,6 @@ public class PanelActividades extends javax.swing.JPanel {
         });
         add(lblAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 290, 130, 40));
         add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 120, 230, 10));
-
-        lblDinamico.setText("Modificaion:");
         add(lblDinamico, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 80, 20));
 
         idActividadTxt.setBackground(new java.awt.Color(255, 255, 255));
@@ -151,13 +152,14 @@ public class PanelActividades extends javax.swing.JPanel {
         try 
         {
           File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoActividades.txt");
-          s=new Scanner(f);
+          
           if(!f.exists())
           {
               f.createNewFile();
           }
-          else
-          {
+          
+            try {
+                s=new Scanner(f);
               while(s.hasNextLine()&&!encontrado)
               {
                   String linea= s.nextLine();
@@ -195,7 +197,11 @@ public class PanelActividades extends javax.swing.JPanel {
               
                   sl.close();
                   s.close();
-          }
+            } 
+            catch (NullPointerException e) {
+                lblDinamico.setText("Creando");
+            }
+          
         } 
         catch (IOException e) {
             e.printStackTrace();
@@ -203,24 +209,104 @@ public class PanelActividades extends javax.swing.JPanel {
     }//GEN-LAST:event_idActividadTxtActionPerformed
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
-        
-        boolean vacio=true;
-        if(idActividadTxt.getText().equals("")||nombreActividadTxt.getText().equals("")||descripcionActividad.getText().equals("")
-            ||idLocalizacionActTxt.getText().equals("")||idEntrenadorActTxt.getText().equals(""))
-            vacio=false;
-       
-        if(!vacio)
-            JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
-        else
-        {
-            int idActividad=Integer.parseInt(idActividadTxt.getText());
-            String nombre=nombreActividadTxt.getText();
-            String descripcion=descripcionActividad.getText();
-            int idLocalizacion=Integer.parseInt(idLocalizacionActTxt.getText());
-            int idEntrenador= Integer.parseInt(idEntrenadorActTxt.getText());
-            if(!crear)
-                    guardarDatos(idActividad, nombre,descripcion,idLocalizacion,idEntrenador);
+        try {
+            File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoActividades.txt");
+            boolean vacio=true;
+            
+            if(!f.exists())
+                f.createNewFile();
+            if(idActividadTxt.getText().equals("")||nombreActividadTxt.getText().equals("")||descripcionActividad.getText().equals("")
+                    ||idLocalizacionActTxt.getText().equals("")||idEntrenadorActTxt.getText().equals(""))
+                vacio=false;
+            if(!idActividadTxt.getText().matches("[0-9]{8}"))//.matches taoma una sub region de algo, en este caso números enteros del 0 al 9
+            {
+                vacio=false;
+                idActividadTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El id de la actividad solo acepta valores numéricos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
+            if(nombreActividadTxt.getText().length()<5)
+            {
+                vacio=false;
+                nombreActividadTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El nombre de la actividad debe contener al menos 5 caracteres","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                
+            }
+            if(descripcionActividad.getText().length()<10)
+            {
+                vacio=false;
+                descripcionActividad.setText("");
+                JOptionPane.showMessageDialog(null,"El nombre de la actividad debe contener al menos 10 caracteres","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                
+            }
+            
+            if(!idLocalizacionActTxt.getText().matches("[0-9]{8}"))//.matches taoma una sub region de algo, en este caso números enteros del 0 al 9
+            {
+                vacio=false;
+                idLocalizacionActTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El id de la localización de la actividad solo acepta valores numéricos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
             else
+            {
+                File archId= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoLocalizacion.txt");
+                if (!archId.exists()) 
+                {
+                    JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
+                    vacio=false;
+                }
+                else
+                {
+                    int cod;
+                    cod=Integer.parseInt(idLocalizacionActTxt.getText());
+                    if(!revisarEnArchivo(archId, cod))
+                    {
+                        idLocalizacionActTxt.setText("");
+                        JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
+                        vacio=false;
+                    }
+                }
+                
+            }
+            
+            if(!idEntrenadorActTxt.getText().matches("[0-9]{8}"))//.matches taoma una sub region de algo, en este caso números enteros del 0 al 9
+            {
+                vacio=false;
+                idEntrenadorActTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El id del entrenador de la actividad solo acepta valores numéricos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+                File archId= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEntrenador.txt");
+                if (!archId.exists()) 
+                {
+                    JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
+                    vacio=false;
+                }
+                else
+                {
+                    int cod;
+                    cod=Integer.parseInt(idEntrenadorActTxt.getText());
+                    if(!revisarEnArchivo(archId, cod))
+                    {
+                        idEntrenadorActTxt.setText("");
+                        JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
+                        vacio=false;
+                    }
+                }
+                
+            }
+            
+            if(!vacio)
+                JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
+            else
+            {
+                int idActividad=Integer.parseInt(idActividadTxt.getText());
+                String nombre=nombreActividadTxt.getText();
+                String descripcion=descripcionActividad.getText();
+                int idLocalizacion=Integer.parseInt(idLocalizacionActTxt.getText());
+                int idEntrenador= Integer.parseInt(idEntrenadorActTxt.getText());
+                if(!crear)
+                    guardarDatos(idActividad, nombre,descripcion,idLocalizacion,idEntrenador);
+                else
                 {
                     sNuevaLinea=(idActividad+";"+nombre+";"+idLocalizacion+";"+descripcion);
                     modificar(sAntiguaLinea,sNuevaLinea);
@@ -231,6 +317,9 @@ public class PanelActividades extends javax.swing.JPanel {
                 idActividadTxt.setText("");
                 idLocalizacionActTxt.setText("");
                 idEntrenadorActTxt.setText("");
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(PanelActividades.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
 public void  guardarDatos(int idActividad,String nombre, String descripcion,int idLocalizacion, int idEntrenador){
@@ -311,6 +400,36 @@ public void  guardarDatos(int idActividad,String nombre, String descripcion,int 
            catch (Exception ex) { 
              System.out.println(ex.getMessage());
         }
+    }
+     public boolean revisarEnArchivo(File archivo, int id)
+    {
+        if (!archivo.exists()) {
+            return false;
+        }
+        else
+        {
+            try 
+            {
+                Scanner s=new Scanner(archivo);
+                Scanner sl = null;
+                while(s.hasNextLine())
+                {
+                  String linea= s.nextLine();
+                  sl= new Scanner(linea);
+                  sl.useDelimiter("\\s*;\\s*");
+                  if(id==Integer.parseInt(sl.next()))
+                      return true;
+                  else
+                      return false;
+                } 
+            }
+            catch (FileNotFoundException ex) {
+                Logger.getLogger(PanelSalas.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

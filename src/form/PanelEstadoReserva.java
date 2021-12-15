@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,7 +26,7 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
      */
     public PanelEstadoReserva() {
         initComponents();
-        TextPrompt placeholderEstadoReserva= new TextPrompt("Obligatorio",idEstadoReserva);
+        TextPrompt placeholderEstadoReserva= new TextPrompt("Obligatorio, debe contener 8 dígitos",idEstadoReserva);
         grupoEstado.add(reservado);
         grupoEstado.add(noReservado);
     }
@@ -111,11 +113,11 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
         File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEstadoReserva.txt");
         Scanner s;    
             try {
-                s= new Scanner(f);
+                
                 if(!f.exists())
-                {
+                
                     f.createNewFile();
-                }
+                s= new Scanner(f);
                 while(s.hasNext()&&!encontrado)
                 {
                     String linea=s.nextLine();
@@ -146,7 +148,10 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
                 }
                 s.close();
                
-            } 
+            }
+            catch (NullPointerException e) {
+                lblDinamico.setText("Creando");
+            }
             catch (FileNotFoundException e)
             {
                 JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
@@ -157,40 +162,52 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
     }//GEN-LAST:event_idEstadoReservaActionPerformed
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
-        boolean vacio=true;
-        if(idEstadoReserva.getText().equals(""))
-            vacio=false;
-       
-        if(!vacio)
-            JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
-        else
-        {
-            File estadoReserva= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEstadoReserva.txt");
-            try 
+        try {
+            boolean vacio=true;
+            File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEstadoReserva.txt");
+            if(!f.exists())
+                f.createNewFile();
+            if(idEstadoReserva.getText().equals(""))
+                vacio=false;
+            if(!idEstadoReserva.getText().matches("[0-9]{8}"))//.matches taoma una sub region de algo, en este caso números enteros del 0 al 9
             {
-                if(!estadoReserva.exists())
-                    estadoReserva.createNewFile();
-                BufferedWriter bw=new BufferedWriter(new FileWriter(estadoReserva));
-                if(reservado.isSelected())
-                    estado="reservado";
-                else
-                    estado="no reservado";
-                bw.write(idEstadoReserva.getText()+";"+estado);
-                bw.newLine();
-                bw.flush();
-            } 
-            catch (FileNotFoundException e) 
-            {
-                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+                vacio=false;
+                idEstadoReserva.setText("");
+                JOptionPane.showMessageDialog(null,"El id de la localización solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
-            catch(IOException e)
+            if(!vacio)
+                JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
+            else 
             {
-                e.printStackTrace();
+                File estadoReserva= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEstadoReserva.txt");
+                try
+                {
+                    if(!estadoReserva.exists())
+                        estadoReserva.createNewFile();
+                    BufferedWriter bw=new BufferedWriter(new FileWriter(estadoReserva));
+                    if(reservado.isSelected())
+                        estado="reservado";
+                    else
+                        estado="no reservado";
+                    bw.write(idEstadoReserva.getText()+";"+estado);
+                    bw.newLine();
+                    bw.flush();
+                }
+                catch (FileNotFoundException e)
+                {
+                    JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+                }
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                }
+                
+                JOptionPane.showMessageDialog(null, "Estado de reserva agregado correctamente");
+                idEstadoReserva.setText("");
+                noReservado.setSelected(true);
             }
-            
-            JOptionPane.showMessageDialog(null, "Estado de reserva agregado correctamente");
-            idEstadoReserva.setText("");
-            noReservado.setSelected(true);
+        } catch (IOException ex) {
+            Logger.getLogger(PanelEstadoReserva.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
 

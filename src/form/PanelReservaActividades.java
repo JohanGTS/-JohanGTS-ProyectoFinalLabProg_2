@@ -14,6 +14,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -179,12 +181,13 @@ public class PanelReservaActividades extends javax.swing.JPanel {
         File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservaActividades.txt");
         Scanner s;    
             try {
-                s= new Scanner(f);
+                
                 if(!f.exists())
-                {
                     f.createNewFile();
-                }
-                while(s.hasNext()&&!encontrado)
+                
+                try {
+                    s= new Scanner(f);
+                    while(s.hasNext()&&!encontrado)
                 {
                     String linea=s.nextLine();
                     Scanner sl= new Scanner(linea);
@@ -216,6 +219,9 @@ public class PanelReservaActividades extends javax.swing.JPanel {
                     }
                 }
                 s.close();
+                } catch (NullPointerException e) {
+                    lblDinamico.setText("Creando");
+                }
                
             } 
             catch (FileNotFoundException e)
@@ -228,51 +234,140 @@ public class PanelReservaActividades extends javax.swing.JPanel {
     }//GEN-LAST:event_idReservaActividadTxtActionPerformed
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
-        boolean vacio=true;
-        
-        if(idReservaActividadTxt.getText().equals("")||idReservaHoraActTxt.getText().equals("")||fechaBajaTxt.getText().equals("")
-            ||fechaReservaTxt.getText().equals("")||idClienteReservaActTxt.getText().equals("")||idActividadTxt.getText().equals("")
-            ||idEstadoReservaActTxt.getText().equals(""))
-            vacio=false;
-        if(!idEstadoReservaActTxt.getText().matches("[0-9]{8}"))
+        try {
+            boolean vacio=true;
+            File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservaActividades.txt");
+            if(!f.exists())
+                f.createNewFile();
+            
+            if(idReservaActividadTxt.getText().equals("")||idReservaHoraActTxt.getText().equals("")||fechaBajaTxt.getText().equals("")
+                    ||fechaReservaTxt.getText().equals("")||idClienteReservaActTxt.getText().equals("")||idActividadTxt.getText().equals("")
+                    ||idEstadoReservaActTxt.getText().equals(""))
+                vacio=false;
+            if(!idEstadoReservaActTxt.getText().matches("[0-9]{8}"))
             {
                 vacio=false;
                 idEstadoReservaActTxt.setText("");
                 JOptionPane.showMessageDialog(null,"El id del estado de la reserva solo acepta valores númericos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
-        if(!idReservaActividadTxt.getText().matches("[0-9]{8}"))
+            else
+            {
+                File archId= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEstadoReserva.txt");
+                if (!archId.exists()) 
+                {
+                    JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
+                    vacio=false;
+                }
+                else
+                {
+                    int cod;
+                    cod=Integer.parseInt(idEstadoReservaActTxt.getText());
+                    if(!revisarEnArchivo(archId, cod))
+                    {
+                        idEstadoReservaActTxt.setText("");
+                        JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
+                        vacio=false;
+                    }
+                }
+            }
+            
+            if(!idReservaActividadTxt.getText().matches("[0-9]{8}"))
             {
                 vacio=false;
                 idReservaActividadTxt.setText("");
                 JOptionPane.showMessageDialog(null,"El id de reserva solo acepta valores númericos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
-        if(!idClienteReservaActTxt.getText().matches("[0-9]{8}"))
+            
+            if(!idClienteReservaActTxt.getText().matches("[0-9]{8}"))
             {
                 vacio=false;
                 idClienteReservaActTxt.setText("");
                 JOptionPane.showMessageDialog(null,"El id del cliente solo acepta valores númericos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
-        if(!idActividadTxt.getText().matches("[0-9]{8}"))
+            else
+            {
+                File archId= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
+                if (!archId.exists()) 
+                {
+                    JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
+                    vacio=false;
+                }
+                else
+                {
+                    int cod;
+                    cod=Integer.parseInt(idClienteReservaActTxt.getText());
+                    if(!revisarEnArchivo(archId, cod))
+                    {
+                        idClienteReservaActTxt.setText("");
+                        JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
+                        vacio=false;
+                    }
+                }
+            }
+            
+            if(!idActividadTxt.getText().matches("[0-9]{8}"))
             {
                 vacio=false;
                 idActividadTxt.setText("");
                 JOptionPane.showMessageDialog(null,"El id de la actividad solo acepta valores númericos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
-        if(!idReservaHoraActTxt.getText().matches("[0-9]{8}"))
+            else
+            {
+                File archId= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoActividades.txt");
+                if (!archId.exists()) 
+                {
+                    JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
+                    vacio=false;
+                }
+                else
+                {
+                    int cod;
+                    cod=Integer.parseInt(idActividadTxt.getText());
+                    if(!revisarEnArchivo(archId, cod))
+                    {
+                        idActividadTxt.setText("");
+                        JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
+                        vacio=false;
+                    }
+                }
+            }
+            
+            if(!idReservaHoraActTxt.getText().matches("[0-9]{8}"))
             {
                 vacio=false;
                 idReservaHoraActTxt.setText("");
                 JOptionPane.showMessageDialog(null,"El id del horario solo acepta valores númericos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
-        if(!fechaReservaTxt.getText().isEmpty())
+            else
+            {
+                File archId= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoHorarioActividades.txt");
+                if (!archId.exists()) 
+                {
+                    JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
+                    vacio=false;
+                }
+                else
+                {
+                    int cod;
+                    cod=Integer.parseInt(idReservaHoraActTxt.getText());
+                    if(!revisarEnArchivo(archId, cod))
+                    {
+                        idReservaHoraActTxt.setText("");
+                        JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
+                        vacio=false;
+                    }
+                }
+            }
+            
+            if(!fechaReservaTxt.getText().isEmpty())
             {
                 
                 String fechaBruta=fechaReservaTxt.getText();
                 String[] separada=fechaBruta.split("/");
                 try {
                     if(Integer.parseInt(separada[0])>0&&Integer.parseInt(separada[0])<32&&
-                        Integer.parseInt(separada[1])>0&&Integer.parseInt(separada[1])<13&&
-                        Integer.parseInt(separada[2])>2000)
+                            Integer.parseInt(separada[1])>0&&Integer.parseInt(separada[1])<13&&
+                            Integer.parseInt(separada[2])>2000)
                     {
                         try 
                         {
@@ -283,26 +378,28 @@ public class PanelReservaActividades extends javax.swing.JPanel {
                             ex.printStackTrace();
                         }
                     }
-                else
+                    else
                     {
                         JOptionPane.showMessageDialog(null,"Formato de fecha incorrecto","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
                         fechaReservaTxt.setText("");
+                        vacio=false;
                     }
                 }
                 catch (Exception e) {
                     JOptionPane.showMessageDialog(null,"Solo se pueden poner números del 0 al 9","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
                     fechaReservaTxt.setText("");
+                    vacio=false;
                 }
             }
-        if(!fechaReservaTxt.getText().isEmpty())
+            if(!fechaBajaTxt.getText().isEmpty())
             {
                 
                 String fechaBruta=fechaBajaTxt.getText();
                 String[] separada=fechaBruta.split("/");
                 try {
                     if(Integer.parseInt(separada[0])>0&&Integer.parseInt(separada[0])<32&&
-                        Integer.parseInt(separada[1])>0&&Integer.parseInt(separada[1])<13&&
-                        Integer.parseInt(separada[2])>2000)
+                            Integer.parseInt(separada[1])>0&&Integer.parseInt(separada[1])<13&&
+                            Integer.parseInt(separada[2])>2000)
                     {
                         try 
                         {
@@ -313,32 +410,34 @@ public class PanelReservaActividades extends javax.swing.JPanel {
                             ex.printStackTrace();
                         }
                     }
-                else
+                    else
                     {
                         JOptionPane.showMessageDialog(null,"Formato de fecha incorrecto","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
                         fechaBajaTxt.setText("");
+                        vacio=false;
                     }
                 }
                 catch (Exception e) {
                     JOptionPane.showMessageDialog(null,"Solo se pueden poner números del 0 al 9","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
                     fechaBajaTxt.setText("");
+                    vacio=false;
                 }
             }
-        
-        if(!vacio)
-            JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
-        else
-        {
-            int idR=Integer.parseInt(idReservaActividadTxt.getText());
-            int idEstado= Integer.parseInt(idEstadoReservaActTxt.getText());
-            int idClienteReser= Integer.parseInt(idClienteReservaActTxt.getText());
-            int idActividad= Integer.parseInt(idActividadTxt.getText());
-            int idReservaHora= Integer.parseInt(idReservaHoraActTxt.getText());
-            if(!crear)
+            
+            if(!vacio)
+                JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
+            else
+            {
+                int idR=Integer.parseInt(idReservaActividadTxt.getText());
+                int idEstado= Integer.parseInt(idEstadoReservaActTxt.getText());
+                int idClienteReser= Integer.parseInt(idClienteReservaActTxt.getText());
+                int idActividad= Integer.parseInt(idActividadTxt.getText());
+                int idReservaHora= Integer.parseInt(idReservaHoraActTxt.getText());
+                if(!crear)
                     guardarDatos(idR, fechaR, fechaB, idEstado,idClienteReser,idActividad,idReservaHora);
                 else
                 {
-                    sNuevaLinea=(idR+";"+fechaR+";"+ fechaB+";"+ idEstado+";"+idClienteReser+";"+idActividad+";"+idReservaHora);
+                    sNuevaLinea=(idR+";"+formato.format(fechaR)+";"+ formato.format(fechaB)+";"+ idEstado+";"+idClienteReser+";"+idActividad+";"+idReservaHora);
                     modificar(sAntiguaLinea,sNuevaLinea);
                 }
                 JOptionPane.showMessageDialog(null, "Actividad reservada correctamente");
@@ -351,6 +450,9 @@ public class PanelReservaActividades extends javax.swing.JPanel {
                 idReservaHoraActTxt.setText("");
                 
             
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(PanelReservaActividades.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
 public void  guardarDatos(int idR,Date fechaR,Date fechaB,int idEstado,int idClienteReser, int idAct,int idReservaHoraAct){
@@ -428,6 +530,36 @@ public void  guardarDatos(int idR,Date fechaR,Date fechaB,int idEstado,int idCli
            catch (Exception ex) { 
              System.out.println(ex.getMessage());
         }
+    }
+    public boolean revisarEnArchivo(File archivo, int id)
+    {
+        if (!archivo.exists()) {
+            return false;
+        }
+        else
+        {
+            try 
+            {
+                Scanner s=new Scanner(archivo);
+                Scanner sl = null;
+                while(s.hasNextLine())
+                {
+                  String linea= s.nextLine();
+                  sl= new Scanner(linea);
+                  sl.useDelimiter("\\s*;\\s*");
+                  if(id==Integer.parseInt(sl.next()))
+                      return true;
+                  else
+                      return false;
+                } 
+            }
+            catch (FileNotFoundException ex) {
+                Logger.getLogger(PanelSalas.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

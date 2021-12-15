@@ -13,7 +13,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -30,10 +33,10 @@ public class PanelHorarioActividades extends javax.swing.JPanel {
      */
     public PanelHorarioActividades() {
         initComponents();
-        TextPrompt placeholderIdHorarioAct= new TextPrompt("Obligatorio",idHorarioActividadTxt);
-        TextPrompt placeholderDiaActividad= new TextPrompt("Obligatorio     DD/MM/AA",diaActividadTxt);
-        TextPrompt placeholderHoraActividad= new TextPrompt("Obligatorio    HH:MM",horaActividadTxt);
-        TextPrompt placeholderIdActividad= new TextPrompt("Obligatorio",idActividadTxt);
+        TextPrompt placeholderIdHorarioAct= new TextPrompt("Obligatorio, debe contener 8 dígitos",idHorarioActividadTxt);
+        TextPrompt placeholderDiaActividad= new TextPrompt("Obligatorio     DD/MM/AAAA",diaActividadTxt);
+        TextPrompt placeholderHoraActividad= new TextPrompt("Obligatorio    HH:MM en formato 24 horas",horaActividadTxt);
+        TextPrompt placeholderIdActividad= new TextPrompt("Obligatorio, debe contener 8 dígitos",idActividadTxt);
     }
 
     /**
@@ -132,17 +135,19 @@ public class PanelHorarioActividades extends javax.swing.JPanel {
         cod=Integer.parseInt(idHorarioActividadTxt.getText());
         boolean encontrado=false;
         File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoHorarioActividades.txt");
-        Scanner s;    
+        Scanner s;  
+        Scanner sl=null;
             try {
-                s= new Scanner(f);
+                
                 if(!f.exists())
-                {
                     f.createNewFile();
-                }
+                try
+                {
+                   s= new Scanner(f);
                 while(s.hasNext()&&!encontrado)
                 {
                     String linea=s.nextLine();
-                    Scanner sl= new Scanner(linea);
+                    sl= new Scanner(linea);
                     sl.useDelimiter("\\s*;\\s*");
                     if(cod==Integer.parseInt(sl.next())){
                         diaActividadTxt.setText(sl.next());
@@ -157,7 +162,6 @@ public class PanelHorarioActividades extends javax.swing.JPanel {
                     }
                     else{
                         lblDinamico.setText("Creando");
-                        idHorarioActividadTxt.setText("");
                         idActividadTxt.setText("");
                         diaActividadTxt.setText("");
                         horaActividadTxt.setText("");
@@ -165,6 +169,10 @@ public class PanelHorarioActividades extends javax.swing.JPanel {
                     }
                 }
                 s.close();
+                sl.close();
+                } catch (NullPointerException e) {
+                    lblDinamico.setText("Creando");
+                }
                
             } 
             catch (FileNotFoundException e)
@@ -179,19 +187,104 @@ public class PanelHorarioActividades extends javax.swing.JPanel {
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
         
         boolean vacio=true;
-        
+        File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoHorarioActividades.txt");
         
         try {
+            if(!f.exists())
+                f.createNewFile();
+            
             if(idActividadTxt.getText().equals("")||idHorarioActividadTxt.getText().equals("")||horaActividadTxt.getText().equals("")||
             diaActividadTxt.getText().equals(""))
                 vacio=false;
+            if(!idActividadTxt.getText().matches("[0-9]{8}"))
+            {
+                vacio=false;
+                idActividadTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El id de la actividad solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
+            else 
+            {
+                File archId= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoActividades.txt");
+                if (!archId.exists()) 
+                {
+                    JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
+                    vacio=false;
+                }
+                else
+                {
+                    int cod;
+                    cod=Integer.parseInt(idActividadTxt.getText());
+                    if(!revisarEnArchivo(archId, cod))
+                    {
+                        idActividadTxt.setText("");
+                        JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
+                        vacio=false;
+                    }
+                }
+            }
+            
+            if(!idHorarioActividadTxt.getText().matches("[0-9]{8}"))
+            {
+                vacio=false;
+                idHorarioActividadTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El id del horario la actividad solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
+            if(!diaActividadTxt.getText().isEmpty())
+            {
+                
+                String fechaBruta=diaActividadTxt.getText();
+                String[] separada=fechaBruta.split("/");
+                try {
+                    if(Integer.parseInt(separada[0])>0&&Integer.parseInt(separada[0])<32&&
+                        Integer.parseInt(separada[1])>0&&Integer.parseInt(separada[1])<13&&
+                        Integer.parseInt(separada[2])>2000)
+                    {
+                        System.out.println("Dia correcto");
+                    }
+                else
+                    {
+                        JOptionPane.showMessageDialog(null,"Formato de día incorrecto","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
+                        diaActividadTxt.setText("");
+                        vacio=false;
+                    }
+                }
+                catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,"Solo se pueden poner números del 0 al 9","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
+                    diaActividadTxt.setText("");
+                    vacio=false;
+                }
+            }
+            if(!horaActividadTxt.getText().isEmpty())
+            {
+                
+                String horaBruta=horaActividadTxt.getText();
+                String[] separada=horaBruta.split(":");
+                try {
+                    if(Integer.parseInt(separada[0])>=0&&Integer.parseInt(separada[0])<24&&
+                        Integer.parseInt(separada[1])>=0&&Integer.parseInt(separada[1])<60)
+                    {
+                        System.out.println("hora correcta");
+                    }
+                else
+                    {
+                        JOptionPane.showMessageDialog(null,"Formato de hora incorrecto","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
+                        horaActividadTxt.setText("");
+                        vacio=false;
+                    }
+                }
+                catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,"Solo se pueden poner números del 0 al 9","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
+                    horaActividadTxt.setText("");
+                    vacio=false;
+                }
+            }
             
             if(!vacio)
                 JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
             else
             {   
                 int idHorario=Integer.parseInt(idHorarioActividadTxt.getText());
-                int dia=Integer.parseInt(diaActividadTxt.getText());
+                String dia=diaActividadTxt.getText();
                 String hora=horaActividadTxt.getText();
                 int idActividad=Integer.parseInt(idActividadTxt.getText());
                 
@@ -213,7 +306,7 @@ public class PanelHorarioActividades extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
-public void  guardarDatos(int idHorario,int dia,String hora,int idActividad){
+public void  guardarDatos(int idHorario,String dia,String hora,int idActividad){
         try
         {
            FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoHorarioActividades.txt",true);
@@ -291,6 +384,36 @@ public void  guardarDatos(int idHorario,int dia,String hora,int idActividad){
            catch (Exception ex) { 
              System.out.println(ex.getMessage());
         }
+    }
+    public boolean revisarEnArchivo(File archivo, int id)
+    {
+        if (!archivo.exists()) {
+            return false;
+        }
+        else
+        {
+            try 
+            {
+                Scanner s=new Scanner(archivo);
+                Scanner sl = null;
+                while(s.hasNextLine())
+                {
+                  String linea= s.nextLine();
+                  sl= new Scanner(linea);
+                  sl.useDelimiter("\\s*;\\s*");
+                  if(id==Integer.parseInt(sl.next()))
+                      return true;
+                  else
+                      return false;
+                } 
+            }
+            catch (FileNotFoundException ex) {
+                Logger.getLogger(PanelSalas.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

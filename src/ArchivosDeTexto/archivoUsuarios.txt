@@ -1,3 +1,2 @@
-admin; rootroot; 0;admin;admin;aaa
-kkkk; ooo ; 1;user;user;aaa
-aaaa;12345678;1;bbb;ccc;
+admin; root; 0;admin;admin;aaa
+kkk; ooo ; 1;user;user;aaa

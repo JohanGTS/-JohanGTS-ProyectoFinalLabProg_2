@@ -25,8 +25,6 @@ public class PanelClientes extends javax.swing.JPanel {
     public static String sAntiguaLinea="";
     public static String sNuevaLinea="";
     public static boolean crear;
-    public static String estatus;
-    public static String tipo;
     /**
      * Creates new form PanelClientes
      */
@@ -36,14 +34,14 @@ public class PanelClientes extends javax.swing.JPanel {
         grupoEstatus.add(pasivoEstatus);
         grupoTipo.add(activoTipo);
         grupoTipo.add(invitadoTipo);
-        TextPrompt placeholderIdCliente= new TextPrompt("Obligatorio",idClienteTxt);
+        TextPrompt placeholderIdCliente= new TextPrompt("Obligatorio, debe contener 8 dígitos",idClienteTxt);
         TextPrompt placeholderNombreCliente= new TextPrompt("Obligatorio",nombreClienteTxt);
         TextPrompt placeholderApellidoPaterno= new TextPrompt("Obligatorio",apellidoPaternoTxt);
         TextPrompt placeholderApellidoMaterno= new TextPrompt("Obligatorio",apellidoMaternoTxt);
-        TextPrompt placeholderDire= new TextPrompt("Obligatorio",direccionTxt);
+        TextPrompt placeholderDire= new TextPrompt("Obligatorio, debe tener al menos 10 caracteres",direccionTxt);
         TextPrompt placeholderFechaNacimiento= new TextPrompt("Obligatorio",fechaNacimientoTxt);
-        TextPrompt placeholderTelefono= new TextPrompt("Obligatorio",telefonoTxt);
-        TextPrompt placeholderCelular= new TextPrompt("Obligatorio",celularTxt);
+        TextPrompt placeholderTelefono= new TextPrompt("Obligatorio, debe tener 10 caracteres",telefonoTxt);
+        TextPrompt placeholderCelular= new TextPrompt("Obligatorio, debe tener 10 caracteres",celularTxt);
         TextPrompt placeholderFechaIngreso= new TextPrompt("Obligatorio",fechaIngresoTxt);
     }
 
@@ -262,25 +260,23 @@ public class PanelClientes extends javax.swing.JPanel {
 
     private void idClienteTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idClienteTxtActionPerformed
         int cod;
-        estatus="pasivo";
-        tipo="invitado";
+        String status="";
+        String tipo="";
         cod=Integer.parseInt(idClienteTxt.getText());
         boolean encontrado=false;
-        File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
+        File archivoReservas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
         Scanner s;    
             try {
-                s= new Scanner(f);
-                if(!f.exists())
-                {
-                    f.createNewFile();
-                }
+                
+                if(!archivoReservas.exists())
+                    archivoReservas.createNewFile();
+                s= new Scanner(archivoReservas);
                 while(s.hasNext()&&!encontrado)
                 {
                     String linea=s.nextLine();
                     Scanner sl= new Scanner(linea);
                     sl.useDelimiter("\\s*;\\s*");
                     if(cod==Integer.parseInt(sl.next())){
-                        
                         nombreClienteTxt.setText(sl.next());
                         apellidoPaternoTxt.setText(sl.next());
                         apellidoMaternoTxt.setText(sl.next());
@@ -291,40 +287,69 @@ public class PanelClientes extends javax.swing.JPanel {
                         fechaIngresoTxt.setText(sl.next());
                         if(sl.next().equals("activo"))
                         {
-                            estatus="activo";
+                            status="activo";
                             activoEstatus.setSelected(true);
-                        }   
-                            
+                        }
+                        else
+                        {
+                            status="pasivo";
+                            pasivoEstatus.setSelected(true);
+                        }
+                        
                         if(sl.next().equals("activo"))
                         {
                             tipo="activo";
                             activoTipo.setSelected(true);
                         }
-                            
+                        else
+                        {
+                            tipo="invitado";
+                            invitadoTipo.setSelected(true);
+                        }  
+                        
                         correoElectronicoTxt.setText(sl.next());
                         balanceTxt.setText(sl.next());
                         valorCuotasTxt.setText(sl.next());
+                        
                         lblDinamico.setText("Modificando");
                         sAntiguaLinea=(idClienteTxt.getText()+";"+nombreClienteTxt.getText()+";"+apellidoPaternoTxt.getText()+";"+apellidoMaternoTxt.getText()+";"+
-                                direccionTxt.getText()+";"+fechaNacimientoTxt.getText()+";"+telefonoTxt.getText()+";"+celularTxt.getText()+";"+
-                                fechaIngresoTxt.getText()+";"+estatus+";"+tipo+";"+correoElectronicoTxt.getText()+";"+balanceTxt.getText()+";"+valorCuotasTxt.getText());
+                        direccionTxt.getText()+";"+fechaNacimientoTxt.getText()+";"+telefonoTxt.getText()+";"+celularTxt.getText()+";"+
+                        fechaIngresoTxt.getText()+";"+status+";"+tipo+";"+correoElectronicoTxt.getText()+";"+balanceTxt.getText()+";"+
+                        valorCuotasTxt.getText());
                         encontrado=true;
                         crear=true;
                     }
                     else{
                         lblDinamico.setText("Creando");
+                        idClienteTxt.setText("");
+                        nombreClienteTxt.setText("");
+                        apellidoMaternoTxt.setText("");
+                        apellidoPaternoTxt.setText("");
+                        direccionTxt.setText("");
+                        fechaNacimientoTxt.setText("");
+                        telefonoTxt.setText("");
+                        celularTxt.setText("");
+                        fechaIngresoTxt.setText("");
+                        correoElectronicoTxt.setText("");
+                        balanceTxt.setText("");
+                        valorCuotasTxt.setText("");
+                        invitadoTipo.setSelected(false);
                         pasivoEstatus.setSelected(true);
-                        invitadoTipo.setSelected(true);
-                        balanceTxt.setText("0");
                         crear=false;
                     }
                 }
                 s.close();
                
-            } 
+            }
+            catch(NullPointerException e)
+            {
+                lblDinamico.setText("Creando");
+                e.printStackTrace();
+            }
             catch (FileNotFoundException e)
             {
                 JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
+                lblDinamico.setText("a");
             } catch (IOException ex) 
             {
                 ex.printStackTrace();
@@ -332,46 +357,54 @@ public class PanelClientes extends javax.swing.JPanel {
     }//GEN-LAST:event_idClienteTxtActionPerformed
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
-        boolean vacio=true;
-        if(idClienteTxt.getText().equals("")||nombreClienteTxt.getText().equals("")||apellidoMaternoTxt.getText().equals("")||apellidoPaternoTxt.getText().equals("")
-                ||direccionTxt.getText().equals("")||fechaNacimientoTxt.getText().equals("")||telefonoTxt.getText().equals("")||celularTxt.getText().equals("")||
-                fechaIngresoTxt.getText().equals(""))
-            vacio=false;
-       
-        if(!vacio)
-            JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
-        else
-        {
-            int idClie=Integer.parseInt(idClienteTxt.getText());
-            String nom=nombreClienteTxt.getText();
-            String apeP=apellidoPaternoTxt.getText();
-            String apeM=apellidoMaternoTxt.getText();
-            String direc=direccionTxt.getText();
-            String fechaNac=fechaNacimientoTxt.getText();
-            String tel=telefonoTxt.getText();
-            String cel=celularTxt.getText();
-            String fechaIng=fechaIngresoTxt.getText();
-            if(activoTipo.isSelected())
-                tipo="activo";
-            else
-                tipo="pasivo";
-            if(activoEstatus.isSelected())
-                estatus="activo";
-            else
-                estatus="invitado";
-            String correo=correoElectronicoTxt.getText();
-            double balanc=Double.parseDouble(balanceTxt.getText());
-            double valorCu=Double.parseDouble(valorCuotasTxt.getText());
-            if(!crear)
-                guardarDatos(idClie,nom,apeP,apeM,direc,fechaNac,tel,cel,fechaIng,estatus,tipo,correo,balanc,valorCu);
+        try {
+            boolean vacio=true;
+            String tipo="";
+            String status="";
+            File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
+            if(!f.exists())
+                f.createNewFile();
+            if(idClienteTxt.getText().equals("")||nombreClienteTxt.getText().equals("")||apellidoMaternoTxt.getText().equals("")||apellidoPaternoTxt.getText().equals("")
+                    ||direccionTxt.getText().equals("")||fechaNacimientoTxt.getText().equals("")||telefonoTxt.getText().equals("")||celularTxt.getText().equals("")||
+                    fechaIngresoTxt.getText().equals(""))
+                vacio=false;
+            
+            if(!vacio)
+                JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
             else
             {
-                sNuevaLinea=(idClienteTxt.getText()+";"+nombreClienteTxt.getText()+";"+apellidoPaternoTxt.getText()+";"+apellidoMaternoTxt.getText()+";"+
-                        direccionTxt.getText()+";"+fechaNacimientoTxt.getText()+";"+telefonoTxt.getText()+";"+celularTxt.getText()+";"+
-                        fechaIngresoTxt.getText()+";"+estatus+";"+tipo+";"+correoElectronicoTxt.getText()+";"+
-                        balanceTxt.getText()+";"+valorCuotasTxt.getText());
-                modificar(sAntiguaLinea,sNuevaLinea);
-            }
+                int idClie=Integer.parseInt(idClienteTxt.getText());
+                String nom=nombreClienteTxt.getText();
+                String apeP=apellidoPaternoTxt.getText();
+                String apeM=apellidoMaternoTxt.getText();
+                String direc=direccionTxt.getText();
+                String fechaNac=fechaNacimientoTxt.getText();
+                String tel=telefonoTxt.getText();
+                String cel=celularTxt.getText();
+                String fechaIng=fechaIngresoTxt.getText();
+                if(activoTipo.isSelected())
+                    tipo="activo";
+                else
+                    tipo="pasivo";
+                if(activoEstatus.isSelected())
+                    status="activo";
+                else
+                    status="invitado";
+                String correo=correoElectronicoTxt.getText();
+                double balanc=Double.parseDouble(balanceTxt.getText());
+                double valorCu=Double.parseDouble(valorCuotasTxt.getText());
+                if(!crear)
+                    guardarDatos(idClie,nom,apeP,apeM,direc,fechaNac,tel,cel,fechaIng,status,tipo,correo,balanc,valorCu);
+                else
+                {
+                    sNuevaLinea=(idClienteTxt.getText()+";"+nombreClienteTxt.getText()+";"+apellidoPaternoTxt.getText()+";"+apellidoMaternoTxt.getText()+";"+
+                            direccionTxt.getText()+";"+fechaNacimientoTxt.getText()+";"+telefonoTxt.getText()+";"+celularTxt.getText()+";"+
+                            fechaIngresoTxt.getText()+";"+status+";"+tipo+";"+correoElectronicoTxt.getText()+";"+
+                            balanceTxt.getText()+";"+valorCuotasTxt.getText());
+                    System.out.println(sAntiguaLinea);
+                    System.out.println(sNuevaLinea);
+                    modificar(sAntiguaLinea,sNuevaLinea);
+                }
                 JOptionPane.showMessageDialog(null, "Cliente agregado correctamente");
                 idClienteTxt.setText("");
                 nombreClienteTxt.setText("");
@@ -387,6 +420,9 @@ public class PanelClientes extends javax.swing.JPanel {
                 valorCuotasTxt.setText("");
                 pasivoEstatus.setSelected(true);
                 invitadoTipo.setSelected(true);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
 public void guardarDatos(int id,String nombre,String apePat,String apeMat, String direc, String fechaNac, String telefono,
