@@ -176,22 +176,43 @@ public class PanelUsuario extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
-        
+        String pass= new String(contrasenaPassFl.getPassword());
         boolean vacio=true;
         
         
         
         try {
-            if(loginUsuarioTxt.getText().equals("")||contrasenaPassFl.getPassword().length==0||
-            nombreTxt.getText().equals("")||apellidosTxt.getText().equals(""))
+            if(loginUsuarioTxt.getText().isEmpty()||contrasenaPassFl.getPassword().length==0||
+            nombreTxt.getText().isEmpty()||apellidosTxt.getText().isEmpty())
                 vacio=false;
-            
+            if(pass.length()<7)
+            {
+                JOptionPane.showMessageDialog(null,"La contraseña debe tener 7 caracteres mínimo","Longitud insuficiente",JOptionPane.ERROR_MESSAGE);
+                contrasenaPassFl.setText("");
+                vacio=false;
+            }
+            if(loginUsuarioTxt.getText().length()<4)
+            {
+                JOptionPane.showMessageDialog(null,"El usuario debe tener 4 caracteres mínimo","Longitud insuficiente",JOptionPane.ERROR_MESSAGE);
+                loginUsuarioTxt.setText("");
+                vacio=false;
+            }
+            if(!correoElectronicoTxt.getText().isEmpty())
+            {
+                if(correoElectronicoTxt.getText().length()<8||!correoElectronicoTxt.getText().contains("@")||!correoElectronicoTxt.getText().contains("."))
+                {
+                    JOptionPane.showMessageDialog(null,"El correo debe contener mínimo un @ un . y tener una longitud de 8 caracteres","Longitud insuficiente",JOptionPane.ERROR_MESSAGE);
+                    correoElectronicoTxt.setText("");
+                    vacio=false;
+                } 
+            }
             if(!vacio)
                 JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
+            
             else
             {
                 String log="";
-                String pass="";
+                pass="";
                 int nivel=1;
                 String nomb="";
                 String app="";

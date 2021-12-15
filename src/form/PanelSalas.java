@@ -32,10 +32,10 @@ public class PanelSalas extends javax.swing.JPanel {
      */
     public PanelSalas() {
         initComponents();
-        TextPrompt placeholderIdSalas= new TextPrompt("Obligatorio",idSalasTxt);
+        TextPrompt placeholderIdSalas= new TextPrompt("Obligatorio, debe contener 8 dígitos",idSalasTxt);
         TextPrompt placeholderNombreSala= new TextPrompt("Obligatorio",nombreSalaTxt);
         TextPrompt placeholderDescripcionSala= new TextPrompt("Obligatorio",descripcionSalaTxt);
-        TextPrompt placeholderIdLocSala= new TextPrompt("Obligatorio",idLocSalaTxt);
+        TextPrompt placeholderIdLocSala= new TextPrompt("Obligatorio, debe contener 8 dígitos",idLocSalaTxt);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -153,8 +153,38 @@ public class PanelSalas extends javax.swing.JPanel {
        
         if(!vacio)
             JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
+        //Se empezaran las validaciones de datos
+        else if(!idSalasTxt.getText().matches("[0-9]{8}"))//.matches taoma una sub region de algo, en este caso números enteros del 0 al 9
+        {
+            vacio=false;
+            idSalasTxt.setText("");
+            JOptionPane.showMessageDialog(null,"El id de la sala solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+        }
+        else if(!idLocSalaTxt.getText().matches("[0-9]{8}"))
+        {
+            vacio=false;
+            idLocSalaTxt.setText("");
+            JOptionPane.showMessageDialog(null,"El id de la localización de la sala solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+        }
+        else if(nombreSalaTxt.getText().length()<4)
+        {
+            vacio=false;
+            nombreSalaTxt.setText("");
+            JOptionPane.showMessageDialog(null,"El nombre de la sala debe contener al menos 4 caracteres","Longitud insuficiente",JOptionPane.ERROR_MESSAGE);
+        }
+        else if(descripcionSalaTxt.getText().length()<10)
+        {
+            vacio=false;
+            descripcionSalaTxt.setText("");
+            JOptionPane.showMessageDialog(null,"La descripción de la sala debe contener al menos 10 caracteres","Longitud insuficiente",JOptionPane.ERROR_MESSAGE);
+        }
         else
         {
+            try 
+            {
+                
+            } catch (Exception e) {
+            }
             int idSalas=Integer.parseInt(idSalasTxt.getText());
             String nombre=nombreSalaTxt.getText();
             int idLocSalas=Integer.parseInt(idLocSalaTxt.getText());

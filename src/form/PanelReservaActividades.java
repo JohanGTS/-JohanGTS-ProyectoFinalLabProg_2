@@ -10,6 +10,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
@@ -21,18 +24,21 @@ public class PanelReservaActividades extends javax.swing.JPanel {
     public static String sAntiguaLinea="";
     public static String sNuevaLinea="";
     public static boolean crear;
+    public static Date fechaR;
+    public static Date fechaB;
+    public static final SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
     /**
      * Creates new form PanelReservaActividades
      */
     public PanelReservaActividades() {
         initComponents();
-        TextPrompt placeholderIdReservaAct= new TextPrompt("Obligatorio",idReservaActividadTxt);
-        TextPrompt placeholderFechaReserva= new TextPrompt("Obligatorio     DD/MM/AA",fechaReservaTxt);
-        TextPrompt placeholderFechaBaja= new TextPrompt("Obligatorio    DD/MM/AA",fechaBajaTxt);
-        TextPrompt placeholderIdEstadoReserva= new TextPrompt("Obligatorio",idEstadoReservaActTxt);
-        TextPrompt placeholderIdClienteReservaAct= new TextPrompt("Obligatorio",idClienteReservaActTxt);
-        TextPrompt placeholderIdActividad= new TextPrompt("Obligatorio",idActividadTxt);
-        TextPrompt placeholderIdRerservaHoraAct= new TextPrompt("Obligatorio",idReservaHoraActTxt);
+        TextPrompt placeholderIdReservaAct= new TextPrompt("Obligatorio, debe contener 8 dígitos",idReservaActividadTxt);
+        TextPrompt placeholderFechaReserva= new TextPrompt("Obligatorio     DD/MM/AAAA",fechaReservaTxt);
+        TextPrompt placeholderFechaBaja= new TextPrompt("Obligatorio    DD/MM/AAAA",fechaBajaTxt);
+        TextPrompt placeholderIdEstadoReserva= new TextPrompt("Obligatorio, debe contener 8 dígitos",idEstadoReservaActTxt);
+        TextPrompt placeholderIdClienteReservaAct= new TextPrompt("Obligatorio, debe contener 8 dígitos",idClienteReservaActTxt);
+        TextPrompt placeholderIdActividad= new TextPrompt("Obligatorio, debe contener 8 dígitos",idActividadTxt);
+        TextPrompt placeholderIdRerservaHoraAct= new TextPrompt("Obligatorio, debe contener 8 dígitos",idReservaHoraActTxt);
     }
 
     /**
@@ -127,8 +133,6 @@ public class PanelReservaActividades extends javax.swing.JPanel {
             }
         });
         add(lblAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 360, 130, 40));
-
-        lblDinamico.setText("Modificaion:");
         add(lblDinamico, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 10, 80, 20));
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -230,14 +234,102 @@ public class PanelReservaActividades extends javax.swing.JPanel {
             ||fechaReservaTxt.getText().equals("")||idClienteReservaActTxt.getText().equals("")||idActividadTxt.getText().equals("")
             ||idEstadoReservaActTxt.getText().equals(""))
             vacio=false;
-       
+        if(!idEstadoReservaActTxt.getText().matches("[0-9]{8}"))
+            {
+                vacio=false;
+                idEstadoReservaActTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El id del estado de la reserva solo acepta valores númericos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
+        if(!idReservaActividadTxt.getText().matches("[0-9]{8}"))
+            {
+                vacio=false;
+                idReservaActividadTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El id de reserva solo acepta valores númericos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
+        if(!idClienteReservaActTxt.getText().matches("[0-9]{8}"))
+            {
+                vacio=false;
+                idClienteReservaActTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El id del cliente solo acepta valores númericos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
+        if(!idActividadTxt.getText().matches("[0-9]{8}"))
+            {
+                vacio=false;
+                idActividadTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El id de la actividad solo acepta valores númericos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
+        if(!idReservaHoraActTxt.getText().matches("[0-9]{8}"))
+            {
+                vacio=false;
+                idReservaHoraActTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El id del horario solo acepta valores númericos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
+        if(!fechaReservaTxt.getText().isEmpty())
+            {
+                
+                String fechaBruta=fechaReservaTxt.getText();
+                String[] separada=fechaBruta.split("/");
+                try {
+                    if(Integer.parseInt(separada[0])>0&&Integer.parseInt(separada[0])<32&&
+                        Integer.parseInt(separada[1])>0&&Integer.parseInt(separada[1])<13&&
+                        Integer.parseInt(separada[2])>2000)
+                    {
+                        try 
+                        {
+                            fechaR=formato.parse((fechaBruta));
+                            System.out.println(formato.format(fechaR));
+                        } 
+                        catch (ParseException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                else
+                    {
+                        JOptionPane.showMessageDialog(null,"Formato de fecha incorrecto","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
+                        fechaReservaTxt.setText("");
+                    }
+                }
+                catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,"Solo se pueden poner números del 0 al 9","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
+                    fechaReservaTxt.setText("");
+                }
+            }
+        if(!fechaReservaTxt.getText().isEmpty())
+            {
+                
+                String fechaBruta=fechaBajaTxt.getText();
+                String[] separada=fechaBruta.split("/");
+                try {
+                    if(Integer.parseInt(separada[0])>0&&Integer.parseInt(separada[0])<32&&
+                        Integer.parseInt(separada[1])>0&&Integer.parseInt(separada[1])<13&&
+                        Integer.parseInt(separada[2])>2000)
+                    {
+                        try 
+                        {
+                            fechaB=formato.parse((fechaBruta));
+                            System.out.println(formato.format(fechaB));
+                        } 
+                        catch (ParseException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                else
+                    {
+                        JOptionPane.showMessageDialog(null,"Formato de fecha incorrecto","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
+                        fechaBajaTxt.setText("");
+                    }
+                }
+                catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,"Solo se pueden poner números del 0 al 9","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
+                    fechaBajaTxt.setText("");
+                }
+            }
+        
         if(!vacio)
             JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
         else
         {
             int idR=Integer.parseInt(idReservaActividadTxt.getText());
-            String fechaR=fechaReservaTxt.getText();
-            String fechaB=fechaBajaTxt.getText();
             int idEstado= Integer.parseInt(idEstadoReservaActTxt.getText());
             int idClienteReser= Integer.parseInt(idClienteReservaActTxt.getText());
             int idActividad= Integer.parseInt(idActividadTxt.getText());
@@ -261,12 +353,12 @@ public class PanelReservaActividades extends javax.swing.JPanel {
             
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
-public void  guardarDatos(int idR,String fechaR,String fechaB,int idEstado,int idClienteReser, int idAct,int idReservaHoraAct){
+public void  guardarDatos(int idR,Date fechaR,Date fechaB,int idEstado,int idClienteReser, int idAct,int idReservaHoraAct){
         try
         {
            FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservaActividades.txt",true);
            PrintWriter pw= new PrintWriter(F1);
-           pw.println(idR+";"+fechaR+";"+fechaB+";"+idEstado+";"+idClienteReser+";"+idAct+";"+idReservaHoraAct);
+           pw.println(idR+";"+formato.format(fechaR)+";"+formato.format(fechaB)+";"+idEstado+";"+idClienteReser+";"+idAct+";"+idReservaHoraAct);
            pw.close();
         } catch (Exception e) 
         {
@@ -294,7 +386,7 @@ public void  guardarDatos(int idR,String fechaR,String fechaB,int idEstado,int i
                     }
                         
                     else{
-                        System.out.println("c");
+                        escribir(fNuevo, linea);
                     }
                         
                 }
