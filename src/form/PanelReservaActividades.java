@@ -179,7 +179,8 @@ public class PanelReservaActividades extends javax.swing.JPanel {
         cod=Integer.parseInt(idReservaActividadTxt.getText());
         boolean encontrado=false;
         File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservaActividades.txt");
-        Scanner s;    
+        Scanner s;  
+        Scanner sl=null;
             try {
                 
                 if(!f.exists())
@@ -190,9 +191,11 @@ public class PanelReservaActividades extends javax.swing.JPanel {
                     while(s.hasNext()&&!encontrado)
                 {
                     String linea=s.nextLine();
-                    Scanner sl= new Scanner(linea);
+                    sl= new Scanner(linea);
                     sl.useDelimiter("\\s*;\\s*");
-                    if(cod==Integer.parseInt(sl.next())){
+                    try 
+                    {
+                        if(cod==Integer.parseInt(sl.next())){
                         fechaReservaTxt.setText(sl.next());
                         fechaBajaTxt.setText(sl.next());
                         idEstadoReservaActTxt.setText(sl.next());
@@ -217,17 +220,19 @@ public class PanelReservaActividades extends javax.swing.JPanel {
                         idReservaHoraActTxt.setText("");
                         crear=false;
                     }
+                    } 
+                    catch (Exception e) {
+                        System.out.println("Error al leer el archivo ");
+                        e.printStackTrace();
+                    }
                 }
                 s.close();
+                sl.close();
                 } catch (NullPointerException e) {
                     lblDinamico.setText("Creando");
                 }
-               
             } 
-            catch (FileNotFoundException e)
-            {
-                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
-            } catch (IOException ex) 
+            catch (IOException ex) 
             {
                 ex.printStackTrace();
             }

@@ -43,7 +43,7 @@ public class PanelReservas extends javax.swing.JPanel {
         TextPrompt placeholderIdClienteReserva= new TextPrompt("Obligatorio, debe contener 8 dígitos",idClienteReservaTxt);
         TextPrompt placeholderHorarioReserva= new TextPrompt("Obligatorio",horarioReservaTxt);
         TextPrompt placeholderFechaReserva= new TextPrompt("Obligatorio     DD/MM/AAAA",fechaReservaTxt);
-        TextPrompt placeholderidEstadoReserva= new TextPrompt("Obligatorio     DD/MM/AAAA",idEstadoReservaTxt);
+        TextPrompt placeholderidEstadoReserva= new TextPrompt("Obligatorio",idEstadoReservaTxt);
     }
 
     /**
@@ -168,53 +168,60 @@ public class PanelReservas extends javax.swing.JPanel {
         cod=Integer.parseInt(idReservaTxt.getText());
         boolean encontrado=false;
         File archivoReservas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservas.txt");
-        Scanner s;    
+        Scanner s;  
+        Scanner sl=null;
             try {
                 
                 if(!archivoReservas.exists())
                     archivoReservas.createNewFile();
                 try {
                     s= new Scanner(archivoReservas);
-                while(s.hasNext()&&!encontrado)
-                {
-                    String linea=s.nextLine();
-                    Scanner sl= new Scanner(linea);
-                    sl.useDelimiter("\\s*;\\s*");
-                    if(cod==Integer.parseInt(sl.next())){
-                        idSalaReservaTxt.setText(sl.next());
-                        idClienteReservaTxt.setText(sl.next());
-                        fechaReservaTxt.setText(sl.next());
-                        horarioReservaTxt.setText(sl.next());
-                        idEstadoReservaTxt.setText(sl.next());
-                        lblDinamico.setText("Modificando");
-                        sAntiguaLinea=(idReservaTxt.getText()+";"+idSalaReservaTxt.getText()+";"+idClienteReservaTxt.getText()+";"+
-                                fechaReservaTxt.getText()+";"+horarioReservaTxt.getText()+";"+idEstadoReservaTxt.getText());
-                        encontrado=true;
-                        crear=true;
+                    while(s.hasNext()&&!encontrado)
+                    {
+                        String linea=s.nextLine();
+                        sl= new Scanner(linea);
+                        sl.useDelimiter("\\s*;\\s*");
+                        try 
+                        {
+                            if(cod==Integer.parseInt(sl.next()))
+                        {
+                            idSalaReservaTxt.setText(sl.next());
+                            idClienteReservaTxt.setText(sl.next());
+                            fechaReservaTxt.setText(sl.next());
+                            horarioReservaTxt.setText(sl.next());
+                            idEstadoReservaTxt.setText(sl.next());
+                            lblDinamico.setText("Modificando");
+                            sAntiguaLinea=(idReservaTxt.getText()+";"+idSalaReservaTxt.getText()+";"+idClienteReservaTxt.getText()+";"+
+                                    fechaReservaTxt.getText()+";"+horarioReservaTxt.getText()+";"+idEstadoReservaTxt.getText());
+                            encontrado=true;
+                            crear=true;
+                        }
+                        else
+                        {
+                            lblDinamico.setText("Creando");
+                            idSalaReservaTxt.setText("");
+                            idClienteReservaTxt.setText("");
+                            fechaReservaTxt.setText("");
+                            horarioReservaTxt.setText("");
+                            idEstadoReservaTxt.setText("");
+                            crear=false;
+                        }
+                        } 
+                        catch (Exception e) {
+                            System.out.println("Error al leer el archivo ");
+                            e.printStackTrace();
+                        }
+                        
                     }
-                    else{
-                        lblDinamico.setText("Creando");
-                        idSalaReservaTxt.setText("");
-                        idClienteReservaTxt.setText("");
-                        fechaReservaTxt.setText("");
-                        horarioReservaTxt.setText("");
-                        idEstadoReservaTxt.setText("");
-                        crear=false;
-                    }
-                }
-                s.close();
+                    s.close();
+                    sl.close();
                 } 
                 catch (NullPointerException e) {
                 lblDinamico.setText("Creando");
-            }   
-                
-               
+                }   
             }
             
-            catch (FileNotFoundException e)
-            {
-                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
-            } catch (IOException ex) 
+            catch (IOException ex) 
             {
                 ex.printStackTrace();
             }
@@ -294,7 +301,6 @@ public class PanelReservas extends javax.swing.JPanel {
             }
             if(!fechaReservaTxt.getText().isEmpty())
             {
-                
                 String fechaBruta=fechaReservaTxt.getText();
                 String[] separada=fechaBruta.split("/");
                 try {

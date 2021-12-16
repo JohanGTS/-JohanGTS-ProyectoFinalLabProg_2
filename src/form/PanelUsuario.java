@@ -131,8 +131,6 @@ public class PanelUsuario extends javax.swing.JPanel {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Correo Electrico:");
         add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 270, -1, 24));
-
-        lblDinamico.setText("Modificaion:");
         add(lblDinamico, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 10, 80, 20));
         add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 250, 10));
         add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 218, 250, -1));
@@ -178,7 +176,7 @@ public class PanelUsuario extends javax.swing.JPanel {
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
         String pass= new String(contrasenaPassFl.getPassword());
         boolean vacio=true;
-        File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuario.txt");
+        File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuarios.txt");
         try {
             if(!f.exists())
                 {
@@ -204,7 +202,7 @@ public class PanelUsuario extends javax.swing.JPanel {
                 if(correoElectronicoTxt.getText().length()<8||!correoElectronicoTxt.getText().contains("@")||!correoElectronicoTxt.getText().contains("."))
                 {
                     JOptionPane.showMessageDialog(null,"El correo debe contener mínimo un @ un . y tener una longitud de 8 caracteres","Longitud insuficiente",JOptionPane.ERROR_MESSAGE);
-                    correoElectronicoTxt.setText("");
+                    correoElectronicoTxt.setText(" ");
                     vacio=false;
                 } 
             }
@@ -288,6 +286,7 @@ public class PanelUsuario extends javax.swing.JPanel {
                               nivel1.setSelected(true);
                               nivel="1";
                           }
+                          lblDinamico.setText("Modificando");
                           nombreTxt.setText(sl.next());
                           apellidosTxt.setText(sl.next());
                           correoElectronicoTxt.setText(sl.next());
@@ -296,7 +295,8 @@ public class PanelUsuario extends javax.swing.JPanel {
                           encontrado=true;
                           sAntiguaLinea=(loginUsuarioTxt.getText()+";"+pass+";"+nivel+";"+
                                   nombreTxt.getText()+";"+apellidosTxt.getText()+";"+correoElectronicoTxt.getText());
-                          lblDinamico.setText("Modificando");
+                          modificar(sAntiguaLinea, sNuevaLinea);
+                          
                       }
                       else
                       {
@@ -376,8 +376,6 @@ public class PanelUsuario extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
-            
-   
     
     public static void escribir(File Ffichero,String cadena)
     {

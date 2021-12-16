@@ -13,6 +13,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
@@ -25,6 +28,9 @@ public class PanelClientes extends javax.swing.JPanel {
     public static String sAntiguaLinea="";
     public static String sNuevaLinea="";
     public static boolean crear;
+    public static Date fechaN;
+    public static Date fechaI;
+    public static final SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
     /**
      * Creates new form PanelClientes
      */
@@ -39,10 +45,10 @@ public class PanelClientes extends javax.swing.JPanel {
         TextPrompt placeholderApellidoPaterno= new TextPrompt("Obligatorio",apellidoPaternoTxt);
         TextPrompt placeholderApellidoMaterno= new TextPrompt("Obligatorio",apellidoMaternoTxt);
         TextPrompt placeholderDire= new TextPrompt("Obligatorio, debe tener al menos 10 caracteres",direccionTxt);
-        TextPrompt placeholderFechaNacimiento= new TextPrompt("Obligatorio",fechaNacimientoTxt);
+        TextPrompt placeholderFechaNacimiento= new TextPrompt("Obligatorio  DD/MM/AAAA",fechaNacimientoTxt);
         TextPrompt placeholderTelefono= new TextPrompt("Obligatorio, debe tener 10 caracteres",telefonoTxt);
         TextPrompt placeholderCelular= new TextPrompt("Obligatorio, debe tener 10 caracteres",celularTxt);
-        TextPrompt placeholderFechaIngreso= new TextPrompt("Obligatorio",fechaIngresoTxt);
+        TextPrompt placeholderFechaIngreso= new TextPrompt("Obligatorio  DD/MM/AAAA",fechaIngresoTxt);
     }
 
     /**
@@ -265,7 +271,8 @@ public class PanelClientes extends javax.swing.JPanel {
         cod=Integer.parseInt(idClienteTxt.getText());
         boolean encontrado=false;
         File archivoReservas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
-        Scanner s;    
+        Scanner s;  
+        Scanner sl=null;
             try {
                 
                 if(!archivoReservas.exists())
@@ -274,7 +281,7 @@ public class PanelClientes extends javax.swing.JPanel {
                 while(s.hasNext()&&!encontrado)
                 {
                     String linea=s.nextLine();
-                    Scanner sl= new Scanner(linea);
+                    sl= new Scanner(linea);
                     sl.useDelimiter("\\s*;\\s*");
                     if(cod==Integer.parseInt(sl.next())){
                         nombreClienteTxt.setText(sl.next());
@@ -339,7 +346,7 @@ public class PanelClientes extends javax.swing.JPanel {
                     }
                 }
                 s.close();
-               
+                sl.close();
             }
             catch(NullPointerException e)
             {
@@ -368,7 +375,109 @@ public class PanelClientes extends javax.swing.JPanel {
                     ||direccionTxt.getText().equals("")||fechaNacimientoTxt.getText().equals("")||telefonoTxt.getText().equals("")||celularTxt.getText().equals("")||
                     fechaIngresoTxt.getText().equals(""))
                 vacio=false;
+            if(!telefonoTxt.getText().matches("[0-9]{10}"))//.matches taoma una sub region de algo, en este caso números enteros del 0 al 9
+            {
+                vacio=false;
+                telefonoTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El teléfono solo acepta valores numéricos enteros y debe tener 10 dígitos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
+            if(!celularTxt.getText().matches("[0-9]{10}"))//.matches taoma una sub region de algo, en este caso números enteros del 0 al 9
+            {
+                vacio=false;
+                celularTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El celular solo acepta valores numéricos enteros y debe tener 10 dígitos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
+            if(direccionTxt.getText().length()<8)
+            {
+                vacio=false;
+                direccionTxt.setText("");
+                JOptionPane.showMessageDialog(null,"La dirección necesita al menos 8 caracteres","Longitud incorrecta",JOptionPane.ERROR_MESSAGE);
             
+            }
+            if(!valorCuotasTxt.getText().isEmpty())
+            {
+                try 
+                {
+                    Double valorCuota=Double.parseDouble(valorCuotasTxt.getText());
+                    if(valorCuota<=0)
+                    {
+                        vacio=false;
+                        valorCuotasTxt.setText("");
+                        JOptionPane.showMessageDialog(null,"El valor de la cuota debe ser un número positivo","Longitud incorrecta",JOptionPane.ERROR_MESSAGE);
+
+                    }
+                } 
+                catch (Exception e) 
+                {
+                    vacio=false;
+                    valorCuotasTxt.setText("");
+                    JOptionPane.showMessageDialog(null,"El valor de la cuota debe ser un número positivo","Longitud incorrecta",JOptionPane.ERROR_MESSAGE);
+
+                }
+                
+            }
+            if(!fechaNacimientoTxt.getText().isEmpty())
+            {
+                String fechaBruta=fechaNacimientoTxt.getText();
+                String[] separada=fechaBruta.split("/");
+                try {
+                    if(Integer.parseInt(separada[0])>0&&Integer.parseInt(separada[0])<32&&
+                        Integer.parseInt(separada[1])>0&&Integer.parseInt(separada[1])<13&&
+                        Integer.parseInt(separada[2])>2000)
+                    {
+                        try 
+                        {
+                            fechaN=formato.parse((fechaBruta));
+                            System.out.println(formato.format(fechaN));
+                        } 
+                        catch (ParseException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                else
+                    {
+                        JOptionPane.showMessageDialog(null,"Formato de fecha incorrecto","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
+                        fechaNacimientoTxt.setText("");
+                        vacio=false;
+                    }
+                }
+                catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,"Solo se pueden poner números del 0 al 9","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
+                    fechaNacimientoTxt.setText("");
+                    vacio=false;
+                }
+            }
+            if(!fechaIngresoTxt.getText().isEmpty())
+            {
+                String fechaBruta=fechaIngresoTxt.getText();
+                String[] separada=fechaBruta.split("/");
+                try {
+                    if(Integer.parseInt(separada[0])>0&&Integer.parseInt(separada[0])<32&&
+                        Integer.parseInt(separada[1])>0&&Integer.parseInt(separada[1])<13&&
+                        Integer.parseInt(separada[2])>2000)
+                    {
+                        try 
+                        {
+                            fechaI=formato.parse((fechaBruta));
+                            System.out.println(formato.format(fechaN));
+                        } 
+                        catch (ParseException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                else
+                    {
+                        JOptionPane.showMessageDialog(null,"Formato de fecha incorrecto","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
+                        fechaIngresoTxt.setText("");
+                        vacio=false;
+                    }
+                }
+                catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,"Solo se pueden poner números del 0 al 9","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
+                    fechaIngresoTxt.setText("");
+                    vacio=false;
+                }
+            }
             if(!vacio)
                 JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
             else
@@ -378,10 +487,10 @@ public class PanelClientes extends javax.swing.JPanel {
                 String apeP=apellidoPaternoTxt.getText();
                 String apeM=apellidoMaternoTxt.getText();
                 String direc=direccionTxt.getText();
-                String fechaNac=fechaNacimientoTxt.getText();
+                Date fechaNac=fechaN;
                 String tel=telefonoTxt.getText();
                 String cel=celularTxt.getText();
-                String fechaIng=fechaIngresoTxt.getText();
+                Date fechaIng=fechaI;
                 if(activoTipo.isSelected())
                     tipo="activo";
                 else
@@ -398,8 +507,8 @@ public class PanelClientes extends javax.swing.JPanel {
                 else
                 {
                     sNuevaLinea=(idClienteTxt.getText()+";"+nombreClienteTxt.getText()+";"+apellidoPaternoTxt.getText()+";"+apellidoMaternoTxt.getText()+";"+
-                            direccionTxt.getText()+";"+fechaNacimientoTxt.getText()+";"+telefonoTxt.getText()+";"+celularTxt.getText()+";"+
-                            fechaIngresoTxt.getText()+";"+status+";"+tipo+";"+correoElectronicoTxt.getText()+";"+
+                            direccionTxt.getText()+";"+formato.format(fechaN)+";"+telefonoTxt.getText()+";"+celularTxt.getText()+";"+
+                            formato.format(fechaI)+";"+status+";"+tipo+";"+correoElectronicoTxt.getText()+";"+
                             balanceTxt.getText()+";"+valorCuotasTxt.getText());
                     System.out.println(sAntiguaLinea);
                     System.out.println(sNuevaLinea);
@@ -425,13 +534,13 @@ public class PanelClientes extends javax.swing.JPanel {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
-public void guardarDatos(int id,String nombre,String apePat,String apeMat, String direc, String fechaNac, String telefono,
-String celular, String fechaIng, String status, String tipo,String correo, double balance, double valorCuotas){
+public void guardarDatos(int id,String nombre,String apePat,String apeMat, String direc, Date fechaNac, String telefono,
+String celular, Date fechaIng, String status, String tipo,String correo, double balance, double valorCuotas){
         try
         {
            FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt",true);
            PrintWriter pw= new PrintWriter(F1);
-           pw.println(id+";"+nombre+";"+apePat+";"+apeMat+";"+direc+";"+fechaNac+";"+telefono+";"+celular+";"+fechaIng+";"
+           pw.println(id+";"+nombre+";"+apePat+";"+apeMat+";"+direc+";"+formato.format(fechaNac)+";"+telefono+";"+celular+";"+formato.format(fechaIng)+";"
                    +status+";"+tipo+";"+correo+";"+balance+";"+valorCuotas);
            pw.close();
         } catch (Exception e) 

@@ -112,18 +112,20 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
         boolean encontrado=false;
         File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEstadoReserva.txt");
         Scanner s;    
+        Scanner sl=null;
             try {
                 
                 if(!f.exists())
-                
                     f.createNewFile();
                 s= new Scanner(f);
                 while(s.hasNext()&&!encontrado)
                 {
                     String linea=s.nextLine();
-                    Scanner sl= new Scanner(linea);
+                    sl= new Scanner(linea);
                     sl.useDelimiter("\\s*;\\s*");
-                    if(cod==Integer.parseInt(sl.next())){
+                    try 
+                    {
+                        if(cod==Integer.parseInt(sl.next())){
                         if(sl.next().equals("reservado"))
                         {
                             estado="reservado";
@@ -145,17 +147,19 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
                         noReservado.setSelected(true);
                         crear=false;
                     }
+                    } catch (Exception e) 
+                    {
+                        System.out.println("Error al leer el archivo ");
+                        e.printStackTrace();
+                    }
                 }
                 s.close();
-               
+                sl.close();
             }
             catch (NullPointerException e) {
                 lblDinamico.setText("Creando");
             }
-            catch (FileNotFoundException e)
-            {
-                JOptionPane.showMessageDialog(null, "Archivo de texto no encontrado");
-            } catch (IOException ex) 
+            catch (IOException ex) 
             {
                 ex.printStackTrace();
             }

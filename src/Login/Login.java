@@ -184,17 +184,21 @@ public class Login extends javax.swing.JFrame {
             loginUsuario=txtUsuario.getText();
             passUsuario=new String(passflPass.getPassword());//Se crea un objeto String con el contenido del campo jPasswordField
             File archivoUsuarios= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuarios.txt");
-            try {                           
-                if(!archivoUsuarios.exists())
-                    archivoUsuarios.createNewFile();
-                BufferedReader br =new BufferedReader(new FileReader(archivoUsuarios));
-                
+            try {         
                 BufferedWriter bw=new BufferedWriter(new FileWriter(archivoUsuarios));
-                bw.write("admin; root; 0;admin;admin;aaa");
-                bw.newLine();
-                bw.write("kkk; ooo ; 1;user;user;aaa");
-                bw.newLine();
-                bw.flush();
+                if(!archivoUsuarios.exists())
+                {
+                    archivoUsuarios.createNewFile();
+                }
+                if(archivoUsuarios.length()==0)
+                {
+                    bw.write("admin;rootroot; 0;admin;admin;");
+                    bw.newLine();
+                    bw.write("kkk;oooopppp ; 1;user;user;");
+                    bw.newLine();
+                    bw.flush();
+                }
+                    
                 Scanner s= new Scanner(archivoUsuarios);
                 while(s.hasNext())
                 {
