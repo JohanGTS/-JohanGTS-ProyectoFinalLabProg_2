@@ -161,7 +161,7 @@ public class Main extends javax.swing.JFrame {
         //  SubMenu del Procesos 
         MenuItem menuGenerarCobro = new MenuItem(iconSubMenu, "Generar Cobro", null);
         MenuItem menuReservarCobro = new MenuItem(iconSubMenu, "Reservar Cobro", null);
-        MenuItem menuActualizarCuotas = new MenuItem(iconSubMenu, "ActualizarCuotas", null);
+        MenuItem menuActualizarCuotas = new MenuItem(iconSubMenu, "Actualizar Cuotas", null);
        
         
 
@@ -176,6 +176,8 @@ public class Main extends javax.swing.JFrame {
                 panelBody.revalidate();
             }
         });
+        
+        
         MenuItem menuentrenador = new MenuItem(iconSubMenu, "Entrenador", null);
         MenuItem menulocalizacion = new MenuItem(iconSubMenu, "Localizacion", null);
         MenuItem menusalas = new MenuItem(iconSubMenu, "Salas", null);

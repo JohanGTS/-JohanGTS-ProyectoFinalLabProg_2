@@ -272,7 +272,7 @@ public class PanelClientes extends javax.swing.JPanel {
         boolean encontrado=false;
         File archivoReservas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
         Scanner s;  
-        Scanner sl=null;
+        Scanner sl = null;
             try {
                 
                 if(!archivoReservas.exists())
@@ -346,12 +346,18 @@ public class PanelClientes extends javax.swing.JPanel {
                     }
                 }
                 s.close();
-                sl.close();
+                try 
+                {
+                    sl.close();
+                } catch (NullPointerException e) 
+                {
+                    lblDinamico.setText("Creando");
+                }
+                
             }
             catch(NullPointerException e)
             {
                 lblDinamico.setText("Creando");
-                e.printStackTrace();
             }
             catch (FileNotFoundException e)
             {
@@ -379,6 +385,12 @@ public class PanelClientes extends javax.swing.JPanel {
             {
                 vacio=false;
                 telefonoTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El teléfono solo acepta valores numéricos enteros y debe tener 10 dígitos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
+            if(!idClienteTxt.getText().matches("[0-9]{8}"))//.matches taoma una sub region de algo, en este caso números enteros del 0 al 9
+            {
+                vacio=false;
+                idClienteTxt.setText("");
                 JOptionPane.showMessageDialog(null,"El teléfono solo acepta valores numéricos enteros y debe tener 10 dígitos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
             if(!celularTxt.getText().matches("[0-9]{10}"))//.matches taoma una sub region de algo, en este caso números enteros del 0 al 9
@@ -416,6 +428,12 @@ public class PanelClientes extends javax.swing.JPanel {
                 }
                 
             }
+            else
+            {
+                valorCuotasTxt.setText("500");
+            }
+            if(balanceTxt.getText().isEmpty())
+                balanceTxt.setText("0");
             if(!fechaNacimientoTxt.getText().isEmpty())
             {
                 String fechaBruta=fechaNacimientoTxt.getText();
@@ -423,7 +441,7 @@ public class PanelClientes extends javax.swing.JPanel {
                 try {
                     if(Integer.parseInt(separada[0])>0&&Integer.parseInt(separada[0])<32&&
                         Integer.parseInt(separada[1])>0&&Integer.parseInt(separada[1])<13&&
-                        Integer.parseInt(separada[2])>2000)
+                        Integer.parseInt(separada[2])>1900)
                     {
                         try 
                         {
