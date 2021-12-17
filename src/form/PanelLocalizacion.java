@@ -182,7 +182,7 @@ public class PanelLocalizacion extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
             else
             {
-                int idSala=Integer.parseInt(idTxt.getText());
+                String idSala=idTxt.getText();
                 String tipo=tipoTxt.getText();
                     if(!crear)
                     guardarDatos(idSala, tipo);
@@ -201,7 +201,7 @@ public class PanelLocalizacion extends javax.swing.JPanel {
         }
             
     }//GEN-LAST:event_lblAgregarMouseClicked
-public void  guardarDatos(int id,String tipo){
+public void  guardarDatos(String id,String tipo){
         try
         {
            FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoLocalizacion.txt",true);

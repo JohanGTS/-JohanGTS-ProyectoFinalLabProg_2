@@ -209,9 +209,9 @@ public class PanelSalas extends javax.swing.JPanel {
             else
             {
                 
-                int idSalas=Integer.parseInt(idSalasTxt.getText());
+                String idSalas=idSalasTxt.getText();
                 String nombre=nombreSalaTxt.getText();
-                int idLocSalas=Integer.parseInt(idLocSalaTxt.getText());
+                String idLocSalas=idLocSalaTxt.getText();
                 String descripcion=descripcionSalaTxt.getText();
                 if(!crear)
                     guardarDatos(idSalas, nombre,descripcion,idLocSalas);
@@ -295,7 +295,7 @@ public class PanelSalas extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }//GEN-LAST:event_idSalasTxtActionPerformed
-    public void  guardarDatos(int idSala,String nombre, String descripcion,int idLocSala){
+    public void  guardarDatos(String idSala,String nombre, String descripcion,String idLocSala){
         try
         {
            FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoSalas.txt",true);

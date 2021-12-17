@@ -328,7 +328,7 @@ public class PanelClientes extends javax.swing.JPanel {
                     }
                     else{
                         lblDinamico.setText("Creando");
-                        idClienteTxt.setText("");
+                        
                         nombreClienteTxt.setText("");
                         apellidoMaternoTxt.setText("");
                         apellidoPaternoTxt.setText("");
@@ -472,7 +472,7 @@ public class PanelClientes extends javax.swing.JPanel {
                 try {
                     if(Integer.parseInt(separada[0])>0&&Integer.parseInt(separada[0])<32&&
                         Integer.parseInt(separada[1])>0&&Integer.parseInt(separada[1])<13&&
-                        Integer.parseInt(separada[2])>2000)
+                        Integer.parseInt(separada[2])>1900)
                     {
                         try 
                         {
@@ -528,8 +528,6 @@ public class PanelClientes extends javax.swing.JPanel {
                             direccionTxt.getText()+";"+formato.format(fechaN)+";"+telefonoTxt.getText()+";"+celularTxt.getText()+";"+
                             formato.format(fechaI)+";"+status+";"+tipo+";"+correoElectronicoTxt.getText()+";"+
                             balanceTxt.getText()+";"+valorCuotasTxt.getText());
-                    System.out.println(sAntiguaLinea);
-                    System.out.println(sNuevaLinea);
                     modificar(sAntiguaLinea,sNuevaLinea);
                 }
                 JOptionPane.showMessageDialog(null, "Cliente agregado correctamente");

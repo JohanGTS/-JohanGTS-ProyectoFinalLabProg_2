@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -32,6 +33,7 @@ public class Login extends javax.swing.JFrame {
         TextPrompt placeholderUsuario= new TextPrompt("Ingrese su usuario",txtUsuario);
         TextPrompt placeholderPassword= new TextPrompt("Ingrese su contraseña",passflPass);
         this.setLocationRelativeTo(null);
+        setIconImage(new ImageIcon(getClass().getResource("../menu/gold.png")).getImage());
     }
 
     /**

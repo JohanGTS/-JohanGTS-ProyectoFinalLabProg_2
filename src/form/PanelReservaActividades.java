@@ -404,7 +404,7 @@ public class PanelReservaActividades extends javax.swing.JPanel {
                 try {
                     if(Integer.parseInt(separada[0])>0&&Integer.parseInt(separada[0])<32&&
                             Integer.parseInt(separada[1])>0&&Integer.parseInt(separada[1])<13&&
-                            Integer.parseInt(separada[2])>2000)
+                            Integer.parseInt(separada[2])>1900)
                     {
                         try 
                         {

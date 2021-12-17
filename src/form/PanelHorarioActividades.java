@@ -339,7 +339,7 @@ public void  guardarDatos(int idHorario,String dia,String hora,int idActividad){
                     }
                         
                     else{
-                        System.out.println("c");
+                        escribir(fNuevo, linea);
                     }
                         
                 }

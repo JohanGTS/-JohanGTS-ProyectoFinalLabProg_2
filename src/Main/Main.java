@@ -24,6 +24,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import menu.MenuItem;
 import Login.Login;
+import form.PanelGenerarCobros;
+import java.awt.Image;
+import java.awt.Toolkit;
 
 /**
  *
@@ -38,8 +41,19 @@ public class Main extends javax.swing.JFrame {
     public Main() {
         initComponents();
         nivelAcceso=Login.nivelAccesoLogin;
+        setIconImage(new ImageIcon(getClass().getResource("../menu/gold.png")).getImage());
         execute();
+        
     }
+    
+    //Icono del app
+    @Override
+    public Image getIconImage()
+    {
+        Image retValue= Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\menu\\gold.png"));
+        return retValue;
+    }
+    
 
     private void execute() {
         ImageIcon iconMantenimiento = new ImageIcon(getClass().getResource("/menu/mantenimiento.png"));
@@ -162,7 +176,15 @@ public class Main extends javax.swing.JFrame {
         MenuItem menuGenerarCobro = new MenuItem(iconSubMenu, "Generar Cobro", null);
         MenuItem menuReservarCobro = new MenuItem(iconSubMenu, "Reservar Cobro", null);
         MenuItem menuActualizarCuotas = new MenuItem(iconSubMenu, "Actualizar Cuotas", null);
-       
+       MenuItem generarCobro = new MenuItem(iconSubMenu, "Generar cobros", new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
+                panelBody.add(new PanelGenerarCobros());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });
         
 
 
@@ -193,7 +215,7 @@ public class Main extends javax.swing.JFrame {
 
         MenuItem menuMantenimiento = new MenuItem(iconMantenimiento, "Mantenimiento", null, menuUsuario, menuEntrenador, menuLocalizacion,menuSalas,menuActividad,menuHorarioActividad,menuClientes,menuEstadoReserva,menuReserva,menuReservasActividades);
         MenuItem menuMovimiento = new MenuItem(iconMovimiento, "Movimientos", null, menuCuotas);
-        MenuItem menuproceso = new MenuItem(iconProcesos, "Procesos", null,menuGenerarCobro,menuReservarCobro,menuActualizarCuotas);
+        MenuItem menuproceso = new MenuItem(iconProcesos, "Procesos", null,generarCobro,menuReservarCobro,menuActualizarCuotas);
         MenuItem menuConsultas = new MenuItem(iconConsultas, "Consultas", null, menuusuario,menuentrenador,menulocalizacion,menusalas,menuactividad,menuhorarioactividad,menuCobroFecha,menuCobroCliente,menuCuotaFecha,menuCuotaClientes,menuClientesBalance);
         MenuItem menuSalir = new MenuItem(iconSalir, "Salir", new ActionListener(){
            @Override

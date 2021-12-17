@@ -247,10 +247,10 @@ public class PanelCuotas extends javax.swing.JPanel {
     }//GEN-LAST:event_idCuotaTxtActionPerformed
 
     private void idClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idClienteActionPerformed
-        boolean vacio=true;
+        
         if(!idCliente.getText().matches("[0-9]{8}"))
             {
-                vacio=false;
+                
                 idCliente.setText("");
                 JOptionPane.showMessageDialog(null,"El id del horario de reserva solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
@@ -260,7 +260,7 @@ public class PanelCuotas extends javax.swing.JPanel {
                 if (!archId.exists()) 
                 {
                     JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
-                    vacio=false;
+                    
                 }
                 else
                 {
@@ -270,7 +270,7 @@ public class PanelCuotas extends javax.swing.JPanel {
                     {
                         idCliente.setText("");
                         JOptionPane.showMessageDialog(null,"El archivo del id no existe, cree una el id en el respectivo mantenimiento","Archivo inexistente",JOptionPane.ERROR_MESSAGE);
-                        vacio=false;
+                       
                     }
                 }
             }
