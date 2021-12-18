@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
  */
 public class PanelGenerarCobros extends javax.swing.JPanel {
     public static double cuota;
+    public static int aux=0;
     /**
      * Creates new form PanelHorarioActividades
      */
@@ -183,7 +184,7 @@ public class PanelGenerarCobros extends javax.swing.JPanel {
                         
                     }
                     s.close();
-                    JOptionPane.showMessageDialog(null, "Cobro generado");
+                    
                     diaActividadTxt.setText("");
                     conceptoCobrotxt.setText("");
                     File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
@@ -191,6 +192,7 @@ public class PanelGenerarCobros extends javax.swing.JPanel {
                     File auxiliar= new File(fAntiguo.getAbsolutePath());
                     borrar(fAntiguo);
                     System.out.println(fNuevo.renameTo(auxiliar));
+                    JOptionPane.showMessageDialog(null, "Cobro generado");
                 }
                 else
                 {
@@ -223,8 +225,13 @@ public void  guardarDatos(int id,String fecha,String idCliente,Double valorCuota
 
 public static int generarIdCobro(File f)
 {
+    
     if(!f.exists())
+    {
+        System.out.println("no existe");
         return 1;
+    }
+        
     else
         {
             int id=1;
@@ -237,8 +244,16 @@ public static int generarIdCobro(File f)
                   String linea= s.nextLine();
                   sl= new Scanner(linea);
                   sl.useDelimiter("\\s*;\\s*");
-                    if(Integer.parseInt(sl.next())==id)
-                        id++;
+                  int a=Integer.parseInt(sl.next());
+                    System.out.println(a);
+                    System.out.println(id);
+                    System.out.println("-------------");
+                    if(id<=a)
+                    {
+                        while(id<=a+aux)
+                            id++;
+                        aux++;
+                    }
                     else
                         return id;
                 } 

@@ -89,7 +89,7 @@ public class PanelReversarCobros extends javax.swing.JPanel {
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
         
         boolean vacio=true;
-        
+        File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoCobros.txt");
         String fechaBruta="";
         try {
             
@@ -120,14 +120,20 @@ public class PanelReversarCobros extends javax.swing.JPanel {
                     vacio=false;
                 }
             }
-            
+            if(revisarEnArchivo(f, fechaBruta))
+            {
+                JOptionPane.showMessageDialog(null,"No es posible reversar un cobro que no se ha realizado","Cobro inexistente",JOptionPane.ERROR_MESSAGE);
+                vacio=false;    
+                diaActividadTxt.setText("");
+            }
+                
             if(!vacio)
                 JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
             else
             {   
                 Scanner s;
                 Scanner sl=null;
-                File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoCobros.txt");
+                
                 if(!f.exists())
                     f.createNewFile();
                 Scanner s2= new Scanner(f);
@@ -140,11 +146,13 @@ public class PanelReversarCobros extends javax.swing.JPanel {
                 }
                 s2.close();
                 File auxiliar= new File(f.getAbsolutePath());
-                System.out.println(auxiliar);
                 borrar(f);
                 System.out.println("a");
                 File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal2.txt");
-                
+                if(fNuevo.exists())
+                    System.out.println("existe");
+                else 
+                    System.out.println("no existe");
                 System.out.println(fNuevo.renameTo(auxiliar));
                 System.out.println("b");
                 if(!revisarEnArchivo(f, fechaBruta))
@@ -185,7 +193,7 @@ public class PanelReversarCobros extends javax.swing.JPanel {
                     auxiliar= new File(fAntiguo.getAbsolutePath());
                     borrar(fAntiguo);
                     System.out.println(fNuevo.renameTo(auxiliar));
-                    JOptionPane.showMessageDialog(null, "Cobro generado");
+                    JOptionPane.showMessageDialog(null, "Cobro reversado");
                 }
                 else
                 {
@@ -249,32 +257,38 @@ public static boolean revisarEnArchivo(File archivo, String id)
 
 public static boolean revisarEnArchivo2(File archivo, String linea2)
     {
+        Scanner s = null;
         if (!archivo.exists()) {
             return false;
         }
         else
         {
+            
             try 
             {
-                Scanner s=new Scanner(archivo);
+                s=new Scanner(archivo);
                 while(s.hasNextLine())
                 {
+                    System.out.println("Lo abrió");
                   String linea= s.nextLine();
                     try {
                         if(linea2.equals(linea))
                         {
                             s.close();
+                            System.out.println("Lo cierra");   
                             return true;
                         }
                         
                     else
                         {
                             s.close();
+                            System.out.println("Lo cierra");   
                             return false;
                         }
-                        
-                    } catch (Exception e) {
+                    } 
+                    catch (Exception e) {
                         s.close();
+                        System.out.println("Lo cierra");   
                         return false;
                     }
                     
@@ -282,9 +296,12 @@ public static boolean revisarEnArchivo2(File archivo, String linea2)
             }
             catch (Exception ex) {
                 Logger.getLogger(PanelSalas.class.getName()).log(Level.SEVERE, null, ex);
+                s.close();
+                System.out.println("Lo cierra");   
                 return false;
             }
         }
+        s.close();
         return true;
     } 
 
@@ -343,7 +360,6 @@ public static boolean revisarEnArchivo2(File archivo, String linea2)
                     }
                 }
                 br.close();
-                
             }
             else
                 System.out.println("El archivo no existe");
