@@ -23,15 +23,14 @@ import javax.swing.JOptionPane;
  *
  * @author Gabriel Marte
  */
-public class PanelGenerarCobros extends javax.swing.JPanel {
-    public static double cuota;
+public class PanelReversarCobros extends javax.swing.JPanel {
+    
     /**
      * Creates new form PanelHorarioActividades
      */
-    public PanelGenerarCobros() {
+    public PanelReversarCobros() {
         initComponents();
         TextPrompt placeholderDiaActividad= new TextPrompt("Obligatorio     MM/AAAA",diaActividadTxt);
-        TextPrompt placeholderConcepto= new TextPrompt("Obligatorio",conceptoCobrotxt);
     }
 
     /**
@@ -50,16 +49,13 @@ public class PanelGenerarCobros extends javax.swing.JPanel {
         jSeparator8 = new javax.swing.JSeparator();
         lblAgregar = new javax.swing.JLabel();
         lblDinamico = new javax.swing.JLabel();
-        conceptoCobrotxt = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jSeparator5 = new javax.swing.JSeparator();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel10.setText("Generar cobro");
+        jLabel10.setText("Reversar Cobro");
         jLabel10.setOpaque(true);
         add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 270, 40));
 
@@ -88,14 +84,6 @@ public class PanelGenerarCobros extends javax.swing.JPanel {
         });
         add(lblAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 290, 130, 40));
         add(lblDinamico, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 10, 80, 20));
-
-        conceptoCobrotxt.setBorder(null);
-        add(conceptoCobrotxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 233, 20));
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel4.setText("Concepto");
-        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
-        add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 250, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
@@ -105,15 +93,10 @@ public class PanelGenerarCobros extends javax.swing.JPanel {
         String fechaBruta="";
         try {
             
-            if(diaActividadTxt.getText().isEmpty())
+            if(diaActividadTxt.getText().equals(""))
                 vacio=false;
-            if(conceptoCobrotxt.getText().isEmpty()||conceptoCobrotxt.getText().length()<4)
-            {
-                vacio=false;
-                JOptionPane.showMessageDialog(null,"El concepto debe tener al menos cuatro letras","Longitud insuficiente",JOptionPane.ERROR_MESSAGE);
-            }
             
-            else
+            if(!diaActividadTxt.getText().isEmpty())
             {
                 String auxiliar="30/";
                 fechaBruta=auxiliar+diaActividadTxt.getText();
@@ -147,10 +130,26 @@ public class PanelGenerarCobros extends javax.swing.JPanel {
                 File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoCobros.txt");
                 if(!f.exists())
                     f.createNewFile();
-                
-                if(!revisarEnArchivo(f, fechaBruta))
+                Scanner s2= new Scanner(f);
+                while(s2.hasNext())
                 {
-                    
+                    String linea2=s2.nextLine();
+                    String antiguaLinea=linea2;
+                    if(!linea2.contains(fechaBruta))
+                        modificar2(fechaBruta,antiguaLinea );
+                }
+                s2.close();
+                File auxiliar= new File(f.getAbsolutePath());
+                System.out.println(auxiliar);
+                borrar(f);
+                System.out.println("a");
+                File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal2.txt");
+                
+                System.out.println(fNuevo.renameTo(auxiliar));
+                System.out.println("b");
+                if(!revisarEnArchivo(f, fechaBruta))
+                {   
+                   
                     File f2= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
                     s= new Scanner(f2);
                     while(s.hasNext())
@@ -160,9 +159,7 @@ public class PanelGenerarCobros extends javax.swing.JPanel {
                         String antiguaLinea=linea;
                         sl= new Scanner(linea);
                         sl.useDelimiter("\\s*;\\s*");
-                        String idCliente=sl.next();
-                        nuevaLinea+=idCliente+";";
-                        for (int i = 0; i < 9; i++) 
+                        for (int i = 0; i < 10; i++) 
                         {
                             nuevaLinea+=sl.next()+";";
                         }
@@ -173,83 +170,42 @@ public class PanelGenerarCobros extends javax.swing.JPanel {
                         if(status.equals("activo"))
                         {
                             Double balance = Double.parseDouble(sl.next());
-                            cuota=Double.parseDouble(sl.next());
-                            balance+=cuota;
+                            Double cuota=Double.parseDouble(sl.next());
+                            balance-=cuota;
                             nuevaLinea+=balance+";"+cuota;
-                            guardarDatos(generarIdCobro(f),fechaBruta,idCliente,cuota,conceptoCobrotxt.getText());
                         }
                         sl.close();
                         modificar(antiguaLinea,nuevaLinea );
-                        
                     }
                     s.close();
-                    JOptionPane.showMessageDialog(null, "Cobro generado");
+                    
                     diaActividadTxt.setText("");
-                    conceptoCobrotxt.setText("");
                     File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
-                    File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
-                    File auxiliar= new File(fAntiguo.getAbsolutePath());
+                    fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
+                    auxiliar= new File(fAntiguo.getAbsolutePath());
                     borrar(fAntiguo);
                     System.out.println(fNuevo.renameTo(auxiliar));
+                    JOptionPane.showMessageDialog(null, "Cobro generado");
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(null, "Cobro ya realizado anteriormente", "Cobro realizado anteriormente",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Cobro ya realizado anteriormente", "Cobro realizado anteriormetne",JOptionPane.ERROR_MESSAGE);
                     diaActividadTxt.setText("");
                 }
+                
+                
             }
             
         } catch (FileNotFoundException ex) {   
-            Logger.getLogger(PanelGenerarCobros.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelReversarCobros.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(PanelGenerarCobros.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelReversarCobros.class.getName()).log(Level.SEVERE, null, ex);
         }   
                 
             
         
     }//GEN-LAST:event_lblAgregarMouseClicked
-public void  guardarDatos(int id,String fecha,String idCliente,Double valorCuota, String conceptoC){
-        try
-        {
-           FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoCobros.txt",true);
-           PrintWriter pw= new PrintWriter(F1);
-           pw.println(id+";"+fecha+";"+idCliente+";"+valorCuota+";"+conceptoC+";"+"false");
-           pw.close();
-        } catch (Exception e) 
-        {
-            JOptionPane.showMessageDialog(null, "Error al grabar el archivo");
-        }
-    }
 
-public static int generarIdCobro(File f)
-{
-    if(!f.exists())
-        return 1;
-    else
-        {
-            int id=1;
-            try 
-            {
-                Scanner s=new Scanner(f);
-                Scanner sl = null;
-                while(s.hasNextLine())
-                {
-                  String linea= s.nextLine();
-                  sl= new Scanner(linea);
-                  sl.useDelimiter("\\s*;\\s*");
-                    if(Integer.parseInt(sl.next())==id)
-                        id++;
-                    else
-                        return id;
-                } 
-            }
-            catch (Exception ex) {
-                ex.printStackTrace();
-                return id+1;
-            }
-            return id;
-        }
-}
     
 public static boolean revisarEnArchivo(File archivo, String id)
     {
@@ -268,9 +224,13 @@ public static boolean revisarEnArchivo(File archivo, String id)
                   sl= new Scanner(linea);
                   sl.useDelimiter("\\s*;\\s*");
                     try {
-                        System.out.println(sl.next());
                         if(id.equals(sl.next()))
-                        return true;
+                        {
+                            s.close();
+                            sl.close();
+                            return true;
+                        }
+                        
                     else
                         return false;
                     } catch (Exception e) {
@@ -284,8 +244,49 @@ public static boolean revisarEnArchivo(File archivo, String id)
                 return false;
             }
         }
-        return false;
+        return true;
     }    
+
+public static boolean revisarEnArchivo2(File archivo, String linea2)
+    {
+        if (!archivo.exists()) {
+            return false;
+        }
+        else
+        {
+            try 
+            {
+                Scanner s=new Scanner(archivo);
+                while(s.hasNextLine())
+                {
+                  String linea= s.nextLine();
+                    try {
+                        if(linea2.equals(linea))
+                        {
+                            s.close();
+                            return true;
+                        }
+                        
+                    else
+                        {
+                            s.close();
+                            return false;
+                        }
+                        
+                    } catch (Exception e) {
+                        s.close();
+                        return false;
+                    }
+                    
+                } 
+            }
+            catch (Exception ex) {
+                Logger.getLogger(PanelSalas.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+        return true;
+    } 
 
     public static  void modificar(String lineaAntigua, String nuevaLinea) throws IOException{ 
        
@@ -309,6 +310,7 @@ public static boolean revisarEnArchivo(File archivo, String id)
                         
                 }
                 br.close();
+                String nAntiguo=fAntiguo.getName();
                 File auxiliar= new File(fAntiguo.getAbsolutePath());
                 borrar(fAntiguo);
                 System.out.println(fNuevo.renameTo(auxiliar));
@@ -319,6 +321,37 @@ public static boolean revisarEnArchivo(File archivo, String id)
             e.printStackTrace();
         }
     }
+    
+    public static  void modificar2(String fecha, String nuevaLinea) throws IOException{ 
+       
+       File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoCobros.txt");
+       File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal2.txt");
+       if(!fNuevo.exists())
+        fNuevo.createNewFile();
+       String nCadena=nuevaLinea;
+       String cadenaFNuevo="";
+       BufferedReader br;
+        try {
+            if(fAntiguo.exists())
+            {
+                br=new BufferedReader(new FileReader(fAntiguo));
+                String linea;
+                while((linea=br.readLine()) != null)
+                {
+                    if(!linea.contains(fecha)&&revisarEnArchivo2(fNuevo, linea)){
+                        escribir(fNuevo, nCadena);
+                    }
+                }
+                br.close();
+                
+            }
+            else
+                System.out.println("El archivo no existe");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public static void escribir(File Ffichero,String cadena)
     {
         BufferedWriter bw;
@@ -346,15 +379,24 @@ public static boolean revisarEnArchivo(File archivo, String id)
              System.out.println(ex.getMessage());
         }
     }
+    public void  guardarDatos(String linea){
+        try
+        {
+           FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temp.txt",true);
+           PrintWriter pw= new PrintWriter(F1);
+           pw.println(linea);
+           pw.close();
+        } catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null, "Error al grabar el archivo");
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField conceptoCobrotxt;
     private javax.swing.JTextField diaActividadTxt;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JLabel lblAgregar;
     private javax.swing.JLabel lblDinamico;

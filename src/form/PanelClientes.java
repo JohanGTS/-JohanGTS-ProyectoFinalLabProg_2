@@ -265,14 +265,21 @@ public class PanelClientes extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void idClienteTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idClienteTxtActionPerformed
-        int cod;
+        String cod;
         String status="";
         String tipo="";
-        cod=Integer.parseInt(idClienteTxt.getText());
-        boolean encontrado=false;
-        File archivoReservas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
-        Scanner s;  
-        Scanner sl = null;
+        if(!idClienteTxt.getText().matches("[0-9]{8}"))//.matches taoma una sub region de algo, en este caso números enteros del 0 al 9
+            {
+                idClienteTxt.setText("");
+                JOptionPane.showMessageDialog(null,"El teléfono solo acepta valores numéricos enteros y debe tener 10 dígitos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+            }
+        else
+        {
+            cod=idClienteTxt.getText();
+            boolean encontrado=false;
+            File archivoReservas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
+            Scanner s;  
+            Scanner sl = null;
             try {
                 
                 if(!archivoReservas.exists())
@@ -283,7 +290,7 @@ public class PanelClientes extends javax.swing.JPanel {
                     String linea=s.nextLine();
                     sl= new Scanner(linea);
                     sl.useDelimiter("\\s*;\\s*");
-                    if(cod==Integer.parseInt(sl.next())){
+                    if(cod.equals(sl.next())){
                         nombreClienteTxt.setText(sl.next());
                         apellidoPaternoTxt.setText(sl.next());
                         apellidoMaternoTxt.setText(sl.next());
@@ -367,6 +374,8 @@ public class PanelClientes extends javax.swing.JPanel {
             {
                 ex.printStackTrace();
             }
+        }
+        
     }//GEN-LAST:event_idClienteTxtActionPerformed
 
     private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked

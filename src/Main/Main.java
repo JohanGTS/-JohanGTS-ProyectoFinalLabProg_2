@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 import menu.MenuItem;
 import Login.Login;
 import form.PanelGenerarCobros;
+import form.PanelReversarCobros;
 import java.awt.Image;
 import java.awt.Toolkit;
 
@@ -173,8 +174,16 @@ public class Main extends javax.swing.JFrame {
        
         
         //  SubMenu del Procesos 
-        MenuItem menuGenerarCobro = new MenuItem(iconSubMenu, "Generar Cobro", null);
-        MenuItem menuReservarCobro = new MenuItem(iconSubMenu, "Reservar Cobro", null);
+        
+        MenuItem reversarCobro = new MenuItem(iconSubMenu, "Reversar cobros", new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
+                panelBody.add(new PanelReversarCobros());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });
         MenuItem menuActualizarCuotas = new MenuItem(iconSubMenu, "Actualizar Cuotas", null);
        MenuItem generarCobro = new MenuItem(iconSubMenu, "Generar cobros", new ActionListener() {
             @Override
@@ -215,7 +224,7 @@ public class Main extends javax.swing.JFrame {
 
         MenuItem menuMantenimiento = new MenuItem(iconMantenimiento, "Mantenimiento", null, menuUsuario, menuEntrenador, menuLocalizacion,menuSalas,menuActividad,menuHorarioActividad,menuClientes,menuEstadoReserva,menuReserva,menuReservasActividades);
         MenuItem menuMovimiento = new MenuItem(iconMovimiento, "Movimientos", null, menuCuotas);
-        MenuItem menuproceso = new MenuItem(iconProcesos, "Procesos", null,generarCobro,menuReservarCobro,menuActualizarCuotas);
+        MenuItem menuproceso = new MenuItem(iconProcesos, "Procesos", null,generarCobro,reversarCobro,menuActualizarCuotas);
         MenuItem menuConsultas = new MenuItem(iconConsultas, "Consultas", null, menuusuario,menuentrenador,menulocalizacion,menusalas,menuactividad,menuhorarioactividad,menuCobroFecha,menuCobroCliente,menuCuotaFecha,menuCuotaClientes,menuClientesBalance);
         MenuItem menuSalir = new MenuItem(iconSalir, "Salir", new ActionListener(){
            @Override
@@ -367,6 +376,7 @@ public class Main extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */

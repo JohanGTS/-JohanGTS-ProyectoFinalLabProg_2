@@ -1,4 +1,2 @@
 admin;rootroot; 0;admin;admin;
 kkk;oooopppp ; 1;user;user;
-asda;asdasdasd;1;asd;asd;
-asda;asdasdasd;0;asd;asdita;
