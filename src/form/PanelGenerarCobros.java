@@ -151,7 +151,6 @@ public class PanelGenerarCobros extends javax.swing.JPanel {
                 
                 if(!revisarEnArchivo(f, fechaBruta))
                 {
-                    
                     File f2= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
                     s= new Scanner(f2);
                     while(s.hasNext())
@@ -245,9 +244,6 @@ public static int generarIdCobro(File f)
                   sl= new Scanner(linea);
                   sl.useDelimiter("\\s*;\\s*");
                   int a=Integer.parseInt(sl.next());
-                    System.out.println(a);
-                    System.out.println(id);
-                    System.out.println("-------------");
                     if(id<=a)
                     {
                         while(id<=a+aux)
@@ -266,16 +262,18 @@ public static int generarIdCobro(File f)
         }
 }
     
-public static boolean revisarEnArchivo(File archivo, String id)
+public static boolean revisarEnArchivo(File archivo, String id) throws FileNotFoundException
     {
+        Scanner s=new Scanner(archivo);
         if (!archivo.exists()) {
+            s.close();
             return false;
         }
         else
         {
             try 
             {
-                Scanner s=new Scanner(archivo);
+                
                 Scanner sl = null;
                 while(s.hasNextLine())
                 {
@@ -285,10 +283,16 @@ public static boolean revisarEnArchivo(File archivo, String id)
                     try {
                         System.out.println(sl.next());
                         if(id.equals(sl.next()))
-                        return true;
-                    else
-                        return false;
+                        {
+                            s.close();
+                            return true;
+                        }
+                        else{
+                            s.close();
+                            return false;
+                        }
                     } catch (Exception e) {
+                        s.close();
                         return false;
                     }
                   
@@ -296,9 +300,11 @@ public static boolean revisarEnArchivo(File archivo, String id)
             }
             catch (Exception ex) {
                 Logger.getLogger(PanelSalas.class.getName()).log(Level.SEVERE, null, ex);
+                s.close();
                 return false;
             }
         }
+        s.close();
         return false;
     }    
 

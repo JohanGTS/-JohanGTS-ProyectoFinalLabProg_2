@@ -149,10 +149,7 @@ public class PanelReversarCobros extends javax.swing.JPanel {
                 borrar(f);
                 System.out.println("a");
                 File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal2.txt");
-                if(fNuevo.exists())
-                    System.out.println("existe");
-                else 
-                    System.out.println("no existe");
+                
                 System.out.println(fNuevo.renameTo(auxiliar));
                 System.out.println("b");
                 if(!revisarEnArchivo(f, fechaBruta))
@@ -269,26 +266,22 @@ public static boolean revisarEnArchivo2(File archivo, String linea2)
                 s=new Scanner(archivo);
                 while(s.hasNextLine())
                 {
-                    System.out.println("Lo abrió");
                   String linea= s.nextLine();
                     try {
                         if(linea2.equals(linea))
                         {
-                            s.close();
-                            System.out.println("Lo cierra");   
+                            s.close();  
                             return true;
                         }
                         
                     else
                         {
-                            s.close();
-                            System.out.println("Lo cierra");   
+                            s.close(); 
                             return false;
                         }
                     } 
                     catch (Exception e) {
-                        s.close();
-                        System.out.println("Lo cierra");   
+                        s.close(); 
                         return false;
                     }
                     
@@ -297,7 +290,6 @@ public static boolean revisarEnArchivo2(File archivo, String linea2)
             catch (Exception ex) {
                 Logger.getLogger(PanelSalas.class.getName()).log(Level.SEVERE, null, ex);
                 s.close();
-                System.out.println("Lo cierra");   
                 return false;
             }
         }
