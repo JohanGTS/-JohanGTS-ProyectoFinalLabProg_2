@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package form;
+import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -15,6 +16,9 @@ public class PanelConsultaUsuario extends javax.swing.JPanel {
     public PanelConsultaUsuario() {
         initComponents();
         Tabla=( DefaultTableModel)this.jTable1.getModel();
+        jTable1.setBackground(Color.white);
+        
+        
     }
 
     /**
@@ -27,6 +31,7 @@ public class PanelConsultaUsuario extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        txtPorNombre1 = new javax.swing.JTextField();
         Consultar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtPorNombre = new javax.swing.JTextField();
@@ -39,18 +44,35 @@ public class PanelConsultaUsuario extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
+        txtPorNombre1.setBackground(new java.awt.Color(0, 0, 0));
+        txtPorNombre1.setFont(new java.awt.Font("Californian FB", 0, 18)); // NOI18N
+        txtPorNombre1.setForeground(new java.awt.Color(255, 255, 255));
+        txtPorNombre1.setText("Consulta de Usuario");
+        txtPorNombre1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtPorNombre1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPorNombre1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(169, 169, 169)
+                .addComponent(txtPorNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(231, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtPorNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 50));
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 50));
 
         Consultar.setText("Consultar");
         Consultar.addActionListener(new java.awt.event.ActionListener() {
@@ -72,21 +94,29 @@ public class PanelConsultaUsuario extends javax.swing.JPanel {
         add(txtPorNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, 210, 30));
         add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 600, 10));
 
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Login Usuario", "Contrasena", "Nivel Acceso", "Nombre", "Apellido", "Correo Electronico"
+                "Login Usuario", "Contraseña", "Nivel Acceso", "Nombre", "Apellido", "Correo Electronico"
             }
         ));
         jTable1.setGridColor(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(jTable1);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 600, 560));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 600, 190));
     }// </editor-fold>//GEN-END:initComponents
 
     private void ConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultarActionPerformed
@@ -173,6 +203,10 @@ public class PanelConsultaUsuario extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txtPorNombreActionPerformed
 
+    private void txtPorNombre1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPorNombre1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPorNombre1ActionPerformed
+
     
 
 
@@ -184,5 +218,6 @@ public class PanelConsultaUsuario extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField txtPorNombre;
+    private javax.swing.JTextField txtPorNombre1;
     // End of variables declaration//GEN-END:variables
 }

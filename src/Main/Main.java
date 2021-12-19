@@ -24,6 +24,12 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import menu.MenuItem;
 import Login.Login;
+import form.PanelActualizarCuotas;
+import form.PanelConsultaActividad;
+import form.PanelConsultaEntrenador;
+import form.PanelConsultaHorarioActividades;
+import form.PanelConsultaLocalizacion;
+import form.PanelConsultaSalas;
 import form.PanelConsultaUsuario;
 import form.PanelGenerarCobros;
 import form.PanelReversarCobros;
@@ -185,7 +191,15 @@ public class Main extends javax.swing.JFrame {
                 panelBody.revalidate();
             }
         });
-        MenuItem menuActualizarCuotas = new MenuItem(iconSubMenu, "Actualizar Cuotas", null);
+        MenuItem menuActualizarCuotas = new MenuItem(iconSubMenu, "Actualizar Cuotas", new ActionListener(){
+         @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
+                panelBody.add(new PanelActualizarCuotas());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });
        MenuItem generarCobro = new MenuItem(iconSubMenu, "Generar cobros", new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -210,11 +224,54 @@ public class Main extends javax.swing.JFrame {
         });
         
         
-        MenuItem menuentrenador = new MenuItem(iconSubMenu, "Entrenador", null);
-        MenuItem menulocalizacion = new MenuItem(iconSubMenu, "Localizacion", null);
-        MenuItem menusalas = new MenuItem(iconSubMenu, "Salas", null);
-        MenuItem menuactividad = new MenuItem(iconSubMenu, "Actividad", null);
-        MenuItem menuhorarioactividad = new MenuItem(iconSubMenu, "Horario Actividad", null);
+        MenuItem menuentrenador = new MenuItem(iconSubMenu, "Entrenador", new ActionListener() {
+          @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
+                panelBody.add(new PanelConsultaEntrenador());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });  
+        
+        MenuItem menulocalizacion = new MenuItem(iconSubMenu, "Localizacion", new ActionListener() {
+        @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
+                panelBody.add(new PanelConsultaLocalizacion());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });  
+        
+        MenuItem menusalas = new MenuItem(iconSubMenu, "Salas", new ActionListener() {
+        @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
+                panelBody.add(new PanelConsultaSalas());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });  
+        
+        MenuItem menuactividad = new MenuItem(iconSubMenu, "Actividad", new ActionListener() {
+        @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
+                panelBody.add(new PanelConsultaActividad());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });
+        MenuItem menuhorarioactividad = new MenuItem(iconSubMenu, "Horario Actividad", new ActionListener() {
+        @Override
+            public void actionPerformed(ActionEvent ae) {
+                panelBody.removeAll();
+                panelBody.add(new PanelConsultaHorarioActividades());
+                panelBody.repaint();
+                panelBody.revalidate();
+            }
+        });
         MenuItem menuCobroFecha = new MenuItem(iconSubMenu, "Cobro por Rango de Fecha", null);
         MenuItem menuCobroCliente = new MenuItem(iconSubMenu, "Cobro por Clientes", null);
         MenuItem menuCuotaFecha = new MenuItem(iconSubMenu, "Cuota por Fecha", null);
