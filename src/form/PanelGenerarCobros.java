@@ -141,6 +141,7 @@ public class PanelGenerarCobros extends javax.swing.JPanel {
             
             if(!vacio)
                 JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
+            
             else
             {   
                 Scanner s;
@@ -224,42 +225,7 @@ public void  guardarDatos(int id,String fecha,String idCliente,Double valorCuota
 
 public static int generarIdCobro(File f)
 {
-    
-    if(!f.exists())
-    {
-        System.out.println("no existe");
-        return 1;
-    }
-        
-    else
-        {
-            int id=1;
-            try 
-            {
-                Scanner s=new Scanner(f);
-                Scanner sl = null;
-                while(s.hasNextLine())
-                {
-                  String linea= s.nextLine();
-                  sl= new Scanner(linea);
-                  sl.useDelimiter("\\s*;\\s*");
-                  int a=Integer.parseInt(sl.next());
-                    if(id<=a)
-                    {
-                        while(id<=a+aux)
-                            id++;
-                        aux++;
-                    }
-                    else
-                        return id;
-                } 
-            }
-            catch (Exception ex) {
-                ex.printStackTrace();
-                return id+1;
-            }
-            return id;
-        }
+        return (int)(Math.random()*8000000+1);
 }
     
 public static boolean revisarEnArchivo(File archivo, String id) throws FileNotFoundException

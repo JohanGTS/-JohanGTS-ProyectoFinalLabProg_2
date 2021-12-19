@@ -1,2 +1,2 @@
-12345678;aaaaaaaaaaaa;aaaaaaaaaaaaa;aaaaaaaaaaaaaaaa;aaaaaaaaaaaaaaaaaaaaa;10/11/2002;1234567812;1234567878;10/11/2002;activo;activo;;4000.0;500.0
-45645689;aaaaaaaaaaaaaa;aaaaaaaaaaaaa;aaaaaaaaaaaaaa;aaaaaaaaaaaaaaaa;10/11/2002;1231231231;1231231233;10/11/2002;activo;activo;aaaa@aaaa.com;1600.0;200.0
+12345678;aaaaaaaaaaaa;aaaaaaaaaaaaa;aaaaaaaaaaaaaaaa;aaaaaaaaaaaaaaaaaaaaa;10/11/2002;1234567812;1234567878;10/11/2002;activo;activo;;500.0;500.0
+45645689;aaaaaaaaaaaaaa;aaaaaaaaaaaaa;aaaaaaaaaaaaaa;aaaaaaaaaaaaaaaa;10/11/2002;1231231231;1231231233;10/11/2002;activo;activo;aaaa@aaaa.com;200.0;200.0

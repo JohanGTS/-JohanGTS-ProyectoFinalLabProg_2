@@ -229,16 +229,23 @@ public static boolean revisarEnArchivo(File archivo, String id)
                   sl= new Scanner(linea);
                   sl.useDelimiter("\\s*;\\s*");
                     try {
-                        if(id.equals(sl.next()))
+                        if(linea.contains(id))
                         {
                             s.close();
                             sl.close();
                             return true;
                         }
                         
-                    else
-                        return false;
+                        else
+                        {
+                            s.close();
+                            sl.close();
+                            return false;
+                        }
+                        
                     } catch (Exception e) {
+                        s.close();
+                        sl.close();
                         return false;
                     }
                   
@@ -339,7 +346,7 @@ public static boolean revisarEnArchivo2(File archivo, String linea2)
         fNuevo.createNewFile();
        String nCadena=nuevaLinea;
        String cadenaFNuevo="";
-       BufferedReader br;
+       BufferedReader br = null;
         try {
             if(fAntiguo.exists())
             {
@@ -356,6 +363,7 @@ public static boolean revisarEnArchivo2(File archivo, String linea2)
             else
                 System.out.println("El archivo no existe");
         } catch (Exception e) {
+            br.close();
             e.printStackTrace();
         }
     }
