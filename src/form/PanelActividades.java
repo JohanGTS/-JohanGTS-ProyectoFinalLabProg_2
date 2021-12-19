@@ -144,9 +144,9 @@ public class PanelActividades extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void idActividadTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idActividadTxtActionPerformed
-        int cod;
+        String cod;
         boolean encontrado=false;
-        cod=Integer.parseInt(idActividadTxt.getText());
+        cod=idActividadTxt.getText();
         Scanner s;
         Scanner sl = null;
         try 
@@ -167,7 +167,7 @@ public class PanelActividades extends javax.swing.JPanel {
                   sl.useDelimiter("\\s*;\\s*");
                   try 
                   {
-                      if(cod==Integer.parseInt(sl.next()))
+                      if(cod.equals(sl.next()))
                       {
                           nombreActividadTxt.setText(sl.next());
                           descripcionActividad.setText(sl.next());
@@ -255,8 +255,8 @@ public class PanelActividades extends javax.swing.JPanel {
                 }
                 else
                 {
-                    int cod;
-                    cod=Integer.parseInt(idLocalizacionActTxt.getText());
+                    String cod;
+                    cod=idLocalizacionActTxt.getText();
                     if(!revisarEnArchivo(archId, cod))
                     {
                         idLocalizacionActTxt.setText("");
@@ -283,8 +283,8 @@ public class PanelActividades extends javax.swing.JPanel {
                 }
                 else
                 {
-                    int cod;
-                    cod=Integer.parseInt(idEntrenadorActTxt.getText());
+                    String cod;
+                    cod=idEntrenadorActTxt.getText();
                     if(!revisarEnArchivo(archId, cod))
                     {
                         idEntrenadorActTxt.setText("");
@@ -299,11 +299,11 @@ public class PanelActividades extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
             else
             {
-                int idActividad=Integer.parseInt(idActividadTxt.getText());
+                String idActividad=idActividadTxt.getText();
                 String nombre=nombreActividadTxt.getText();
                 String descripcion=descripcionActividad.getText();
-                int idLocalizacion=Integer.parseInt(idLocalizacionActTxt.getText());
-                int idEntrenador= Integer.parseInt(idEntrenadorActTxt.getText());
+                String idLocalizacion=idLocalizacionActTxt.getText();
+                String idEntrenador=idEntrenadorActTxt.getText();
                 if(!crear)
                     guardarDatos(idActividad, nombre,descripcion,idLocalizacion,idEntrenador);
                 else
@@ -317,12 +317,13 @@ public class PanelActividades extends javax.swing.JPanel {
                 idActividadTxt.setText("");
                 idLocalizacionActTxt.setText("");
                 idEntrenadorActTxt.setText("");
+                lblDinamico.setText("");
             }
         } catch (IOException ex) {
             Logger.getLogger(PanelActividades.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
-public void  guardarDatos(int idActividad,String nombre, String descripcion,int idLocalizacion, int idEntrenador){
+public void  guardarDatos(String idActividad,String nombre, String descripcion,String idLocalizacion, String idEntrenador){
         try
         {
            FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoActividades.txt",true);
@@ -360,7 +361,6 @@ public void  guardarDatos(int idActividad,String nombre, String descripcion,int 
                         
                 }
                 br.close();
-                String nAntiguo=fAntiguo.getName();
                 File auxiliar= new File(fAntiguo.getAbsolutePath());
                 borrar(fAntiguo);
                 System.out.println(fNuevo.renameTo(auxiliar));
@@ -401,7 +401,7 @@ public void  guardarDatos(int idActividad,String nombre, String descripcion,int 
              System.out.println(ex.getMessage());
         }
     }
-     public boolean revisarEnArchivo(File archivo, int id)
+     public boolean revisarEnArchivo(File archivo, String id)
     {
         if (!archivo.exists()) {
             return false;
@@ -417,7 +417,7 @@ public void  guardarDatos(int idActividad,String nombre, String descripcion,int 
                   String linea= s.nextLine();
                   sl= new Scanner(linea);
                   sl.useDelimiter("\\s*;\\s*");
-                  if(id==Integer.parseInt(sl.next()))
+                  if(id.equals(sl.next()))
                       return true;
                   else
                       return false;

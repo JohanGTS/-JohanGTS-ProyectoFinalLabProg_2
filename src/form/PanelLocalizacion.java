@@ -194,6 +194,7 @@ public class PanelLocalizacion extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, "Localización agregada correctamente");
                 idTxt.setText("");
                 tipoTxt.setText("");
+                lblDinamico.setText("");
                 }
             
         } catch (Exception e) {

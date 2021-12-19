@@ -424,7 +424,7 @@ public class PanelClientes extends javax.swing.JPanel {
                     {
                         vacio=false;
                         valorCuotasTxt.setText("");
-                        JOptionPane.showMessageDialog(null,"El valor de la cuota debe ser un número positivo","Longitud incorrecta",JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null,"El valor de la cuota debe ser un número positivo","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
 
                     }
                 } 
@@ -432,7 +432,7 @@ public class PanelClientes extends javax.swing.JPanel {
                 {
                     vacio=false;
                     valorCuotasTxt.setText("");
-                    JOptionPane.showMessageDialog(null,"El valor de la cuota debe ser un número positivo","Longitud incorrecta",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"El valor de la cuota debe ser un número positivo","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
 
                 }
                 
@@ -443,6 +443,17 @@ public class PanelClientes extends javax.swing.JPanel {
             }
             if(balanceTxt.getText().isEmpty())
                 balanceTxt.setText("0");
+            if(!correoElectronicoTxt.getText().isEmpty()&&!correoElectronicoTxt.getText().equals("ninguno"))
+            {
+                if(correoElectronicoTxt.getText().length()<8||!correoElectronicoTxt.getText().contains("@")||!correoElectronicoTxt.getText().contains("."))
+                {
+                    JOptionPane.showMessageDialog(null,"El correo debe contener mínimo un @ un . y tener una longitud de 8 caracteres","Longitud insuficiente",JOptionPane.ERROR_MESSAGE);
+                    correoElectronicoTxt.setText(" ");
+                    vacio=false;
+                } 
+            }
+            else
+                correoElectronicoTxt.setText("ninguno");
             if(!fechaNacimientoTxt.getText().isEmpty())
             {
                 String fechaBruta=fechaNacimientoTxt.getText();
@@ -509,7 +520,7 @@ public class PanelClientes extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
             else
             {
-                int idClie=Integer.parseInt(idClienteTxt.getText());
+                String idClie=idClienteTxt.getText();
                 String nom=nombreClienteTxt.getText();
                 String apeP=apellidoPaternoTxt.getText();
                 String apeM=apellidoMaternoTxt.getText();
@@ -551,6 +562,7 @@ public class PanelClientes extends javax.swing.JPanel {
                 celularTxt.setText("");
                 correoElectronicoTxt.setText("");
                 balanceTxt.setText("");
+                lblDinamico.setText("");
                 valorCuotasTxt.setText("");
                 pasivoEstatus.setSelected(true);
                 invitadoTipo.setSelected(true);
@@ -559,7 +571,7 @@ public class PanelClientes extends javax.swing.JPanel {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
-public void guardarDatos(int id,String nombre,String apePat,String apeMat, String direc, Date fechaNac, String telefono,
+public void guardarDatos(String id,String nombre,String apePat,String apeMat, String direc, Date fechaNac, String telefono,
 String celular, Date fechaIng, String status, String tipo,String correo, double balance, double valorCuotas){
         try
         {

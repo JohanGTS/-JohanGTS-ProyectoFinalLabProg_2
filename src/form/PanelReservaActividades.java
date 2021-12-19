@@ -175,8 +175,8 @@ public class PanelReservaActividades extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void idReservaActividadTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idReservaActividadTxtActionPerformed
-        int cod;
-        cod=Integer.parseInt(idReservaActividadTxt.getText());
+        String cod;
+        cod=idReservaActividadTxt.getText();
         boolean encontrado=false;
         File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservaActividades.txt");
         Scanner s;  
@@ -195,7 +195,7 @@ public class PanelReservaActividades extends javax.swing.JPanel {
                     sl.useDelimiter("\\s*;\\s*");
                     try 
                     {
-                        if(cod==Integer.parseInt(sl.next())){
+                        if(cod.equals(sl.next())){
                         fechaReservaTxt.setText(sl.next());
                         fechaBajaTxt.setText(sl.next());
                         idEstadoReservaActTxt.setText(sl.next());
@@ -433,11 +433,11 @@ public class PanelReservaActividades extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
             else
             {
-                int idR=Integer.parseInt(idReservaActividadTxt.getText());
-                int idEstado= Integer.parseInt(idEstadoReservaActTxt.getText());
-                int idClienteReser= Integer.parseInt(idClienteReservaActTxt.getText());
-                int idActividad= Integer.parseInt(idActividadTxt.getText());
-                int idReservaHora= Integer.parseInt(idReservaHoraActTxt.getText());
+                String idR=idReservaActividadTxt.getText();
+                String idEstado= idEstadoReservaActTxt.getText();
+                String idClienteReser= idClienteReservaActTxt.getText();
+                String idActividad=idActividadTxt.getText();
+                String idReservaHora=idReservaHoraActTxt.getText();
                 if(!crear)
                     guardarDatos(idR, fechaR, fechaB, idEstado,idClienteReser,idActividad,idReservaHora);
                 else
@@ -453,14 +453,14 @@ public class PanelReservaActividades extends javax.swing.JPanel {
                 idClienteReservaActTxt.setText("");
                 idActividadTxt.setText("");
                 idReservaHoraActTxt.setText("");
-                
+                lblDinamico.setText("");
             
             }
         } catch (IOException ex) {
             Logger.getLogger(PanelReservaActividades.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
-public void  guardarDatos(int idR,Date fechaR,Date fechaB,int idEstado,int idClienteReser, int idAct,int idReservaHoraAct){
+public void  guardarDatos(String idR,Date fechaR,Date fechaB,String idEstado,String idClienteReser, String idAct,String idReservaHoraAct){
         try
         {
            FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservaActividades.txt",true);

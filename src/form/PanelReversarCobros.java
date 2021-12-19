@@ -126,6 +126,7 @@ public class PanelReversarCobros extends javax.swing.JPanel {
                 vacio=false;    
                 diaActividadTxt.setText("");
             }
+            
                 
             if(!vacio)
                 JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);

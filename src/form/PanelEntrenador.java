@@ -144,7 +144,7 @@ public class PanelEntrenador extends javax.swing.JPanel {
         try {
             if(!f.exists())
                 f.createNewFile();
-            if(idTxt.getText().equals("")||nombreTxt.getText().equals("")||apellidosTxt.getText().equals("")||telefonoTxt.getText().equals(""))
+            if(idTxt.getText().isEmpty()||nombreTxt.getText().isEmpty()||apellidosTxt.getText().isEmpty()||telefonoTxt.getText().isEmpty())
                 vacio=false;
             if(!correoElectronicoTxt.getText().isEmpty())
             {
@@ -167,11 +167,22 @@ public class PanelEntrenador extends javax.swing.JPanel {
                 telefonoTxt.setText("");
                 JOptionPane.showMessageDialog(null,"El teléfono solo acepta valores numéricos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
+            if(!correoElectronicoTxt.getText().isEmpty()&&!correoElectronicoTxt.getText().equals("ninguno"))
+            {
+                if(correoElectronicoTxt.getText().length()<8||!correoElectronicoTxt.getText().contains("@")||!correoElectronicoTxt.getText().contains("."))
+                {
+                    JOptionPane.showMessageDialog(null,"El correo debe contener mínimo un @ un . y tener una longitud de 8 caracteres","Longitud insuficiente",JOptionPane.ERROR_MESSAGE);
+                    correoElectronicoTxt.setText(" ");
+                    vacio=false;
+                } 
+            }
+            else
+                correoElectronicoTxt.setText("ninguno");
             if(!vacio)
                 JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
             else
             {
-                int id=Integer.parseInt(idTxt.getText());
+                String id=idTxt.getText();
                 String nomb=nombreTxt.getText();
                 String ape= apellidosTxt.getText();
                 String tel= telefonoTxt.getText();
@@ -189,6 +200,7 @@ public class PanelEntrenador extends javax.swing.JPanel {
                 apellidosTxt.setText("");
                 telefonoTxt.setText("");
                 correoElectronicoTxt.setText("");
+                lblDinamico.setText("");
                 }
             
         } catch (Exception e) {
@@ -260,7 +272,7 @@ public class PanelEntrenador extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }//GEN-LAST:event_idTxtActionPerformed
-public void  guardarDatos(int id,String nombre,String apellido, String telefono, String correo){
+public void  guardarDatos(String id,String nombre,String apellido, String telefono, String correo){
         try
         {
            FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEntrenador.txt",true);

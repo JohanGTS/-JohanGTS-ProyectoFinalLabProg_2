@@ -197,7 +197,7 @@ public class PanelUsuario extends javax.swing.JPanel {
                 loginUsuarioTxt.setText("");
                 vacio=false;
             }
-            if(!correoElectronicoTxt.getText().isEmpty())
+            if(!correoElectronicoTxt.getText().isEmpty()&&!correoElectronicoTxt.getText().equals("ninguno"))
             {
                 if(correoElectronicoTxt.getText().length()<8||!correoElectronicoTxt.getText().contains("@")||!correoElectronicoTxt.getText().contains("."))
                 {
@@ -206,6 +206,8 @@ public class PanelUsuario extends javax.swing.JPanel {
                     vacio=false;
                 } 
             }
+            else
+                correoElectronicoTxt.setText("ninguno");
             if(!vacio)
                 JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
             
@@ -231,7 +233,6 @@ public class PanelUsuario extends javax.swing.JPanel {
                     sNuevaLinea=(log+";"+pass+";"+nivel+";"+nomb+";"+app+";"+correo);
                     modificar(sAntiguaLinea,sNuevaLinea);
                 }
-                JOptionPane.showMessageDialog(null, "Usuario agregado correctamente");
                 loginUsuarioTxt.setText("");
                 contrasenaPassFl.setText("");
                 nivel0.setSelected(false);
@@ -239,6 +240,8 @@ public class PanelUsuario extends javax.swing.JPanel {
                 nombreTxt.setText("");
                 apellidosTxt.setText("");
                 correoElectronicoTxt.setText("");
+                lblDinamico.setText("");
+                JOptionPane.showMessageDialog(null, "Usuario agregado correctamente");
                 }
             
         } catch (Exception e) {

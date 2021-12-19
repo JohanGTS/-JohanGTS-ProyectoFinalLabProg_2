@@ -283,10 +283,10 @@ public class PanelHorarioActividades extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
             else
             {   
-                int idHorario=Integer.parseInt(idHorarioActividadTxt.getText());
+                String idHorario=idHorarioActividadTxt.getText();
                 String dia=diaActividadTxt.getText();
                 String hora=horaActividadTxt.getText();
-                int idActividad=Integer.parseInt(idActividadTxt.getText());
+                String idActividad=idActividadTxt.getText();
                 
                 if(!crear)
                     guardarDatos(idHorario, dia, hora, idActividad);
@@ -300,13 +300,14 @@ public class PanelHorarioActividades extends javax.swing.JPanel {
                 idHorarioActividadTxt.setText("");
                 horaActividadTxt.setText("");
                 diaActividadTxt.setText("");
+                lblDinamico.setText("");
                 }
             
         } catch (Exception e) {
             e.printStackTrace();
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
-public void  guardarDatos(int idHorario,String dia,String hora,int idActividad){
+public void  guardarDatos(String idHorario,String dia,String hora,String idActividad){
         try
         {
            FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoHorarioActividades.txt",true);

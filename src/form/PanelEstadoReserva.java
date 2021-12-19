@@ -209,6 +209,7 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, "Estado de reserva agregado correctamente");
                 idEstadoReserva.setText("");
                 noReservado.setSelected(true);
+                lblDinamico.setText("");
             }
         } catch (IOException ex) {
             Logger.getLogger(PanelEstadoReserva.class.getName()).log(Level.SEVERE, null, ex);

@@ -225,6 +225,7 @@ public class PanelSalas extends javax.swing.JPanel {
                 idSalasTxt.setText("");
                 nombreSalaTxt.setText("");
                 descripcionSalaTxt.setText("");
+                lblDinamico.setText("");
             }
         } catch (IOException ex) {
             Logger.getLogger(PanelSalas.class.getName()).log(Level.SEVERE, null, ex);

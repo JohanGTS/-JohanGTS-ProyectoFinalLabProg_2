@@ -164,8 +164,8 @@ public class PanelReservas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void idReservaTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idReservaTxtActionPerformed
-        int cod;
-        cod=Integer.parseInt(idReservaTxt.getText());
+        String cod;
+        cod=idReservaTxt.getText();
         boolean encontrado=false;
         File archivoReservas= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservas.txt");
         Scanner s;  
@@ -183,7 +183,7 @@ public class PanelReservas extends javax.swing.JPanel {
                         sl.useDelimiter("\\s*;\\s*");
                         try 
                         {
-                            if(cod==Integer.parseInt(sl.next()))
+                            if(cod.equals(sl.next()))
                         {
                             idSalaReservaTxt.setText(sl.next());
                             idClienteReservaTxt.setText(sl.next());
@@ -389,12 +389,12 @@ public class PanelReservas extends javax.swing.JPanel {
             
             else
             {
-                int idReserva=Integer.parseInt(idReservaTxt.getText());
-                int idSala=Integer.parseInt(idSalaReservaTxt.getText());
-                int idCliente=Integer.parseInt(idClienteReservaTxt.getText());
+                String idReserva=idReservaTxt.getText();
+                String idSala=idSalaReservaTxt.getText();
+                String idCliente=idClienteReservaTxt.getText();
                 Date fechas=fecha;
                 String horario=hora;
-                int idEstado=Integer.parseInt(idEstadoReservaTxt.getText());
+                String idEstado=idEstadoReservaTxt.getText();
                 if(!crear)
                     guardarDatos(idReserva, idSala, idCliente, fechas, horario, idEstado);
                 else
@@ -409,13 +409,14 @@ public class PanelReservas extends javax.swing.JPanel {
                 idSalaReservaTxt.setText("");
                 fechaReservaTxt.setText("");
                 horarioReservaTxt.setText("");
+                lblDinamico.setText("");
                 }
             
         } catch (Exception e) {
             e.printStackTrace();
         }
     }//GEN-LAST:event_lblAgregarMouseClicked
-public void  guardarDatos(int idReserva,int idSalaReserva, int idClienteReserva,Date reserva,String horario, int estado){
+public void  guardarDatos(String idReserva,String idSalaReserva, String idClienteReserva,Date reserva,String horario, String estado){
         try
         {
            FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservas.txt",true);
