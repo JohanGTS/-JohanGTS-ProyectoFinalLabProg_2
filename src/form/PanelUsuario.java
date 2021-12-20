@@ -6,38 +6,23 @@
 package form;
 
 import Placeholder.TextPrompt;
-import Tablas.Usuarios;
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.security.spec.NamedParameterSpec;
-import java.util.Random;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
-import javax.swing.border.Border;
 
-/**
- *
- * @author Johan Tavera
- */
 public class PanelUsuario extends javax.swing.JPanel {
 
     public static String sAntiguaLinea="";
     public static String sNuevaLinea="";
     public static boolean crear;
     private static Scanner s;
-    
-    /**
-     * Creates new form Panel1
-     */
+ 
     public PanelUsuario() {
         initComponents();
         grupoNivelAcceso.add(nivel0);
@@ -347,8 +332,6 @@ public class PanelUsuario extends javax.swing.JPanel {
        
        File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuarios.txt");
        File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
-       String aCadena=lineaAntigua;
-       String nCadena=nuevaLinea;
        
        BufferedReader br;
         try {
@@ -358,8 +341,8 @@ public class PanelUsuario extends javax.swing.JPanel {
                 String linea;
                 while((linea=br.readLine()) != null)
                 {
-                    if(linea.equals(aCadena)){
-                        escribir(fNuevo, nCadena);
+                    if(linea.equals(lineaAntigua)){
+                        escribir(fNuevo, nuevaLinea);
                     }
                         
                     else{
@@ -368,7 +351,6 @@ public class PanelUsuario extends javax.swing.JPanel {
                         
                 }
                 br.close();
-                String nAntiguo=fAntiguo.getName();
                 File auxiliar= new File(fAntiguo.getAbsolutePath());
                 borrar(fAntiguo);
                 System.out.println(fNuevo.renameTo(auxiliar));

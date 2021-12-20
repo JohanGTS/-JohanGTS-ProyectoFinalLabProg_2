@@ -5,7 +5,6 @@ import Placeholder.TextPrompt;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,10 +12,6 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Gabriel Marte
- */
 public class PanelEntrenador extends javax.swing.JPanel {
 
     public static String sAntiguaLinea="";
@@ -148,24 +143,26 @@ public class PanelEntrenador extends javax.swing.JPanel {
                 vacio=false;
             if(!correoElectronicoTxt.getText().isEmpty())
             {
-                if(correoElectronicoTxt.getText().length()<8||!correoElectronicoTxt.getText().contains("@")||!correoElectronicoTxt.getText().contains("."))
+                if(correoElectronicoTxt.getText().length()<8||!correoElectronicoTxt.getText().contains("@")||!correoElectronicoTxt.getText().contains("ninguno"))
                 {
                     JOptionPane.showMessageDialog(null,"El correo debe contener mínimo un @ un . y tener una longitud de 8 caracteres","Longitud insuficiente",JOptionPane.ERROR_MESSAGE);
                     correoElectronicoTxt.setText("");
                     vacio=false;
                 } 
             }
-            if(!idTxt.getText().matches("[0-9]{8}"))//.matches taoma una sub region de algo, en este caso números enteros del 0 al 9
+            else
+                correoElectronicoTxt.setText("ninguno");
+            if(!idTxt.getText().matches("[0-9]{8}"))//.matches toma una sub region de algo, en este caso números enteros del 0 al 9
             {
                 vacio=false;
                 idTxt.setText("");
-                JOptionPane.showMessageDialog(null,"El id del entrenador solo acepta valores numéricos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El id del entrenador solo a acepta valores numérios enteros y debe contener 8 de los mismos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
-            if(!telefonoTxt.getText().matches("[0-9]{10}"))//.matches taoma una sub region de algo, en este caso números enteros del 0 al 9
+            if(!telefonoTxt.getText().matches("[0-9]{10}"))//.matches toma una sub region de algo, en este caso números enteros del 0 al 9
             {
                 vacio=false;
                 telefonoTxt.setText("");
-                JOptionPane.showMessageDialog(null,"El teléfono solo acepta valores numéricos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El teléfono solo  acepta valores numérios enteros y debe contener 8 de los mismos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
             if(!correoElectronicoTxt.getText().isEmpty()&&!correoElectronicoTxt.getText().equals("ninguno"))
             {
@@ -194,7 +191,7 @@ public class PanelEntrenador extends javax.swing.JPanel {
                     sNuevaLinea=(id+";"+nomb+";"+ape+";"+tel+";"+correo);
                     modificar(sAntiguaLinea,sNuevaLinea);
                 }
-                JOptionPane.showMessageDialog(null, "Entrenador agregada correctamente");
+                JOptionPane.showMessageDialog(null, "Entrenador agregado correctamente");
                 idTxt.setText("");
                 nombreTxt.setText("");
                 apellidosTxt.setText("");
@@ -209,9 +206,9 @@ public class PanelEntrenador extends javax.swing.JPanel {
     }//GEN-LAST:event_lblAgregarMouseClicked
 
     private void idTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idTxtActionPerformed
-        int cod;
+        String cod;
         boolean encontrado=false;
-        cod=Integer.parseInt(idTxt.getText());
+        cod=idTxt.getText();
         Scanner s;
         Scanner sl = null;
         try 
@@ -232,7 +229,7 @@ public class PanelEntrenador extends javax.swing.JPanel {
                   sl.useDelimiter("\\s*;\\s*");
                   try 
                   {
-                      if(cod==Integer.parseInt(sl.next()))
+                      if(cod.equals(sl.next()))
                       {
                           nombreTxt.setText(sl.next());
                           apellidosTxt.setText(sl.next());
@@ -289,8 +286,6 @@ public void  guardarDatos(String id,String nombre,String apellido, String telefo
        
        File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoEntrenador.txt");
        File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
-       String aCadena=lineaAntigua;
-       String nCadena=nuevaLinea;
        
        BufferedReader br;
         try {
@@ -301,8 +296,8 @@ public void  guardarDatos(String id,String nombre,String apellido, String telefo
                 while((linea=br.readLine()) != null)
                 {
                     
-                    if(linea.equals(aCadena)){
-                        escribir(fNuevo, nCadena);
+                    if(linea.equals(lineaAntigua)){
+                        escribir(fNuevo, nuevaLinea);
                     }
                         
                     else{
@@ -311,7 +306,6 @@ public void  guardarDatos(String id,String nombre,String apellido, String telefo
                         
                 }
                 br.close();
-                String nAntiguo=fAntiguo.getName();
                 File auxiliar= new File(fAntiguo.getAbsolutePath());
                 borrar(fAntiguo);
                 System.out.println(fNuevo.renameTo(auxiliar));
@@ -322,9 +316,7 @@ public void  guardarDatos(String id,String nombre,String apellido, String telefo
             e.printStackTrace();
         }
     }
-            
-   
-    
+                
     public static void escribir(File Ffichero,String cadena)
     {
         BufferedWriter bw;

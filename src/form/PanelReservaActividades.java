@@ -18,10 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Gabriel Marte
- */
+
 public class PanelReservaActividades extends javax.swing.JPanel {
     public static String sAntiguaLinea="";
     public static String sNuevaLinea="";
@@ -253,7 +250,7 @@ public class PanelReservaActividades extends javax.swing.JPanel {
             {
                 vacio=false;
                 idEstadoReservaActTxt.setText("");
-                JOptionPane.showMessageDialog(null,"El id del estado de la reserva solo acepta valores númericos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El id del estado de la reserva solo acepta valores numérios enteros y debe contener 8 de los mismos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
             else
             {
@@ -280,14 +277,14 @@ public class PanelReservaActividades extends javax.swing.JPanel {
             {
                 vacio=false;
                 idReservaActividadTxt.setText("");
-                JOptionPane.showMessageDialog(null,"El id de reserva solo acepta valores númericos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El id de reserva solo acepta valores numérios enteros y debe contener 8 de los mismos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
             
             if(!idClienteReservaActTxt.getText().matches("[0-9]{8}"))
             {
                 vacio=false;
                 idClienteReservaActTxt.setText("");
-                JOptionPane.showMessageDialog(null,"El id del cliente solo acepta valores númericos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El id del cliente solo acepta valores numérios enteros y debe contener 8 de los mismos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
             else
             {
@@ -314,7 +311,7 @@ public class PanelReservaActividades extends javax.swing.JPanel {
             {
                 vacio=false;
                 idActividadTxt.setText("");
-                JOptionPane.showMessageDialog(null,"El id de la actividad solo acepta valores númericos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El id de la actividad solo acepta valores numérios enteros y debe contener 8 de los mismos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
             else
             {
@@ -341,7 +338,7 @@ public class PanelReservaActividades extends javax.swing.JPanel {
             {
                 vacio=false;
                 idReservaHoraActTxt.setText("");
-                JOptionPane.showMessageDialog(null,"El id del horario solo acepta valores númericos enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El id del horario solo acepta valores numérios enteros y debe contener 8 de los mismos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
             else
             {
@@ -477,9 +474,6 @@ public void  guardarDatos(String idR,Date fechaR,Date fechaB,String idEstado,Str
        
        File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservaActividades.txt");
        File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
-       String aCadena=lineaAntigua;
-       String nCadena=nuevaLinea;
-       
        BufferedReader br;
         try {
             if(fAntiguo.exists())
@@ -488,8 +482,8 @@ public void  guardarDatos(String idR,Date fechaR,Date fechaB,String idEstado,Str
                 String linea;
                 while((linea=br.readLine()) != null)
                 {
-                    if(linea.equals(aCadena)){
-                        escribir(fNuevo, nCadena);
+                    if(linea.equals(lineaAntigua)){
+                        escribir(fNuevo, nuevaLinea);
                     }
                         
                     else{
@@ -498,7 +492,6 @@ public void  guardarDatos(String idR,Date fechaR,Date fechaB,String idEstado,Str
                         
                 }
                 br.close();
-                String nAntiguo=fAntiguo.getName();
                 File auxiliar= new File(fAntiguo.getAbsolutePath());
                 borrar(fAntiguo);
                 System.out.println(fNuevo.renameTo(auxiliar));

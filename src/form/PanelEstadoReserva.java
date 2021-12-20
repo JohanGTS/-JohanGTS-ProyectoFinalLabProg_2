@@ -12,10 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Gabriel Marte
- */
 public class PanelEstadoReserva extends javax.swing.JPanel {
     public static String sAntiguaLinea="";
     public static String sNuevaLinea="";
@@ -177,7 +173,7 @@ public class PanelEstadoReserva extends javax.swing.JPanel {
             {
                 vacio=false;
                 idEstadoReserva.setText("");
-                JOptionPane.showMessageDialog(null,"El id de la localización solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El id de la localización solo  acepta valores numérios enteros y debe contener 8 de los mismos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
             if(!vacio)
                 JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);

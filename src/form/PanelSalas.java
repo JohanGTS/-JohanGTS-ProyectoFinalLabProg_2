@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
+
 package form;
 
-import Main.Main;
 import Placeholder.TextPrompt;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -19,10 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Gabriel Marte
- */
+
 public class PanelSalas extends javax.swing.JPanel {
     public static String sAntiguaLinea="";
     public static String sNuevaLinea="";
@@ -161,13 +154,13 @@ public class PanelSalas extends javax.swing.JPanel {
             {
                 vacio=false;
                 idSalasTxt.setText("");
-                JOptionPane.showMessageDialog(null,"El id de la sala solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El id de la sala solo acepta valores numérios enteros y debe contener 8 de los mismos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
             if(!idLocSalaTxt.getText().matches("[0-9]{8}"))
             {
                 vacio=false;
                 idLocSalaTxt.setText("");
-                JOptionPane.showMessageDialog(null,"El id de la localización de la sala solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El id de la localización de la sala solo acepta valores numérios enteros y debe contener 8 de los mismos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
             else
             {
@@ -313,8 +306,6 @@ public class PanelSalas extends javax.swing.JPanel {
        
        File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoSalas.txt");
        File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
-       String aCadena=lineaAntigua;
-       String nCadena=nuevaLinea;
        
        BufferedReader br;
         try {
@@ -324,8 +315,8 @@ public class PanelSalas extends javax.swing.JPanel {
                 String linea;
                 while((linea=br.readLine()) != null)
                 {
-                    if(linea.equals(aCadena)){
-                        escribir(fNuevo, nCadena);
+                    if(linea.equals(lineaAntigua)){
+                        escribir(fNuevo, nuevaLinea);
                     }
                         
                     else{
@@ -334,7 +325,6 @@ public class PanelSalas extends javax.swing.JPanel {
                         
                 }
                 br.close();
-                String nAntiguo=fAntiguo.getName();
                 File auxiliar= new File(fAntiguo.getAbsolutePath());
                 borrar(fAntiguo);
                 System.out.println(fNuevo.renameTo(auxiliar));

@@ -1,2 +1,2 @@
-admin;rootroot; 0;admin;admin; a
-kkk;oooopppp ; 1;user;user; a
+admin;rootroot; 0;admin;admin;
+kkk;oooopppp ; 1;user;user;
