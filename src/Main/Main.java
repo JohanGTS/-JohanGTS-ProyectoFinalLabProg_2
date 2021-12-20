@@ -276,7 +276,7 @@ public class Main extends javax.swing.JFrame {
         MenuItem menuCobroCliente = new MenuItem(iconSubMenu, "Cobro por Clientes", null);
         MenuItem menuCuotaFecha = new MenuItem(iconSubMenu, "Cuota por Fecha", null);
         MenuItem menuCuotaClientes = new MenuItem(iconSubMenu, "Cuota por Clientes", null);
-        MenuItem menuClientesBalance = new MenuItem(iconSubMenu, "Clienets con Balance Pendiente", null);
+        MenuItem menuClientesBalance = new MenuItem(iconSubMenu, "Clientes con Balance Pendiente", null);
         
         
 
