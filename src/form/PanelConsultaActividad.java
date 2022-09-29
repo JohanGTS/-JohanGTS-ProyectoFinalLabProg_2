@@ -1,4 +1,7 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package form;
 
 import java.awt.Color;
@@ -14,7 +17,6 @@ public class PanelConsultaActividad extends javax.swing.JPanel {
     public PanelConsultaActividad() {
         initComponents();
         Tabla=( DefaultTableModel)this.jTable1.getModel();
-        jTable1.setBackground(Color.white);
     }
 
     /**
@@ -76,15 +78,7 @@ public class PanelConsultaActividad extends javax.swing.JPanel {
             new String [] {
                 "ID Actividad", "Nombre Actividad", "Descripcion Actividad", "ID Localizacion Actividad", "ID Entrenador Actividad"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         jTable1.setGridColor(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(jTable1);
 
@@ -92,28 +86,32 @@ public class PanelConsultaActividad extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
-        txtPorNombre1.setEditable(false);
         txtPorNombre1.setBackground(new java.awt.Color(0, 0, 0));
         txtPorNombre1.setFont(new java.awt.Font("Californian FB", 0, 18)); // NOI18N
         txtPorNombre1.setForeground(new java.awt.Color(255, 255, 255));
         txtPorNombre1.setText("Consulta de Actividad");
         txtPorNombre1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtPorNombre1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPorNombre1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(190, 190, 190)
+                .addGap(169, 169, 169)
                 .addComponent(txtPorNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(210, Short.MAX_VALUE))
+                .addContainerGap(231, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(txtPorNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 50));
@@ -195,6 +193,10 @@ public class PanelConsultaActividad extends javax.swing.JPanel {
             System.out.println(x);
         }
     }//GEN-LAST:event_txtPorNombreActionPerformed
+
+    private void txtPorNombre1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPorNombre1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPorNombre1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

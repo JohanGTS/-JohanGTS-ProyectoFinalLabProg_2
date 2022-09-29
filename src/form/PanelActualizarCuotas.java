@@ -1,34 +1,20 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package form;
 
-import Placeholder.TextPrompt;
-import java.awt.Color;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-
+/**
+ *
+ * @author Gabriel Marte
+ */
 public class PanelActualizarCuotas extends javax.swing.JPanel {
-    public static boolean encontrado=true;
-    DefaultTableModel Tabla;
-    public static String fechaBruta="";
 
     /**
-     * Creates new form PanelReservas
+     * Creates new form PanelActualizarCuotas
      */
     public PanelActualizarCuotas() {
         initComponents();
-        TextPrompt placeholderDiaActividad= new TextPrompt("Obligatorio     MM/AAAA",diaActividadTxt);
-        Tabla=( DefaultTableModel)this.jTable1.getModel();
-        jTable1.setBackground(Color.white);
     }
 
     /**
@@ -40,335 +26,19 @@ public class PanelActualizarCuotas extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        grupoEstado = new javax.swing.ButtonGroup();
-        horarioReservaTxt1 = new javax.swing.JTextField();
-        jLabel10 = new javax.swing.JLabel();
-        jSeparator8 = new javax.swing.JSeparator();
-        jLabel5 = new javax.swing.JLabel();
-        diaActividadTxt = new javax.swing.JTextField();
-        jSeparator6 = new javax.swing.JSeparator();
-        lblBuscar = new javax.swing.JLabel();
-        lblDinamico = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        lblPagar = new javax.swing.JLabel();
-
-        horarioReservaTxt1.setBorder(null);
-
-        setBackground(new java.awt.Color(255, 255, 255));
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel10.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel10.setText("Actualizar cuotas");
-        jLabel10.setOpaque(true);
-        add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 250, 40));
-
-        jSeparator8.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 0, 10, 100));
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setText("Fecha Reserva");
-        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
-
-        diaActividadTxt.setBorder(null);
-        add(diaActividadTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 230, 20));
-        add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 230, 10));
-
-        lblBuscar.setBackground(new java.awt.Color(0, 0, 0));
-        lblBuscar.setFont(new java.awt.Font("Californian FB", 0, 18)); // NOI18N
-        lblBuscar.setForeground(new java.awt.Color(255, 255, 255));
-        lblBuscar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblBuscar.setText("Buscar");
-        lblBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lblBuscar.setOpaque(true);
-        lblBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblBuscarMouseClicked(evt);
-            }
-        });
-        add(lblBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 60, 130, 40));
-        add(lblDinamico, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 10, 80, 20));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Id cobro", "Fecha ", "Id cliente", "Cuota", "Concepto", "Pagado"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, true, true, true, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
-
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 600, 180));
-
-        lblPagar.setBackground(new java.awt.Color(0, 0, 0));
-        lblPagar.setFont(new java.awt.Font("Californian FB", 0, 18)); // NOI18N
-        lblPagar.setForeground(new java.awt.Color(255, 255, 255));
-        lblPagar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblPagar.setText("Pagar");
-        lblPagar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lblPagar.setEnabled(false);
-        lblPagar.setOpaque(true);
-        lblPagar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblPagarMouseClicked(evt);
-            }
-        });
-        add(lblPagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 60, 130, 40));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lblPagarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblPagarMouseClicked
-        int reply = JOptionPane.showConfirmDialog(null, "¿Desea pagar las cuotas?", "Pagar cuotas", JOptionPane.YES_NO_OPTION);
-        if (reply == JOptionPane.YES_OPTION) {
-            try {
-                PanelReversarCobros.reversa2(fechaBruta);
-                Tabla.setRowCount(0);
-                JOptionPane.showMessageDialog(null, "Cuotas pagadas");
-            } catch (IOException ex) {
-               ex.printStackTrace();
-            }
-        }
-        else
-        {
-            jTable1.clearSelection();
-            lblPagar.setEnabled(false);
-            Tabla.setRowCount(0);
-        }
-            
-        
-    }//GEN-LAST:event_lblPagarMouseClicked
-
-    private void lblBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBuscarMouseClicked
-        boolean vacio=true;
-        
-        String fechaBruta="";
-        try {
-            
-            if(diaActividadTxt.getText().isEmpty())
-            {
-                vacio=false;
-            }
-                
-            else
-                {
-                    String auxiliar="30/";
-                    fechaBruta=auxiliar+diaActividadTxt.getText();
-                    String[] separada=fechaBruta.split("/");
-                    try {
-                        if(Integer.parseInt(separada[1])>0&&Integer.parseInt(separada[1])<13&&
-                            Integer.parseInt(separada[2])>1900)
-                        {
-                            System.out.println("Dia correcto");
-                        }
-                    else
-                        {
-                            JOptionPane.showMessageDialog(null,"Formato de día incorrecto","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
-                            diaActividadTxt.setText("");
-                            vacio=false;
-                        }
-                    }
-                    catch (Exception e) {
-                        JOptionPane.showMessageDialog(null,"Solo se pueden poner números del 0 al 9","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
-                        diaActividadTxt.setText("");
-                        vacio=false;
-                    }
-                }
-            } 
-        catch (Exception ex) {   
-                ex.printStackTrace();
-                vacio=false;
-                diaActividadTxt.setText("");
-            }
-        
-        if(!vacio)
-                JOptionPane.showMessageDialog(null,"Hay campos obligatorios sin completar","Campos vacíos",JOptionPane.ERROR_MESSAGE);
-        else
-        {
-            File archivoCobro= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoCobros.txt");
-            try 
-            {
-                if(revisarEnArchivo(archivoCobro, fechaBruta))
-                {
-                    Tabla.setRowCount(0);
-                    String idCobro, fechaCobro, idCliente,valorCuota,concepto,pagado;
-                    File arch= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoCobros.txt");
-                    if(arch.exists())
-                    {
-                        String linea;
-                        Scanner s = new Scanner(arch);
-                        while (s.hasNextLine())
-                        {
-                            linea = s.nextLine();
-                            if(linea.contains(fechaBruta))
-                            {
-                                Scanner k = new Scanner(linea);
-                                k.useDelimiter("\\s*;\\s*");
-                                idCobro=k.next();
-                                fechaCobro=k.next();
-                                idCliente=k.next();
-                                valorCuota=k.next();
-                                concepto=k.next();
-                                pagado=k.next();
-                                if(pagado.equals("false"))
-                                    Tabla.addRow(new Object [] {idCobro, fechaCobro, idCliente,valorCuota,concepto,pagado});
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                   JOptionPane.showMessageDialog(null,"No se encontró la fecha en el archivo","Fecha no encontrada",JOptionPane.ERROR_MESSAGE);
-                   diaActividadTxt.setText("");
-                }
-                
-            }
-            catch (Exception ex) 
-            {
-                ex.printStackTrace();
-            } 
-        } 
-    }//GEN-LAST:event_lblBuscarMouseClicked
-
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        if(jTable1.getSelectedRow()!=-1)
-        {
-            lblPagar.setEnabled(true);
-            jTable1.selectAll();
-        }
-    }//GEN-LAST:event_jTable1MouseClicked
-  
-    
-    
-    public static  void modificar(String lineaAntigua, String nuevaLinea){ 
-       
-       File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservas.txt");
-       File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
-       String aCadena=lineaAntigua;
-       String nCadena=nuevaLinea;
-       
-       BufferedReader br;
-        try {
-            if(fAntiguo.exists())
-            {
-                br=new BufferedReader(new FileReader(fAntiguo));
-                String linea;
-                while((linea=br.readLine()) != null)
-                {
-                    if(linea.equals(aCadena)){
-                        escribir(fNuevo, nCadena);
-                    }
-                        
-                    else{
-                        escribir(fNuevo, linea);
-                    }
-                        
-                }
-                br.close();
-                String nAntiguo=fAntiguo.getName();
-                File auxiliar= new File(fAntiguo.getAbsolutePath());
-                borrar(fAntiguo);
-                System.out.println(fNuevo.renameTo(auxiliar));
-            }
-            else
-                System.out.println("Archivo no existe");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-            
-   public boolean revisarEnArchivo(File archivo, String id)
-    {
-        if (!archivo.exists()) {
-            return false;
-        }
-        else
-        {
-            try 
-            {
-                Scanner s=new Scanner(archivo);
-                Scanner sl = null;
-                while(s.hasNextLine())
-                {
-                  String linea= s.nextLine();
-                  sl= new Scanner(linea);
-                  sl.useDelimiter("\\s*;\\s*");
-                  if(linea.contains(id))
-                  {
-                    return true;
-                  }
-                } 
-            }
-            catch (FileNotFoundException ex) {
-                Logger.getLogger(PanelSalas.class.getName()).log(Level.SEVERE, null, ex);
-                return false;
-            }
-        }
-        
-        return false;
-    }
-    public static void escribir(File Ffichero,String cadena)
-    {
-        BufferedWriter bw;
-        try 
-        {
-            if(!Ffichero.exists())
-                Ffichero.createNewFile();
-            bw= new BufferedWriter(new FileWriter(Ffichero,true));
-            bw.write(cadena+"\r\n");
-            bw.close();
-        }
-        catch (Exception ex) {
-              ex.printStackTrace();
-           } 
-    }
-    public static  void borrar(File Ffichero){
-        try {
-
-            if(Ffichero.exists())
-            {
-                System.out.println(Ffichero.delete());
-            }
-            } 
-           catch (Exception ex) { 
-             System.out.println(ex.getMessage());
-        }
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField diaActividadTxt;
-    private javax.swing.ButtonGroup grupoEstado;
-    private javax.swing.JTextField horarioReservaTxt1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator6;
-    private javax.swing.JSeparator jSeparator8;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JLabel lblBuscar;
-    private javax.swing.JLabel lblDinamico;
-    private javax.swing.JLabel lblPagar;
     // End of variables declaration//GEN-END:variables
 }

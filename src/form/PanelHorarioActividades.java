@@ -1,4 +1,7 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package form;
 
 import Placeholder.TextPrompt;
@@ -10,11 +13,16 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
+/**
+ *
+ * @author Gabriel Marte
+ */
 public class PanelHorarioActividades extends javax.swing.JPanel {
     public static String sAntiguaLinea="";
     public static String sNuevaLinea="";
@@ -192,7 +200,7 @@ public class PanelHorarioActividades extends javax.swing.JPanel {
             {
                 vacio=false;
                 idActividadTxt.setText("");
-                JOptionPane.showMessageDialog(null,"El id de la actividad solo  acepta valores numérios enteros y debe contener 8 de los mismos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El id de la actividad solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
             else 
             {
@@ -219,7 +227,7 @@ public class PanelHorarioActividades extends javax.swing.JPanel {
             {
                 vacio=false;
                 idHorarioActividadTxt.setText("");
-                JOptionPane.showMessageDialog(null,"El id del horario la actividad solo  acepta valores numérios enteros y debe contener 8 de los mismos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El id del horario la actividad solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
             if(!diaActividadTxt.getText().isEmpty())
             {
@@ -316,6 +324,9 @@ public void  guardarDatos(String idHorario,String dia,String hora,String idActiv
        
        File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoHorarioActividades.txt");
        File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
+       String aCadena=lineaAntigua;
+       String nCadena=nuevaLinea;
+       
        BufferedReader br;
         try {
             if(fAntiguo.exists())
@@ -324,8 +335,8 @@ public void  guardarDatos(String idHorario,String dia,String hora,String idActiv
                 String linea;
                 while((linea=br.readLine()) != null)
                 {
-                    if(linea.equals(lineaAntigua)){
-                        escribir(fNuevo, nuevaLinea);
+                    if(linea.equals(aCadena)){
+                        escribir(fNuevo, nCadena);
                     }
                         
                     else{
@@ -334,6 +345,7 @@ public void  guardarDatos(String idHorario,String dia,String hora,String idActiv
                         
                 }
                 br.close();
+                String nAntiguo=fAntiguo.getName();
                 File auxiliar= new File(fAntiguo.getAbsolutePath());
                 borrar(fAntiguo);
                 System.out.println(fNuevo.renameTo(auxiliar));
@@ -344,6 +356,8 @@ public void  guardarDatos(String idHorario,String dia,String hora,String idActiv
             e.printStackTrace();
         }
     }
+            
+   
     
     public static void escribir(File Ffichero,String cadena)
     {
@@ -399,6 +413,7 @@ public void  guardarDatos(String idHorario,String dia,String hora,String idActiv
                 return false;
             }
         }
+        
         return true;
     }
 

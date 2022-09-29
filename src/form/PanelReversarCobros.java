@@ -1,4 +1,7 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package form;
 
 import Placeholder.TextPrompt;
@@ -16,7 +19,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-
+/**
+ *
+ * @author Gabriel Marte
+ */
 public class PanelReversarCobros extends javax.swing.JPanel {
     
     /**
@@ -114,7 +120,7 @@ public class PanelReversarCobros extends javax.swing.JPanel {
                     vacio=false;
                 }
             }
-            if(!revisarEnArchivo(f, fechaBruta))
+            if(revisarEnArchivo(f, fechaBruta))
             {
                 JOptionPane.showMessageDialog(null,"No es posible reversar un cobro que no se ha realizado","Cobro inexistente",JOptionPane.ERROR_MESSAGE);
                 vacio=false;    
@@ -142,8 +148,11 @@ public class PanelReversarCobros extends javax.swing.JPanel {
                 s2.close();
                 File auxiliar= new File(f.getAbsolutePath());
                 borrar(f);
+                System.out.println("a");
                 File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal2.txt");
+                
                 System.out.println(fNuevo.renameTo(auxiliar));
+                System.out.println("b");
                 if(!revisarEnArchivo(f, fechaBruta))
                 {   
                    
@@ -182,6 +191,7 @@ public class PanelReversarCobros extends javax.swing.JPanel {
                     auxiliar= new File(fAntiguo.getAbsolutePath());
                     borrar(fAntiguo);
                     System.out.println(fNuevo.renameTo(auxiliar));
+                    JOptionPane.showMessageDialog(null, "Cobro reversado");
                 }
                 else
                 {
@@ -193,154 +203,15 @@ public class PanelReversarCobros extends javax.swing.JPanel {
             }
             
         } catch (FileNotFoundException ex) {   
-            ex.printStackTrace();
+            Logger.getLogger(PanelReversarCobros.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Logger.getLogger(PanelReversarCobros.class.getName()).log(Level.SEVERE, null, ex);
         }   
+                
+            
+        
     }//GEN-LAST:event_lblAgregarMouseClicked
 
-public static void reversa2(String fechaBruta) throws IOException
-{
-    File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoCobros.txt");
-    Scanner s;
-    Scanner sl=null;
-
-    if(!f.exists())
-        f.createNewFile();
-    Scanner s2= new Scanner(f);
-    while(s2.hasNext())
-    {
-        String linea2=s2.nextLine();
-        String antiguaLinea=linea2;
-        if(!linea2.contains(fechaBruta))
-            modificar2(fechaBruta,antiguaLinea );
-    }
-    s2.close();
-    File auxiliar= new File(f.getAbsolutePath());
-    borrar(f);
-    System.out.println("a");
-    File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal2.txt");
-
-    System.out.println(fNuevo.renameTo(auxiliar));
-    System.out.println("b");
-    if(!revisarEnArchivo(f, fechaBruta))
-    {   
-
-        File f2= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
-        s= new Scanner(f2);
-        while(s.hasNext())
-        {
-            String nuevaLinea="";
-            String linea=s.nextLine();
-            String antiguaLinea=linea;
-            sl= new Scanner(linea);
-            sl.useDelimiter("\\s*;\\s*");
-            for (int i = 0; i < 10; i++) 
-            {
-                nuevaLinea+=sl.next()+";";
-            }
-            String status=sl.next();
-            String tipo=sl.next();
-            nuevaLinea+=status+";"+tipo+";";
-
-            if(status.equals("activo"))
-            {
-                Double balance = Double.parseDouble(sl.next());
-                Double cuota=Double.parseDouble(sl.next());
-                balance-=cuota;
-                nuevaLinea+=balance+";"+cuota;
-            }
-            sl.close();
-            modificar(antiguaLinea,nuevaLinea );
-        }
-        s.close();
-        File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
-        fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
-        auxiliar= new File(fAntiguo.getAbsolutePath());
-        borrar(fAntiguo);
-        System.out.println(fNuevo.renameTo(auxiliar));
-        JOptionPane.showMessageDialog(null, "Cobro reversado");
-    }
-}
-    
-public static void reversarPortatil(String fechaBruta)
-{
-    boolean vacio=true;
-        File f= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoCobros.txt");
-        try {
-            
-                Scanner s;
-                Scanner sl=null;
-                
-                if(!f.exists())
-                    f.createNewFile();
-                Scanner s2= new Scanner(f);
-                while(s2.hasNext())
-                {
-                    String linea2=s2.nextLine();
-                    String antiguaLinea=linea2;
-                    String aux[]=antiguaLinea.split(";");
-                    String nuevaLinea="";
-                    for(int i=0;i<4;i++)
-                        nuevaLinea+=aux[i]+";";
-                    nuevaLinea+="true";
-                    if(!linea2.contains(fechaBruta))
-                        modificar2(fechaBruta,nuevaLinea );
-                }
-                s2.close();
-                File auxiliar= new File(f.getAbsolutePath());
-                borrar(f);
-                File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal2.txt");
-                
-                System.out.println(fNuevo.renameTo(auxiliar));
-                if(!revisarEnArchivo(f, fechaBruta))
-                {   
-                   
-                    File f2= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
-                    s= new Scanner(f2);
-                    while(s.hasNext())
-                    {
-                        String nuevaLinea="";
-                        String linea=s.nextLine();
-                        String antiguaLinea=linea;
-                        sl= new Scanner(linea);
-                        sl.useDelimiter("\\s*;\\s*");
-                        for (int i = 0; i < 10; i++) 
-                        {
-                            nuevaLinea+=sl.next()+";";
-                        }
-                        String status=sl.next();
-                        String tipo=sl.next();
-                        nuevaLinea+=status+";"+tipo+";";
-                        
-                        if(status.equals("activo"))
-                        {
-                            Double balance = Double.parseDouble(sl.next());
-                            Double cuota=Double.parseDouble(sl.next());
-                            balance-=cuota;
-                            nuevaLinea+=balance+";"+cuota;
-                        }
-                        sl.close();
-                        modificar(antiguaLinea,nuevaLinea );
-                    }
-                    s.close();
-                    
-                    File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
-                    fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
-                    auxiliar= new File(fAntiguo.getAbsolutePath());
-                    borrar(fAntiguo);
-                    System.out.println(fNuevo.renameTo(auxiliar));
-                }
-                
-            
-            
-        } catch (FileNotFoundException ex) {   
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-}
-    
     
 public static boolean revisarEnArchivo(File archivo, String id)
     {
@@ -397,6 +268,7 @@ public static boolean revisarEnArchivo2(File archivo, String linea2)
         }
         else
         {
+            
             try 
             {
                 s=new Scanner(archivo);

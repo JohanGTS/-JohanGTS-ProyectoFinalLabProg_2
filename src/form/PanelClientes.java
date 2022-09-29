@@ -1,4 +1,7 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package form;
 
 import Placeholder.TextPrompt;
@@ -16,6 +19,10 @@ import java.util.Date;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
+/**
+ *
+ * @author Gabriel Marte
+ */
 public class PanelClientes extends javax.swing.JPanel {
 
     public static String sAntiguaLinea="";

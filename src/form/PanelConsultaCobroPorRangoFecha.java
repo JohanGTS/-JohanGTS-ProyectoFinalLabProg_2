@@ -1,27 +1,22 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package form;
 
 import java.awt.Color;
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class PanelConsultaCobroPorRangoFecha extends javax.swing.JPanel {
-    
-    public static final SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+
     DefaultTableModel Tabla;
-    public static Date fechaDesde;
-    public static Date fechaHasta;
-    public static Date fechaAux;
     
     public PanelConsultaCobroPorRangoFecha() {
         initComponents();
         Tabla=( DefaultTableModel)this.jTable1.getModel();
-        jTable1.setBackground(Color.white);
     }
 
     /**
@@ -34,7 +29,7 @@ public class PanelConsultaCobroPorRangoFecha extends javax.swing.JPanel {
     private void initComponents() {
 
         Consultar = new javax.swing.JButton();
-        desdeTxt = new javax.swing.JTextField();
+        txtPorNombre = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -42,8 +37,6 @@ public class PanelConsultaCobroPorRangoFecha extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         txtPorNombre1 = new javax.swing.JTextField();
 
-        setBackground(new java.awt.Color(255, 255, 255));
-        setForeground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Consultar.setText("Consultar");
@@ -54,40 +47,37 @@ public class PanelConsultaCobroPorRangoFecha extends javax.swing.JPanel {
         });
         add(Consultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 90, 30));
 
-        desdeTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        add(desdeTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 80, 140, 30));
+        txtPorNombre.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtPorNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPorNombreActionPerformed(evt);
+            }
+        });
+        add(txtPorNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, 210, 30));
 
-        jLabel1.setText("Desde");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 90, -1, -1));
+        jLabel1.setText("Por Nombre");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, -1, -1));
         add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 600, 10));
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Fecha", "Id cobro", "Id cliente", "Cobro"
+                "Login Usuario", "Contraseña", "Nivel Acceso", "Nombre", "Apellido", "Correo Electronico"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         jTable1.setGridColor(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(jTable1);
 
@@ -95,12 +85,16 @@ public class PanelConsultaCobroPorRangoFecha extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
-        txtPorNombre1.setEditable(false);
         txtPorNombre1.setBackground(new java.awt.Color(0, 0, 0));
         txtPorNombre1.setFont(new java.awt.Font("Californian FB", 0, 18)); // NOI18N
         txtPorNombre1.setForeground(new java.awt.Color(255, 255, 255));
         txtPorNombre1.setText("Consulta de Cobro Por Rango de Fecha");
         txtPorNombre1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtPorNombre1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPorNombre1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -124,83 +118,34 @@ public class PanelConsultaCobroPorRangoFecha extends javax.swing.JPanel {
 
     private void ConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultarActionPerformed
         Tabla.setRowCount(0);
-        String idCobro,fecha,idCliente,cobro;
-        File arch= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoCobros.txt");
+        String Nombre, Apellido, LoginUsuario,CorreoElectronico,NiveldeAcceso,contrasena;
+        File arch= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuarios.txt");
+
         try
         {
             if(arch.exists())
             {
-                if(!desdeTxt.getText().isEmpty())
-                    {
-                        String fechaBruta=desdeTxt.getText();
-                        String[] separada=fechaBruta.split("/");
-                        try {
-                            if(Integer.parseInt(separada[0])>0&&Integer.parseInt(separada[0])<32&&
-                                    Integer.parseInt(separada[1])>0&&Integer.parseInt(separada[1])<13&&
-                                    Integer.parseInt(separada[2])>1900)
-                            {
-                                try 
-                                {
-                                    fechaDesde=formato.parse((fechaBruta));
-                                    System.out.println(formato.format(fechaDesde));
-                                } 
-                                catch (ParseException ex) {
-                                    ex.printStackTrace();
-                                }
-                            }
-                            else
-                            {
-                                JOptionPane.showMessageDialog(null,"Formato de fecha incorrecto","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
-                                desdeTxt.setText("");
-                            }
-                        }
-                        catch (Exception e) {
-                            JOptionPane.showMessageDialog(null,"Solo se pueden poner números del 0 al 9","Formato de fecha incorrecto",JOptionPane.ERROR_MESSAGE);
-                            desdeTxt.setText("");
-                        }
-                    }
-                
-                        String linea;
-                        
-                        Scanner s;
-                        if(desdeTxt.getText().isEmpty())
-                        {
-                            s = new Scanner(arch);
-                            while (s.hasNextLine())
-                            {
-                                linea = s.nextLine();
-                                Scanner k = new Scanner(linea);
-                                k.useDelimiter("\\s*;\\s*");
-                                idCobro=k.next();
-                                fecha=k.next();
-                                idCliente=k.next();
-                                cobro=k.next();
-                                Tabla.addRow(new Object [] {fecha,idCobro,idCliente,cobro});
 
-                            }//FIN while
+                String linea;
 
-                        s.close();
-                        }
-                        else 
-                        {
-                            s = new Scanner(arch);
-                            while (s.hasNextLine())
-                            {
-                                linea = s.nextLine();
-                                Scanner k = new Scanner(linea);
-                                k.useDelimiter("\\s*;\\s*");
-                                idCobro=k.next();
-                                fecha=k.next();
-                                idCliente=k.next();
-                                cobro=k.next();
-                                System.out.println("1 0");
-                                fechaAux=formato.parse(fecha);
-                                if(fechaDesde.before(fechaAux))
-                                Tabla.addRow(new Object [] {fecha,idCobro,idCliente,cobro});
-                            }
-                            s.close();
-                        }
-                
+                Scanner s = new Scanner(arch);
+                while (s.hasNextLine())
+                {
+                    linea = s.nextLine();
+                    Scanner k = new Scanner(linea);
+                    k.useDelimiter("\\s*;\\s*");
+                    LoginUsuario=k.next();
+                    contrasena=k.next();
+                    NiveldeAcceso=k.next();
+                    Nombre=k.next();
+                    Apellido=k.next();
+                    CorreoElectronico=k.next();
+                    contrasena="********";
+                    Tabla.addRow(new Object [] {LoginUsuario,contrasena,NiveldeAcceso,Nombre,Apellido,CorreoElectronico});
+
+                }//FIN while
+
+                s.close();
             }
         }
         catch(Exception x)
@@ -209,15 +154,63 @@ public class PanelConsultaCobroPorRangoFecha extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_ConsultarActionPerformed
 
+    private void txtPorNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPorNombreActionPerformed
+        Tabla.setRowCount(0);
+
+        String Nombre, Apellido, LoginUsuario,contrasena,CorreoElectronico,NiveldeAcceso;
+        String nomb=txtPorNombre.getText();
+
+        File arch= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuarios.txt");
+
+        try
+        {
+            if(arch.exists())
+            {
+                String linea;
+                Scanner s = new Scanner(arch);
+                while (s.hasNextLine())
+
+                {
+                    linea = s.nextLine();
+                    Scanner k = new Scanner(linea);
+                    k.useDelimiter("\\s*;\\s*");
+                    LoginUsuario=k.next();
+                    contrasena=k.next();
+                    NiveldeAcceso=k.next();
+                    Nombre=k.next();
+                    Apellido=k.next();
+                    CorreoElectronico=k.next();
+                    contrasena="********";
+
+                    if (linea.contains(nomb))
+                    {
+                        Tabla.addRow(new Object [] {LoginUsuario,contrasena,NiveldeAcceso,Nombre,Apellido,CorreoElectronico});
+
+                    }
+
+                }// fin While
+                s.close();
+            }
+        }
+        catch(FileNotFoundException x)
+        {
+            System.out.println(x);
+        }
+    }//GEN-LAST:event_txtPorNombreActionPerformed
+
+    private void txtPorNombre1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPorNombre1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPorNombre1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Consultar;
-    private javax.swing.JTextField desdeTxt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField txtPorNombre;
     private javax.swing.JTextField txtPorNombre1;
     // End of variables declaration//GEN-END:variables
 }

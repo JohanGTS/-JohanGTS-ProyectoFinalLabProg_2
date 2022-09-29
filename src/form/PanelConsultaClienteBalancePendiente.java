@@ -1,4 +1,7 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package form;
 
 import java.awt.Color;
@@ -14,7 +17,6 @@ public class PanelConsultaClienteBalancePendiente extends javax.swing.JPanel {
     public PanelConsultaClienteBalancePendiente() {
         initComponents();
         Tabla=( DefaultTableModel)this.jTable1.getModel();
-        jTable1.setBackground(Color.white);
     }
 
     /**
@@ -35,8 +37,6 @@ public class PanelConsultaClienteBalancePendiente extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         txtPorNombre1 = new javax.swing.JTextField();
 
-        setBackground(new java.awt.Color(255, 255, 255));
-        setForeground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Consultar.setText("Consultar");
@@ -47,8 +47,8 @@ public class PanelConsultaClienteBalancePendiente extends javax.swing.JPanel {
         });
         add(Consultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 90, 30));
 
-        jLabel1.setText("Por id");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 80, -1, -1));
+        jLabel1.setText("Por Nombre");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, -1, -1));
 
         txtPorNombre.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         txtPorNombre.addActionListener(new java.awt.event.ActionListener() {
@@ -63,29 +63,21 @@ public class PanelConsultaClienteBalancePendiente extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Id cliente", "Balance"
+                "Login Usuario", "Contraseña", "Nivel Acceso", "Nombre", "Apellido", "Correo Electronico"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         jTable1.setGridColor(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(jTable1);
 
@@ -93,7 +85,6 @@ public class PanelConsultaClienteBalancePendiente extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
-        txtPorNombre1.setEditable(false);
         txtPorNombre1.setBackground(new java.awt.Color(0, 0, 0));
         txtPorNombre1.setFont(new java.awt.Font("Californian FB", 0, 18)); // NOI18N
         txtPorNombre1.setForeground(new java.awt.Color(255, 255, 255));
@@ -109,17 +100,17 @@ public class PanelConsultaClienteBalancePendiente extends javax.swing.JPanel {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(148, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(117, 117, 117)
                 .addComponent(txtPorNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(140, 140, 140))
+                .addContainerGap(171, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(txtPorNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 50));
@@ -127,8 +118,8 @@ public class PanelConsultaClienteBalancePendiente extends javax.swing.JPanel {
 
     private void ConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultarActionPerformed
         Tabla.setRowCount(0);
-        String id,balance;
-        File arch= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
+        String Nombre, Apellido, LoginUsuario,CorreoElectronico,NiveldeAcceso,contrasena;
+        File arch= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuarios.txt");
 
         try
         {
@@ -136,19 +127,21 @@ public class PanelConsultaClienteBalancePendiente extends javax.swing.JPanel {
             {
 
                 String linea;
+
                 Scanner s = new Scanner(arch);
                 while (s.hasNextLine())
                 {
                     linea = s.nextLine();
                     Scanner k = new Scanner(linea);
                     k.useDelimiter("\\s*;\\s*");
-                    id=k.next(); 
-                    for (int i = 0; i < 11; i++) {
-                        k.next();
-                    }
-                    balance=k.next();
-                    if(Double.parseDouble(balance)>0)
-                        Tabla.addRow(new Object [] {id,balance});
+                    LoginUsuario=k.next();
+                    contrasena=k.next();
+                    NiveldeAcceso=k.next();
+                    Nombre=k.next();
+                    Apellido=k.next();
+                    CorreoElectronico=k.next();
+                    contrasena="********";
+                    Tabla.addRow(new Object [] {LoginUsuario,contrasena,NiveldeAcceso,Nombre,Apellido,CorreoElectronico});
 
                 }//FIN while
 
@@ -164,10 +157,10 @@ public class PanelConsultaClienteBalancePendiente extends javax.swing.JPanel {
     private void txtPorNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPorNombreActionPerformed
         Tabla.setRowCount(0);
 
-        String id,balance;
+        String Nombre, Apellido, LoginUsuario,contrasena,CorreoElectronico,NiveldeAcceso;
         String nomb=txtPorNombre.getText();
 
-        File arch= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoClientes.txt");
+        File arch= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuarios.txt");
 
         try
         {
@@ -181,14 +174,18 @@ public class PanelConsultaClienteBalancePendiente extends javax.swing.JPanel {
                     linea = s.nextLine();
                     Scanner k = new Scanner(linea);
                     k.useDelimiter("\\s*;\\s*");
-                    id=k.next(); 
-                    for (int i = 0; i < 11; i++) {
-                        k.next();
-                    }
-                    balance=k.next();
-                    if (linea.contains(nomb)&&Double.parseDouble(balance)>0)
+                    LoginUsuario=k.next();
+                    contrasena=k.next();
+                    NiveldeAcceso=k.next();
+                    Nombre=k.next();
+                    Apellido=k.next();
+                    CorreoElectronico=k.next();
+                    contrasena="********";
+
+                    if (linea.contains(nomb))
                     {
-                        Tabla.addRow(new Object [] {id,balance});
+                        Tabla.addRow(new Object [] {LoginUsuario,contrasena,NiveldeAcceso,Nombre,Apellido,CorreoElectronico});
+
                     }
 
                 }// fin While

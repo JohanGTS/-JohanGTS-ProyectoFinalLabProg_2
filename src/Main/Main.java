@@ -20,15 +20,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import menu.MenuItem;
-import Login.login;
+import Login.Login;
 import form.PanelActualizarCuotas;
 import form.PanelConsultaActividad;
-import form.PanelConsultaClienteBalancePendiente;
-import form.PanelConsultaCobroPorCliente;
-import form.PanelConsultaCobroPorRangoFecha;
-import form.PanelConsultaCuotaPorCliente;
-import form.PanelConsultaCuotaPorfecha;
 import form.PanelConsultaEntrenador;
 import form.PanelConsultaHorarioActividades;
 import form.PanelConsultaLocalizacion;
@@ -51,7 +48,7 @@ public class Main extends javax.swing.JFrame {
     int nivelAcceso;
     public Main() {
         initComponents();
-        nivelAcceso=login.nivelAccesoLogin;
+        nivelAcceso=Login.nivelAccesoLogin;
         setIconImage(new ImageIcon(getClass().getResource("../menu/gold.png")).getImage());
         execute();
         
@@ -188,13 +185,10 @@ public class Main extends javax.swing.JFrame {
         MenuItem reversarCobro = new MenuItem(iconSubMenu, "Reversar cobros", new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                if(nivelAcceso==0)
-                {
-                    panelBody.removeAll();
-                    panelBody.add(new PanelReversarCobros());
-                    panelBody.repaint();
-                    panelBody.revalidate();
-                }
+                panelBody.removeAll();
+                panelBody.add(new PanelReversarCobros());
+                panelBody.repaint();
+                panelBody.revalidate();
             }
         });
         MenuItem menuActualizarCuotas = new MenuItem(iconSubMenu, "Actualizar Cuotas", new ActionListener(){
@@ -209,13 +203,10 @@ public class Main extends javax.swing.JFrame {
        MenuItem generarCobro = new MenuItem(iconSubMenu, "Generar cobros", new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                if(nivelAcceso==0)
-                {
-                    panelBody.removeAll();
-                    panelBody.add(new PanelGenerarCobros());
-                    panelBody.repaint();
-                    panelBody.revalidate();
-                }
+                panelBody.removeAll();
+                panelBody.add(new PanelGenerarCobros());
+                panelBody.repaint();
+                panelBody.revalidate();
             }
         });
         
@@ -281,51 +272,12 @@ public class Main extends javax.swing.JFrame {
                 panelBody.revalidate();
             }
         });
-        MenuItem menuCobroFecha = new MenuItem(iconSubMenu, "Cobro por Rango de Fecha", new ActionListener(){
-        @Override
-            public void actionPerformed(ActionEvent ae) {
-                panelBody.removeAll();
-                panelBody.add(new PanelConsultaCobroPorRangoFecha());
-                panelBody.repaint();
-                panelBody.revalidate();
-            }
-        });
-        MenuItem menuCobroCliente = new MenuItem(iconSubMenu, "Cobro por Clientes", new ActionListener(){
-        @Override
-            public void actionPerformed(ActionEvent ae) {
-                panelBody.removeAll();
-                panelBody.add(new PanelConsultaCobroPorCliente());
-                panelBody.repaint();
-                panelBody.revalidate();
-            }
-        });
-        MenuItem menuCuotaFecha = new MenuItem(iconSubMenu, "Cuota por Fecha", new ActionListener(){
-        @Override
-            public void actionPerformed(ActionEvent ae) {
-                panelBody.removeAll();
-                panelBody.add(new PanelConsultaCuotaPorfecha());
-                panelBody.repaint();
-                panelBody.revalidate();
-            }
-        });
-        MenuItem menuCuotaClientes = new MenuItem(iconSubMenu, "Cuota por Clientes", new ActionListener(){
-        @Override
-            public void actionPerformed(ActionEvent ae) {
-                panelBody.removeAll();
-                panelBody.add(new PanelConsultaCuotaPorCliente());
-                panelBody.repaint();
-                panelBody.revalidate();
-            }
-        });
-        MenuItem menuClientesBalance = new MenuItem(iconSubMenu, "Clientes con Balance Pendiente",new ActionListener(){
-        @Override
-            public void actionPerformed(ActionEvent ae) {
-                panelBody.removeAll();
-                panelBody.add(new PanelConsultaClienteBalancePendiente());
-                panelBody.repaint();
-                panelBody.revalidate();
-            }
-        });
+        MenuItem menuCobroFecha = new MenuItem(iconSubMenu, "Cobro por Rango de Fecha", null);
+        MenuItem menuCobroCliente = new MenuItem(iconSubMenu, "Cobro por Clientes", null);
+        MenuItem menuCuotaFecha = new MenuItem(iconSubMenu, "Cuota por Fecha", null);
+        MenuItem menuCuotaClientes = new MenuItem(iconSubMenu, "Cuota por Clientes", null);
+        MenuItem menuClientesBalance = new MenuItem(iconSubMenu, "Clientes con Balance Pendiente", null);
+        
         
 
         MenuItem menuMantenimiento = new MenuItem(iconMantenimiento, "Mantenimiento", null, menuUsuario, menuEntrenador, menuLocalizacion,menuSalas,menuActividad,menuHorarioActividad,menuClientes,menuEstadoReserva,menuReserva,menuReservasActividades);
@@ -422,8 +374,8 @@ public class Main extends javax.swing.JFrame {
         panelMenuLayout.setVerticalGroup(
             panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMenuLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 637, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 63, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         getContentPane().add(panelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 34, 250, 700));

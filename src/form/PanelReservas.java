@@ -21,6 +21,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
+/**
+ *
+ * @author Gabriel Marte
+ */
 public class PanelReservas extends javax.swing.JPanel {
     public static String sAntiguaLinea="";
     public static String sNuevaLinea="";
@@ -240,13 +244,13 @@ public class PanelReservas extends javax.swing.JPanel {
             {
                 vacio=false;
                 idReservaTxt.setText("");
-                JOptionPane.showMessageDialog(null,"El id de reserva solo acepta valores numérios enteros y debe contener 8 de los mismos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El id de reserva solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
             if(!idSalaReservaTxt.getText().matches("[0-9]{8}"))
             {
                 vacio=false;
                 idSalaReservaTxt.setText("");
-                JOptionPane.showMessageDialog(null,"El id de la sala de reserva solo acepta valores numérios enteros y debe contener 8 de los mismos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El id de la sala de reserva solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
             else
             {
@@ -258,8 +262,8 @@ public class PanelReservas extends javax.swing.JPanel {
                 }
                 else
                 {
-                    String cod;
-                    cod=idSalaReservaTxt.getText();
+                    int cod;
+                    cod=Integer.parseInt(idSalaReservaTxt.getText());
                     if(!revisarEnArchivo(archId, cod))
                     {
                         idSalaReservaTxt.setText("");
@@ -273,7 +277,7 @@ public class PanelReservas extends javax.swing.JPanel {
             {
                 vacio=false;
                 idClienteReservaTxt.setText("");
-                JOptionPane.showMessageDialog(null,"El id deL cliente que reserva solo acepta valores numérios enteros y debe contener 8 de los mismos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El id deL cliente que reserva solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
             else
             {
@@ -285,8 +289,8 @@ public class PanelReservas extends javax.swing.JPanel {
                 }
                 else
                 {
-                    String cod;
-                    cod=idClienteReservaTxt.getText();
+                    int cod;
+                    cod=Integer.parseInt(idClienteReservaTxt.getText());
                     if(!revisarEnArchivo(archId, cod))
                     {
                         idClienteReservaTxt.setText("");
@@ -331,7 +335,7 @@ public class PanelReservas extends javax.swing.JPanel {
             {
                 vacio=false;
                 horarioReservaTxt.setText("");
-                JOptionPane.showMessageDialog(null,"El id del horario de reserva solo acepta valores numérios enteros y debe contener 8 de los mismos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El id del horario de reserva solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
             else
             {
@@ -343,8 +347,8 @@ public class PanelReservas extends javax.swing.JPanel {
                 }
                 else
                 {
-                    String cod;
-                    cod=horarioReservaTxt.getText();
+                    int cod;
+                    cod=Integer.parseInt(horarioReservaTxt.getText());
                     if(!revisarEnArchivo(archId, cod))
                     {
                         horarioReservaTxt.setText("");
@@ -357,7 +361,7 @@ public class PanelReservas extends javax.swing.JPanel {
             {
                 vacio=false;
                 idEstadoReservaTxt.setText("");
-                JOptionPane.showMessageDialog(null,"El id del horario de reserva solo acepta valores numérios enteros y debe contener 8 de los mismos","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El id del horario de reserva solo acepta valores númerios enteros","Valor incorrecto",JOptionPane.ERROR_MESSAGE);
             }
             else
             {
@@ -369,8 +373,8 @@ public class PanelReservas extends javax.swing.JPanel {
                 }
                 else
                 {
-                    String cod;
-                    cod=idEstadoReservaTxt.getText();
+                    int cod;
+                    cod=Integer.parseInt(idEstadoReservaTxt.getText());
                     if(!revisarEnArchivo(archId, cod))
                     {
                         idEstadoReservaTxt.setText("");
@@ -429,6 +433,8 @@ public void  guardarDatos(String idReserva,String idSalaReserva, String idClient
        
        File fAntiguo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoReservas.txt");
        File fNuevo= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\temporal.txt");
+       String aCadena=lineaAntigua;
+       String nCadena=nuevaLinea;
        
        BufferedReader br;
         try {
@@ -438,8 +444,8 @@ public void  guardarDatos(String idReserva,String idSalaReserva, String idClient
                 String linea;
                 while((linea=br.readLine()) != null)
                 {
-                    if(linea.equals(lineaAntigua)){
-                        escribir(fNuevo, nuevaLinea);
+                    if(linea.equals(aCadena)){
+                        escribir(fNuevo, nCadena);
                     }
                         
                     else{
@@ -448,6 +454,7 @@ public void  guardarDatos(String idReserva,String idSalaReserva, String idClient
                         
                 }
                 br.close();
+                String nAntiguo=fAntiguo.getName();
                 File auxiliar= new File(fAntiguo.getAbsolutePath());
                 borrar(fAntiguo);
                 System.out.println(fNuevo.renameTo(auxiliar));
@@ -459,7 +466,7 @@ public void  guardarDatos(String idReserva,String idSalaReserva, String idClient
         }
     }
             
-   public boolean revisarEnArchivo(File archivo, String id)
+   public boolean revisarEnArchivo(File archivo, int id)
     {
         if (!archivo.exists()) {
             return false;
@@ -475,13 +482,15 @@ public void  guardarDatos(String idReserva,String idSalaReserva, String idClient
                   String linea= s.nextLine();
                   sl= new Scanner(linea);
                   sl.useDelimiter("\\s*;\\s*");
-                  if(id.equals(sl.next()))
+                  if(id==Integer.parseInt(sl.next()))
                   {
                     sl.next();
                     hora=sl.next();
                     return true;
                   }
                       
+                  else
+                      return false;
                 } 
             }
             catch (FileNotFoundException ex) {
@@ -490,7 +499,7 @@ public void  guardarDatos(String idReserva,String idSalaReserva, String idClient
             }
         }
         
-        return false;
+        return true;
     }
     public static void escribir(File Ffichero,String cadena)
     {

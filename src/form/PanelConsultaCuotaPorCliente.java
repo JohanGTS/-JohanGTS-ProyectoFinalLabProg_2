@@ -1,4 +1,7 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package form;
 
 import java.awt.Color;
@@ -14,7 +17,6 @@ public class PanelConsultaCuotaPorCliente extends javax.swing.JPanel {
     public PanelConsultaCuotaPorCliente() {
         initComponents();
         Tabla=( DefaultTableModel)this.jTable1.getModel();
-        jTable1.setBackground(Color.white);
     }
 
     /**
@@ -35,7 +37,6 @@ public class PanelConsultaCuotaPorCliente extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         txtPorNombre1 = new javax.swing.JTextField();
 
-        setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Consultar.setText("Consultar");
@@ -61,29 +62,21 @@ public class PanelConsultaCuotaPorCliente extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Id cliente", "Cuota"
+                "Login Usuario", "Contraseña", "Nivel Acceso", "Nombre", "Apellido", "Correo Electronico"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         jTable1.setGridColor(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(jTable1);
 
@@ -92,12 +85,16 @@ public class PanelConsultaCuotaPorCliente extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
-        txtPorNombre1.setEditable(false);
         txtPorNombre1.setBackground(new java.awt.Color(0, 0, 0));
         txtPorNombre1.setFont(new java.awt.Font("Californian FB", 0, 18)); // NOI18N
         txtPorNombre1.setForeground(new java.awt.Color(255, 255, 255));
         txtPorNombre1.setText("Consulta de Cuota Por Cliente");
         txtPorNombre1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtPorNombre1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPorNombre1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -121,25 +118,30 @@ public class PanelConsultaCuotaPorCliente extends javax.swing.JPanel {
 
     private void ConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultarActionPerformed
         Tabla.setRowCount(0);
-        String id,cuota;
-        File arch= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\detallesCuota.txt");
+        String Nombre, Apellido, LoginUsuario,CorreoElectronico,NiveldeAcceso,contrasena;
+        File arch= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuarios.txt");
 
         try
         {
             if(arch.exists())
             {
+
                 String linea;
+
                 Scanner s = new Scanner(arch);
                 while (s.hasNextLine())
                 {
                     linea = s.nextLine();
                     Scanner k = new Scanner(linea);
                     k.useDelimiter("\\s*;\\s*");
-                    k.next();
-                    id=k.next(); 
-                    cuota=k.next();
-                    
-                        Tabla.addRow(new Object [] {id,cuota});
+                    LoginUsuario=k.next();
+                    contrasena=k.next();
+                    NiveldeAcceso=k.next();
+                    Nombre=k.next();
+                    Apellido=k.next();
+                    CorreoElectronico=k.next();
+                    contrasena="********";
+                    Tabla.addRow(new Object [] {LoginUsuario,contrasena,NiveldeAcceso,Nombre,Apellido,CorreoElectronico});
 
                 }//FIN while
 
@@ -155,10 +157,10 @@ public class PanelConsultaCuotaPorCliente extends javax.swing.JPanel {
     private void txtPorNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPorNombreActionPerformed
         Tabla.setRowCount(0);
 
-        String id, cuota;
+        String Nombre, Apellido, LoginUsuario,contrasena,CorreoElectronico,NiveldeAcceso;
         String nomb=txtPorNombre.getText();
 
-        File arch= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\detallesCuota.txt");
+        File arch= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoUsuarios.txt");
 
         try
         {
@@ -167,18 +169,26 @@ public class PanelConsultaCuotaPorCliente extends javax.swing.JPanel {
                 String linea;
                 Scanner s = new Scanner(arch);
                 while (s.hasNextLine())
+
                 {
                     linea = s.nextLine();
                     Scanner k = new Scanner(linea);
                     k.useDelimiter("\\s*;\\s*");
-                    k.next();
-                    id=k.next(); 
-                    cuota=k.next();
+                    LoginUsuario=k.next();
+                    contrasena=k.next();
+                    NiveldeAcceso=k.next();
+                    Nombre=k.next();
+                    Apellido=k.next();
+                    CorreoElectronico=k.next();
+                    contrasena="********";
+
                     if (linea.contains(nomb))
                     {
-                        Tabla.addRow(new Object [] {id,cuota});
+                        Tabla.addRow(new Object [] {LoginUsuario,contrasena,NiveldeAcceso,Nombre,Apellido,CorreoElectronico});
+
                     }
-                }
+
+                }// fin While
                 s.close();
             }
         }
@@ -187,6 +197,10 @@ public class PanelConsultaCuotaPorCliente extends javax.swing.JPanel {
             System.out.println(x);
         }
     }//GEN-LAST:event_txtPorNombreActionPerformed
+
+    private void txtPorNombre1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPorNombre1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPorNombre1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

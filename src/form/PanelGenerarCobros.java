@@ -1,4 +1,7 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package form;
 
 import Placeholder.TextPrompt;
@@ -16,6 +19,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
+/**
+ *
+ * @author Gabriel Marte
+ */
 public class PanelGenerarCobros extends javax.swing.JPanel {
     public static double cuota;
     public static int aux=0;
@@ -158,7 +165,6 @@ public class PanelGenerarCobros extends javax.swing.JPanel {
                         nuevaLinea+=idCliente+";";
                         for (int i = 0; i < 9; i++) 
                         {
-                            System.out.println(i);
                             nuevaLinea+=sl.next()+";";
                         }
                         String status=sl.next();
@@ -171,10 +177,7 @@ public class PanelGenerarCobros extends javax.swing.JPanel {
                             cuota=Double.parseDouble(sl.next());
                             balance+=cuota;
                             nuevaLinea+=balance+";"+cuota;
-                            int id=generarIdCobro(f);
-                            String linea2=id+";"+fechaBruta+";"+idCliente+";"+cuota+";"+conceptoCobrotxt.getText();
-                            guardarDatos(id,fechaBruta,idCliente,cuota,conceptoCobrotxt.getText());
-                            guardarDatos2(linea2, idCliente, fechaBruta);
+                            guardarDatos(generarIdCobro(f),fechaBruta,idCliente,cuota,conceptoCobrotxt.getText());
                         }
                         sl.close();
                         modificar(antiguaLinea,nuevaLinea );
@@ -207,23 +210,7 @@ public class PanelGenerarCobros extends javax.swing.JPanel {
             
         
     }//GEN-LAST:event_lblAgregarMouseClicked
-    public void  guardarDatos2(String linea,String idCliente,String fechaCuota){
-        try
-        {
-           File pdf= new File("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\Pdf\\pdf"+idCliente+".txt");
-           pdf.createNewFile();
-           FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\Pdf\\pdf"+idCliente+".txt",true);
-           PrintWriter pw= new PrintWriter(F1);
-           pw.println(linea);
-           pw.close();
-        } catch (Exception e) 
-        {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error gDatos2");
-        }
-    }
-    
-    public void  guardarDatos(int id,String fecha,String idCliente,Double valorCuota, String conceptoC){
+public void  guardarDatos(int id,String fecha,String idCliente,Double valorCuota, String conceptoC){
         try
         {
            FileWriter F1=new FileWriter("C:\\-JohanGTS-ProyectoFinalLabProg_2\\src\\ArchivosDeTexto\\archivoCobros.txt",true);
@@ -238,7 +225,7 @@ public class PanelGenerarCobros extends javax.swing.JPanel {
 
 public static int generarIdCobro(File f)
 {
-        return (int)(Math.random()*80000000+1);
+        return (int)(Math.random()*8000000+1);
 }
     
 public static boolean revisarEnArchivo(File archivo, String id) throws FileNotFoundException
@@ -252,6 +239,7 @@ public static boolean revisarEnArchivo(File archivo, String id) throws FileNotFo
         {
             try 
             {
+                
                 Scanner sl = null;
                 while(s.hasNextLine())
                 {
